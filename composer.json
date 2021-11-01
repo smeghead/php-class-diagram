@@ -1,0 +1,33 @@
+{
+    "name": "smeghead/php-class-diagram",
+    "description": "read php source and output PlantUML file.",
+    "type": "command",
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "clue/phar-composer": "^1.2"
+    },
+    "license": "Apache License 2.0",
+    "autoload": {
+        "psr-4": {
+            "Smeghead\\PhpClassDiagram\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "smeghead",
+            "email": "smeghead7@gmail.com"
+        }
+    ],
+    "scripts": {
+        "test": [
+            "php vendor/phpunit/phpunit/phpunit"
+        ],
+        "build": [
+            "php -d phar.readonly=off ./vendor/bin/phar-composer build ./"
+        ]
+    },
+    "bin": [
+        "src/PhpClassDiagram.php"
+    ],
+    "require": {}
+}

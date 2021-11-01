@@ -1,0 +1,11 @@
+version: '3.5'
+ 
+services:
+  php_cli:
+    container_name: php_cli
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    working_dir: /usr/src
+    volumes:
+      - ./:/usr/src
