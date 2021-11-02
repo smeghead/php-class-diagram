@@ -38,11 +38,11 @@ class Namespace_ {
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf('%spackage "%s" <<Rectangle>> {', $indent, $this->name);
         }
-        foreach ($this->children as $n) {
-            $lines = array_merge($lines, $n->dump($level));
-        }
         foreach ($this->entries as $e) {
             $lines = array_merge($lines, $e->dump($level + 1));
+        }
+        foreach ($this->children as $n) {
+            $lines = array_merge($lines, $n->dump($level + 1));
         }
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf('%s}', $indent);

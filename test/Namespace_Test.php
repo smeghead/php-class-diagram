@@ -44,6 +44,7 @@ final class Namespace_Test extends TestCase {
             new Entry('product', json_decode($this->name_expression)),
         ];
         $rel = new Relation($entries);
+        //まだ矢印を出力する実装はしてない。
 //        $expected =<<<EOS
 //@startuml
 //package "product" <<Rectangle>> {
@@ -57,14 +58,34 @@ final class Namespace_Test extends TestCase {
 //EOS;
         $expected =<<<EOS
 @startuml
-package "product" <<Rectangle>> {
-  class Product
-  class Price
-  class Name
-}
+  package "product" <<Rectangle>> {
+    class Product
+    class Price
+    class Name
+  }
 @enduml
 EOS;
         $this->assertSame($expected, implode("\r\n", $rel->dump()), 'output PlantUML script.');
     }
 
+    public function testDump2(): void {
+        $entries = [
+            new Entry('product', json_decode($this->product_expression)),
+            new Entry('product', json_decode($this->price_expression)),
+            new Entry('product/utility', json_decode($this->name_expression)),
+        ];
+        $rel = new Relation($entries);
+        $expected =<<<EOS
+@startuml
+  package "product" <<Rectangle>> {
+    class Product
+    class Price
+    package "utility" <<Rectangle>> {
+      class Name
+    }
+  }
+@enduml
+EOS;
+        $this->assertSame($expected, implode("\r\n", $rel->dump()), 'output PlantUML script.');
+    }
 }
