@@ -25,4 +25,5 @@ final class RelationTest extends TestCase {
 
         $this->assertNotNull($rel, 'initialize Relation');
     }
+
 }

@@ -8,4 +8,12 @@ class Entry {
         $this->directory = $directory;
         $this->info = $info;
     }
+
+    public function dump($level = 0): array {
+        $indent = str_repeat('  ', $level);
+        $lines = [];
+        $lines[] = sprintf('%sclass %s', $indent, $this->info->name);
+        return $lines;
+    }
+
 }
