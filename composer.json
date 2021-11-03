@@ -29,5 +29,7 @@
     "bin": [
         "src/PhpClassDiagram.php"
     ],
-    "require": {}
+    "require": {
+        "symfony/finder": "^5.3"
+    }
 }

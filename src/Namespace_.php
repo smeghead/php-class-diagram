@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
 class Namespace_ {
@@ -48,5 +48,24 @@ class Namespace_ {
             $lines[] = sprintf('%s}', $indent);
         }
         return $lines;
+    }
+
+    public function getArrows(): array {
+        $arrows = [];
+        foreach ($this->entries as $e) {
+            $arrows = array_merge($arrows, $e->getArrows());
+        }
+        foreach ($this->children as $n) {
+            $arrows = array_merge($arrows, $n->getArrows());
+        }
+        return $arrows;
+    }
+
+    public function getEntries(): array {
+        $entries = $this->entries;
+        foreach ($this->children as $n) {
+            $entries = array_merge($entries, $n->getEntries());
+        }
+        return $entries;
     }
 }

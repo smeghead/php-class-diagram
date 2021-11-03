@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
 class Entry {
@@ -16,4 +16,13 @@ class Entry {
         return $lines;
     }
 
+    public function getArrows(): array {
+        $arrows = [];
+        //フィールド変数の型に対しての依存をArrowとして返却する。
+        //FIXME コレクションへの依存は未検出
+        foreach ($this->info->properties as $p) {
+            $arrows[] = new Arrow($this->info->name, $p->type);
+        }
+        return $arrows;
+    }
 }

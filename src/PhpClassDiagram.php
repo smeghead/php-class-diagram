@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
 $options = getopt('h::',['help::'], $rest_index);
@@ -29,4 +29,4 @@ if ( ! is_dir($directory)) {
 include_once './vendor/autoload.php';
 use Smeghead\PhpClassDiagram\Main;
 
-$main = new Main($directory);
+new Main($directory);
