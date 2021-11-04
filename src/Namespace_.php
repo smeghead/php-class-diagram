@@ -2,6 +2,11 @@
 namespace Smeghead\PhpClassDiagram;
 
 class Namespace_ {
+    private static $namesAlreadyUsed = [];
+    public static function init() {
+        self::$namesAlreadyUsed = [];
+    }
+
     public string $name;
     public array $children = [];
     public array $entries = [];
@@ -22,6 +27,9 @@ class Namespace_ {
     }
 
     private function findChild(string $dir): Namespace_ {
+        if (empty($dir)) {
+            return $this;
+        }
         foreach ($this->children as $c) {
             if ($c->name === $dir) {
                 return $c;
@@ -32,11 +40,22 @@ class Namespace_ {
         return end($this->children);
     }
 
+    /**
+     * 重複したパッケージ名があると、PlantUMLでエラーが発生するので避ける
+     */
+    private function avoidDuplicateName(string $name) {
+        if (in_array($name, self::$namesAlreadyUsed)) {
+            return $this->avoidDuplicateName(sprintf('%s_', $name));
+        }
+        self::$namesAlreadyUsed[] = $name;
+        return $name;
+    }
+
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
         if ($this->name !== 'ROOT') {
-            $lines[] = sprintf('%spackage "%s" <<Rectangle>> {', $indent, $this->name);
+            $lines[] = sprintf('%spackage "%s" <<Rectangle>> {', $indent, $this->avoidDuplicateName($this->name));
         }
         foreach ($this->entries as $e) {
             $lines = array_merge($lines, $e->dump($level + 1));

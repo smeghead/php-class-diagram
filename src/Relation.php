@@ -11,6 +11,7 @@ class Relation {
     private Namespace_ $namespace;
 
     public function __construct(array $entries) {
+        Namespace_::init();
         $this->namespace = new Namespace_('ROOT');
         foreach ($entries as $e) {
             $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
