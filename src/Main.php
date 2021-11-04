@@ -15,8 +15,12 @@ class Main {
         $finder->files()->name('*.php');
         $entries = [];
         foreach ($finder as $file) {
-            $reflection = new PhpReflection($file->getPathname());
-            $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo());
+            try {
+                $reflection = new PhpReflection($file->getPathname());
+                $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo());
+            } catch (Exception $e) {
+                fputs(STDERR, $e->getMessage());
+            }
         }
         $relation = new Relation($entries);
         echo implode("\r\n", $relation->dump()) . "\r\n";

@@ -25,9 +25,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame($data->namespace, '', 'namespace name.');
         $this->assertSame($data->properties[0]->name, 'name', 'type.');
         $this->assertSame($data->properties[0]->type, 'Name', 'type.');
-        $this->assertSame($data->properties[0]->private, true, 'private.');
         $this->assertSame($data->properties[1]->name, 'price', 'name.');
         $this->assertSame($data->properties[1]->type, 'Price', 'type.');
-        $this->assertSame($data->properties[1]->private, true, 'private.');
     }
 }

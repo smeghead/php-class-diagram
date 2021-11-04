@@ -13,7 +13,7 @@ class Relation {
     public function __construct(array $entries) {
         $this->namespace = new Namespace_('ROOT');
         foreach ($entries as $e) {
-            $this->namespace->addEntry(explode('/', $e->directory), $e);
+            $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
         }
     }
 
