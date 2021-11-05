@@ -8,7 +8,10 @@ class Namespace_ {
     }
 
     public string $name;
+
+    /** @var Namespace_[] namespaces */
     public array $children = [];
+    /** @var Entry[] entries */
     public array $entries = [];
 
     public function __construct(string $name) {
