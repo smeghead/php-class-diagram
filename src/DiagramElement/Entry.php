@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Smeghead\PhpClassDiagram;
+namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 class Entry {
     public string $directory;
@@ -12,7 +12,7 @@ class Entry {
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $lines[] = sprintf('%sclass %s', $indent, $this->info->name);
+        $lines[] = sprintf('%sclass %s', $indent, $this->info->type->name);
         return $lines;
     }
 
@@ -21,7 +21,7 @@ class Entry {
         //フィールド変数の型に対しての依存をArrowとして返却する。
         //FIXME コレクションへの依存は未検出
         foreach ($this->info->properties as $p) {
-            $arrows[] = new Arrow($this->info->name, $p->type);
+            $arrows[] = new Arrow($this->info->type->name, $p->type->name);
         }
         return $arrows;
     }

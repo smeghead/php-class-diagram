@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\ {
-    Relation,
+use Smeghead\PhpClassDiagram\Relation;
+use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
     Namespace_,
 };
@@ -12,9 +12,9 @@ final class Namespace_Test extends TestCase {
     public function setUp(): void {
     }
 
-    private string $product_expression = '{"name":"Product","namespace":"","properties":[{"name":"name","type":"Name","private":true},{"name":"price","type":"Price","private":true}]}';
-    private string $price_expression = '{"name":"Price","namespace":"","properties":[{"name":"price","type":"int","private":true}]}';
-    private string $name_expression = '{"name":"Name","namespace":"","properties":[{"name":"name","type":"string","private":true}]}';
+    private string $product_expression = '{"type":{"name":"Product","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}}]}';
+    private string $price_expression = '{"type":{"name":"Price","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]}}]}';
+    private string $name_expression = '{"type":{"name":"Name","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
 
     public function testInitialize(): void {
         $entries = [
@@ -31,9 +31,9 @@ final class Namespace_Test extends TestCase {
         $product = $namespace->children[0];
         $this->assertSame('product', $product->name, 'product namespace name');
 
-        $this->assertSame('Product', $product->entries[0]->info->name, 'product class name');
-        $this->assertSame('Price', $product->entries[1]->info->name, 'product class name');
-        $this->assertSame('Name', $product->entries[2]->info->name, 'product class name');
+        $this->assertSame('Product', $product->entries[0]->info->type->name, 'product class name');
+        $this->assertSame('Price', $product->entries[1]->info->type->name, 'product class name');
+        $this->assertSame('Name', $product->entries[2]->info->type->name, 'product class name');
 
     }
 

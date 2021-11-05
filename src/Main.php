@@ -3,10 +3,10 @@ namespace Smeghead\PhpClassDiagram;
 
 use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\ {
-    Entry,
     Relation,
     PhpReflection,
 };
+use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 class Main {
     public function __construct(string $directory) {

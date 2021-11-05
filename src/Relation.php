@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
-use Smeghead\PhpClassDiagram\ {
+use Smeghead\PhpClassDiagram\DiagramElement\ {
     Namespace_,
     Entry,
     Arrow,
@@ -32,7 +32,7 @@ class Relation {
     }
 
     public function getRelations(): array {
-        $classNames = array_map(function($x){ return $x->info->name; }, $this->namespace->getEntries());
+        $classNames = array_map(function($x){ return $x->info->type->name; }, $this->namespace->getEntries());
         $arrows = array_filter($this->namespace->getArrows(), function($x) use ($classNames) {
             return in_array($x->to, $classNames);
         });

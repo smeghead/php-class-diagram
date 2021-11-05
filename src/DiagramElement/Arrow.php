@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Smeghead\PhpClassDiagram;
+namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 class Arrow {
     public string $from;
