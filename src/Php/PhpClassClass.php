@@ -13,6 +13,6 @@ class PhpClassClass extends PhpClass {
      * @return PhpProperty[] プロパティ一覧
      */
     public function getPropertiesFromSyntax(): array {
-        return $this->syntax->stmts;
+        return $this->syntax->getProperties();
     }
 }

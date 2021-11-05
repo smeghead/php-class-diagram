@@ -32,10 +32,18 @@ abstract class PhpClass {
         $properties = $this->getPropertiesFromSyntax();
         $props = [];
         foreach ($properties as $p) {
-            if ( ! $p instanceOf Property) {
-                continue;
+            $docComment = $p->getDocComment();
+            $doc = '';
+            if ( ! empty($docComment)) {
+                $doc =  $docComment->getText();
             }
-            if ($p->type instanceOf Identifier) {
+            if ( ! empty($doc)) {
+                $parts = [];
+                // @var に定義された型情報を取得する。
+                if (preg_match('/@var\s+(\S+)(\b|\s).*/', $doc, $matches)) {
+                    $parts = [$matches[1]];
+                }
+            } else if ($p->type instanceOf Identifier) {
                 $parts = [$p->type->name];
             } else if ($p->type instanceOf Name) {
                 $parts = $p->type->parts;
@@ -63,7 +71,7 @@ abstract class PhpClass {
 
 
     protected function findNamespaceByTypeParts(array $type_parts): array {
-        $type = array_pop($type_parts);
+        $type = str_replace('[]', '', array_pop($type_parts));
         if ($this->syntax instanceOf ClassLike) {
             return $type_parts;
         } else if ($this->syntax instanceOf Namespace_) {

@@ -30,6 +30,6 @@ class PhpClassNamespace extends PhpClass {
         if ($syntax === null) {
             throw new \Exception('failed to find class.');
         }
-        return $syntax->stmts;
+        return $syntax->getProperties();
     }
 }
