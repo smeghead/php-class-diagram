@@ -25,7 +25,7 @@ class PhpReflection {
         try {
             $ast = $parser->parse($code);
         } catch (Error $error) {
-            throw new Exception("Parse error: {$error->getMessage()} file: {$this->filename}\n");
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$this->filename}\n");
         }
 
         $this->class = $this->getClass($ast);
@@ -37,13 +37,13 @@ class PhpReflection {
         }
         foreach ($ast as $element) {
             if ($element instanceOf ClassLike) {
-                return new PhpClassClass($element);
+                return new PhpClassClass($this->filename, $element);
             } else if ($element instanceOf Namespace_) {
-                return new PhpClassNamespace($element);
+                return new PhpClassNamespace($this->filename, $element);
             }
         }
         // クラスが含まれていないファイル
-        var_dump($ast);die('');
+        throw new \Exception('not found class.' . $this->filename);
     }
 
     public function getInfo(): \stdClass {

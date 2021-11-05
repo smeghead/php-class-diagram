@@ -15,9 +15,11 @@ use PhpParser\Node\Stmt\ {
 use Smeghead\PhpClassDiagram\Php\PhpType;
 
 abstract class PhpClass {
+    protected string $filename;
     protected Stmt $syntax;
 
-    public function __construct(Stmt $syntax) {
+    public function __construct(string $filename, Stmt $syntax) {
+        $this->filename = $filename;
         $this->syntax = $syntax;
     }
 

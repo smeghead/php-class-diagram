@@ -13,6 +13,7 @@ class PhpClassNamespace extends PhpClass {
                 return new PhpType($this->syntax->name->parts, $stmt->name->name);
             }
         }
+        throw new \Exception('not found class. ' . $this->filename);
     }
 
     /**
