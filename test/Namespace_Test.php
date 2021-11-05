@@ -56,7 +56,7 @@ final class Namespace_Test extends TestCase {
   Product ..> Price
 @enduml
 EOS;
-        $this->assertSame($expected, implode("\r\n", $rel->dump()), 'output PlantUML script.');
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 
     public function testDump2(): void {
@@ -79,6 +79,6 @@ EOS;
   Product ..> Price
 @enduml
 EOS;
-        $this->assertSame($expected, implode("\r\n", $rel->dump()), 'output PlantUML script.');
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 }
