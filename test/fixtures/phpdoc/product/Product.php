@@ -8,12 +8,12 @@ use hoge\fuga\product\ {
 };
 
 class Product {
-    /** @var Name 名前 */
+    /** @var Name 蜷榊燕 */
     private $name;
     
-    /** @var Price 名前 */
+    /** @var Price 蜷榊燕 */
     private $price;
     
-    /** @var Tag[] 付与されたタグ一覧 */
+    /** @var Tag[] 莉倅ｸ弱＆繧後◆繧ｿ繧ｰ荳隕ｧ */
     private array $tags;
 }
