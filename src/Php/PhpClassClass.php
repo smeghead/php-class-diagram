@@ -6,7 +6,7 @@ use Smeghead\PhpClassDiagram\Php\PhpType;
 class PhpClassClass extends PhpClass {
 
     public function getClassType(): PhpType {
-        return new PhpType([], $this->syntax->name->name);
+        return new PhpType([], $this->syntax->getType(), $this->syntax->name->name);
     }
 
     /**

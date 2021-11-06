@@ -12,7 +12,8 @@ class Entry {
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $lines[] = sprintf('%sclass %s', $indent, $this->info->type->name);
+        $meta = $this->info->type->meta === 'Stmt_Interface' ? 'interface' : 'class';
+        $lines[] = sprintf('%s%s %s', $indent, $meta, $this->info->type->name);
         return $lines;
     }
 

@@ -52,6 +52,7 @@ final class PhpReflectionTest extends TestCase {
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->type->name, 'class type name.');
+        $this->assertSame('Stmt_Class', $data->type->meta, 'class meta name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->type->namespace, 'namespace name.');
         $this->assertSame('name', $data->properties[0]->name, 'type.');
         $this->assertSame('Name', $data->properties[0]->type->name, 'type.');
@@ -61,5 +62,17 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->properties[1]->type->namespace, 'Price namespace.');
         $this->assertSame('Tag[]', $data->properties[2]->type->name, 'type.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->properties[2]->type->namespace, 'Tag[] namespace.');
+    }
+
+    public function testDump_with_interface(): void {
+        $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
+        $class = new PhpReflection($filename);
+
+        $data = $class->getInfo();
+        $this->assertSame('Interface_', $data->type->name, 'class type name.');
+        $this->assertSame('Stmt_Interface', $data->type->meta, 'class meta name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->type->namespace, 'namespace name.');
+        $this->assertSame('name', $data->properties[0]->name, 'property type.');
+        $this->assertSame('string', $data->properties[0]->type->name, 'property type.');
     }
 }

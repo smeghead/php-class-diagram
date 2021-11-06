@@ -12,9 +12,10 @@ final class Namespace_Test extends TestCase {
     public function setUp(): void {
     }
 
-    private string $product_expression = '{"type":{"name":"Product","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}}]}';
-    private string $price_expression = '{"type":{"name":"Price","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]}}]}';
-    private string $name_expression = '{"type":{"name":"Name","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
+    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}}]}';
+    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]}}]}';
+    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
+    private string $interface_expression = '{"type":{"name":"Interface_","meta":"Stmt_Interface","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
 
     public function testInitialize(): void {
         $entries = [
@@ -77,6 +78,21 @@ EOS;
   }
   Product ..> Name
   Product ..> Price
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
+    public function testDump3(): void {
+        $entries = [
+            new Entry('product', json_decode($this->interface_expression)),
+        ];
+        $rel = new Relation($entries);
+        $expected =<<<EOS
+@startuml
+  package "product" <<Rectangle>> {
+    interface Interface_
+  }
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');

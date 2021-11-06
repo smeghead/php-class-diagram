@@ -58,7 +58,7 @@ abstract class PhpClass {
             }
             $props[] = (object)[
                 'name' => $p->props[0]->name->toString(),
-                'type' => new PhpType($namespace, $typeName),
+                'type' => new PhpType($namespace, $p->getType(), $typeName),
             ];
         }
         return $props;

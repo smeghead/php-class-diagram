@@ -10,7 +10,7 @@ class PhpClassNamespace extends PhpClass {
     public function getClassType(): PhpType {
         foreach ($this->syntax->stmts as $stmt) {
             if ($stmt instanceOf ClassLike) {
-                return new PhpType($this->syntax->name->parts, $stmt->name->name);
+                return new PhpType($this->syntax->name->parts, $stmt->getType(), $stmt->name->name);
             }
         }
         throw new \Exception('not found class. ' . $this->filename);
