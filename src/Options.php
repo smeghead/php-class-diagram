@@ -8,7 +8,7 @@ class Options {
         $this->opt = $opt;
     }
 
-    public function help() {
+    public function help(): bool {
         if (isset($this->opt['h'])) {
             return true;
         }
@@ -18,7 +18,7 @@ class Options {
         return false;
     }
 
-    public function classProperties() {
+    public function classProperties(): bool {
         if (isset($this->opt['enable-class-properties'])) {
             return true;
         }
@@ -29,7 +29,7 @@ class Options {
         return false;
     }
 
-    public function classMethods() {
+    public function classMethods(): bool {
         if (isset($this->opt['enable-class-methods'])) {
             return true;
         }
@@ -38,5 +38,19 @@ class Options {
         }
         // default
         return false;
+    }
+
+    public function phpVersion(): string {
+        if (isset($this->opt['php5'])) {
+            return 'php5';
+        }
+        if (isset($this->opt['php7'])) {
+            return 'php7';
+        }
+        if (isset($this->opt['php8'])) {
+            return 'php8';
+        }
+        // default
+        return 'php7';
     }
 }

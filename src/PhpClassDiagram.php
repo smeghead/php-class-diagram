@@ -7,6 +7,8 @@ $options = getopt('h',[
     'disable-class-properties',
     'enable-class-methods',
     'disable-class-methods',
+    'php7',
+    'php8',
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
@@ -19,6 +21,9 @@ OPTIONS
       --disable-class-properties not describe properties in class diagram.
       --enable-class-methods     describe methods in class diagram.
       --disable-class-methods    not describe methods in class diagram.
+      --php5                     parse php source file as php5.
+      --php7                     parse php source file as php7.
+      --php8                     parse php source file as php8. (not suppoted)
 EOS;
 
 if (isset($options['h']) || isset($options['help'])) {

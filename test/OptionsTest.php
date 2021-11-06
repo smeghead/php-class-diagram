@@ -72,5 +72,23 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(false, $options->classMethods(), 'classMethods is off.');
     }
+    public function testPhp1(): void {
+        $opt = [
+            'php7' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('php7', $options->phpVersion(), 'php version is 7.');
+    }
+    public function testPhp2(): void {
+        $opt = [
+            'php8' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('php8', $options->phpVersion(), 'php version is 8.');
+    }
 
 }

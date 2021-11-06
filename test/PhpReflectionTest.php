@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\PhpReflection;
+use Smeghead\PhpClassDiagram\ {
+    Options,
+    PhpReflection,
+};
 
 final class PhpReflectionTest extends TestCase {
     private $fixtureDir;
@@ -10,15 +13,17 @@ final class PhpReflectionTest extends TestCase {
     }
 
     public function testInitialize(): void {
+        $options = new Options([]);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename);
+        $class = new PhpReflection($filename, $options);
 
         $this->assertNotNull($class, 'initialize PhppReflection');
     }
 
     public function testDump(): void {
+        $options = new Options([]);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename);
+        $class = new PhpReflection($filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->type->name, 'class type name.');
@@ -32,8 +37,9 @@ final class PhpReflectionTest extends TestCase {
     }
 
     public function testDump_with_namespace(): void {
+        $options = new Options([]);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename);
+        $class = new PhpReflection($filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->type->name, 'class type name.');
@@ -47,8 +53,9 @@ final class PhpReflectionTest extends TestCase {
     }
 
     public function testDump_with_phpdoc(): void {
+        $options = new Options([]);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename);
+        $class = new PhpReflection($filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->type->name, 'class type name.');
@@ -65,8 +72,9 @@ final class PhpReflectionTest extends TestCase {
     }
 
     public function testDump_with_interface(): void {
+        $options = new Options([]);
         $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
-        $class = new PhpReflection($filename);
+        $class = new PhpReflection($filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Interface_', $data->type->name, 'class type name.');
