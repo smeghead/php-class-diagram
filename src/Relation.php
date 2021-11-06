@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
+use Smeghead\PhpClassDiagram\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\ {
     Namespace_,
     Entry,
@@ -8,11 +9,13 @@ use Smeghead\PhpClassDiagram\DiagramElement\ {
 };
 
 class Relation {
+    private Options $options;
     private Namespace_ $namespace;
 
-    public function __construct(array $entries) {
+    public function __construct(array $entries, Options $options) {
+        $this->options = $options;
         Namespace_::init();
-        $this->namespace = new Namespace_('ROOT');
+        $this->namespace = new Namespace_('ROOT', $options);
         foreach ($entries as $e) {
             $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
         }

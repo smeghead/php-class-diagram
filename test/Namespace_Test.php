@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\Relation;
+use Smeghead\PhpClassDiagram\ {
+    Options,
+    Relation,
+};
 use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
     Namespace_,
@@ -18,12 +21,13 @@ final class Namespace_Test extends TestCase {
     private string $interface_expression = '{"type":{"name":"Interface_","meta":"Stmt_Interface","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
 
     public function testInitialize(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product', json_decode($this->name_expression)),
+            new Entry('product', json_decode($this->product_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product', json_decode($this->name_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
         $namespace = $rel->getNamespace();
 
         $this->assertInstanceOf(Namespace_::class, $namespace, 'namespace instance');
@@ -39,12 +43,13 @@ final class Namespace_Test extends TestCase {
     }
 
     public function testDump(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product', json_decode($this->name_expression)),
+            new Entry('product', json_decode($this->product_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product', json_decode($this->name_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
 
         $expected =<<<EOS
 @startuml
@@ -61,12 +66,13 @@ EOS;
     }
 
     public function testDump2(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product/utility', json_decode($this->name_expression)),
+            new Entry('product', json_decode($this->product_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product/utility', json_decode($this->name_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
@@ -84,14 +90,33 @@ EOS;
     }
 
     public function testDump3(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->interface_expression)),
+            new Entry('product', json_decode($this->interface_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
     interface Interface_
+  }
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
+    public function testDump4(): void {
+        $options = new Options(['enable-class-properties' => true]);
+        $entries = [
+            new Entry('product', json_decode($this->interface_expression), $options),
+        ];
+        $rel = new Relation($entries, $options);
+        $expected =<<<EOS
+@startuml
+  package "product" <<Rectangle>> {
+    interface Interface_ {
+      string name
+    }
   }
 @enduml
 EOS;

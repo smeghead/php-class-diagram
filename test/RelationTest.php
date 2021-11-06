@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\Relation;
+use Smeghead\PhpClassDiagram\ {
+    Options,
+    Relation,
+};
 use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 final class RelationTest extends TestCase {
@@ -17,23 +20,25 @@ final class RelationTest extends TestCase {
     private string $tag_expression = '{"type":{"name":"Tag","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
 
     public function testInitialize(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product', json_decode($this->name_expression)),
+            new Entry('product', json_decode($this->product_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product', json_decode($this->name_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
 
         $this->assertNotNull($rel, 'initialize Relation');
     }
 
     public function testGetRelations1(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product', json_decode($this->name_expression)),
+            new Entry('product', json_decode($this->product_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product', json_decode($this->name_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(2, count($relations), 'count');
@@ -42,13 +47,14 @@ final class RelationTest extends TestCase {
     }
 
     public function testGetRelations2(): void {
+        $options = new Options([]);
         $entries = [
-            new Entry('product', json_decode($this->product_with_tags_expression)),
-            new Entry('product', json_decode($this->price_expression)),
-            new Entry('product', json_decode($this->name_expression)),
-            new Entry('product', json_decode($this->tag_expression)),
+            new Entry('product', json_decode($this->product_with_tags_expression), $options),
+            new Entry('product', json_decode($this->price_expression), $options),
+            new Entry('product', json_decode($this->name_expression), $options),
+            new Entry('product', json_decode($this->tag_expression), $options),
         ];
-        $rel = new Relation($entries);
+        $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(3, count($relations), 'count');

@@ -1,7 +1,10 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
+use Smeghead\PhpClassDiagram\Options;
+
 class Namespace_ {
+    private Options $options;
     private static $namesAlreadyUsed = [];
     public static function init() {
         self::$namesAlreadyUsed = [];
@@ -14,8 +17,9 @@ class Namespace_ {
     /** @var Entry[] entries */
     public array $entries = [];
 
-    public function __construct(string $name) {
+    public function __construct(string $name, Options $options) {
         $this->name = $name;
+        $this->options = $options;
     }
 
     public function addEntry(array $paths, Entry $entry): void {
@@ -39,7 +43,7 @@ class Namespace_ {
             }
         }
         // if not exists, generate Namespace_.
-        $this->children[] = new self($dir);
+        $this->children[] = new self($dir, $this->options);
         return end($this->children);
     }
 

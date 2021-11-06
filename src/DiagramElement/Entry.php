@@ -1,19 +1,33 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
+use Smeghead\PhpClassDiagram\Options;
+
 class Entry {
+    public Options $options;
     public string $directory;
     public \stdClass $info;
-    public function __construct(string $directory, \stdClass $info) {
+    public function __construct(string $directory, \stdClass $info, Options $options) {
         $this->directory = $directory;
         $this->info = $info;
+        $this->options = $options;
     }
 
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
         $meta = $this->info->type->meta === 'Stmt_Interface' ? 'interface' : 'class';
-        $lines[] = sprintf('%s%s %s', $indent, $meta, $this->info->type->name);
+        if ($this->options->classProperties() || $this->options->classMethods()) {
+            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->info->type->name);
+            if ($this->options->classProperties()) {
+                foreach ($this->info->properties as $p) {
+                    $lines[] = sprintf('  %s%s %s', $indent, $p->type->name, $p->name);
+                }
+            }
+            $lines[] = sprintf('%s}', $indent);
+        } else {
+            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->info->type->name);
+        }
         return $lines;
     }
 
