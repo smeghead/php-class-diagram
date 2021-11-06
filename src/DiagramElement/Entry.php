@@ -21,7 +21,7 @@ class Entry {
             $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->info->type->name);
             if ($this->options->classProperties()) {
                 foreach ($this->info->properties as $p) {
-                    $lines[] = sprintf('  %s%s %s', $indent, $p->type->name, $p->name);
+                    $lines[] = sprintf('  %s%s : %s', $indent, $p->name, $p->type->name);
                 }
             }
             $lines[] = sprintf('%s}', $indent);

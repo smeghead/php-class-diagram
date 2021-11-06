@@ -115,7 +115,7 @@ EOS;
 @startuml
   package "product" <<Rectangle>> {
     interface Interface_ {
-      string name
+      name : string
     }
   }
 @enduml
