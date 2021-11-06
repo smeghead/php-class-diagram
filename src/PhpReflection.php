@@ -64,6 +64,7 @@ class PhpReflection {
         $data = (object)[
             'type' => $this->class->getClassType(),
             'properties' => $this->class->getProperties(),
+            'methods' => $this->class->getMethods(),
         ];
         return $data;
     }

@@ -9,6 +9,7 @@ use PhpParser\Node\ {
 use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,
+    ClassMethod,
     Property,
     GroupUse,
 };
@@ -95,5 +96,21 @@ abstract class PhpClass {
             }
         }
         return [];
+    }
+
+    abstract public function getMethods(): array;
+
+    protected function getMethodInfo(ClassMethod $method): \stdClass {
+        $params = array_map(function($x){
+            return (object)[
+                'name' => $x->var->name,
+                'type' => new PhpType([], '', $x->type->toString()),
+            ];
+        }, $method->getParams());
+        return (object)[
+            'name' => $method->name->toString(),
+            'params' => $params,
+            'public' => $method->isPublic(),
+        ];
     }
 }

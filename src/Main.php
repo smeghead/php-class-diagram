@@ -17,7 +17,7 @@ class Main {
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflection = new PhpReflection($file->getPathname());
+                $reflection = new PhpReflection($file->getPathname(), $options);
                 $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
             } catch (\Exception $e) {
                 fputs(STDERR, $e->getMessage() . "\r\n");

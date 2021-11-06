@@ -24,6 +24,14 @@ class Entry {
                     $lines[] = sprintf('  %s%s : %s', $indent, $p->name, $p->type->name);
                 }
             }
+            if ($this->options->classMethods()) {
+                foreach ($this->info->methods as $m) {
+                    $params = array_map(function($x){
+                        return $x->name;
+                    }, $m->params);
+                    $lines[] = sprintf('  %s%s(%s)', $indent, $m->name, implode(', ', $params));
+                }
+            }
             $lines[] = sprintf('%s}', $indent);
         } else {
             $lines[] = sprintf('%s%s %s', $indent, $meta, $this->info->type->name);

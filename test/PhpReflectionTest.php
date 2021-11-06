@@ -83,4 +83,26 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('name', $data->properties[0]->name, 'property type.');
         $this->assertSame('string', $data->properties[0]->type->name, 'property type.');
     }
+    public function testDump_with_methods(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Product', $data->type->name, 'class type name.');
+        $this->assertSame([], $data->type->namespace, 'namespace name.');
+        $this->assertSame('method1', $data->methods[0]->name, 'namespace name.');
+        $this->assertSame('param1', $data->methods[0]->params[0]->name, 'parameter name.');
+    }
+    public function testDump_with_methods2(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Product', $data->type->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->type->namespace, 'namespace name.');
+        $this->assertSame('method1', $data->methods[0]->name, 'namespace name.');
+        $this->assertSame('param1', $data->methods[0]->params[0]->name, 'parameter name.');
+    }
 }
