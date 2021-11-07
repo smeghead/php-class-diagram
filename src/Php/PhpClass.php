@@ -102,9 +102,13 @@ abstract class PhpClass {
 
     protected function getMethodInfo(ClassMethod $method): \stdClass {
         $params = array_map(function($x){
+            $type = '';
+            if ( ! empty($x->type)) {
+                $type = $x->type->toString();
+            }
             return (object)[
                 'name' => $x->var->name,
-                'type' => new PhpType([], '', $x->type->toString()),
+                'type' => new PhpType([], '', $type),
             ];
         }, $method->getParams());
         return (object)[
