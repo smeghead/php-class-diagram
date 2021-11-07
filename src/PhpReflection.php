@@ -61,10 +61,12 @@ class PhpReflection {
     }
 
     public function getInfo(): \stdClass {
+        // TODO PhpClass を返却するように修正する。汎用データ型のstdClassを使うより安全にするため
         $data = (object)[
             'type' => $this->class->getClassType(),
             'properties' => $this->class->getProperties(),
             'methods' => $this->class->getMethods(),
+            'extends' => $this->class->getExtends(),
         ];
         return $data;
     }

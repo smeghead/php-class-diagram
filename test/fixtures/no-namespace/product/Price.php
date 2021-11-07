@@ -1,4 +1,4 @@
 <?php
 class Price {
-    private int $price;
+    private $price;
 }

@@ -41,11 +41,17 @@ class Entry {
 
     public function getArrows(): array {
         $arrows = [];
-        //フィールド変数の型に対しての依存をArrowとして返却する。
-        //FIXME コレクションへの依存は未検出
+        //フィールド変数の型に対しての依存をArrowとして追加する。
         foreach ($this->info->properties as $p) {
-            $arrows[] = new Arrow($this->info->type->name, $p->type->name);
+            $arrows[] = new ArrowDependency($this->info->type->name, $p->type->name);
         }
+        if ( ! empty($this->info->extends)) {
+            //継承先に対してArrowを追加する。
+            foreach ($this->info->extends as $extend) {
+                $arrows[] = new ArrowInheritance($this->info->type->name, $extend->name);
+            }
+        }
+
         return $arrows;
     }
 }

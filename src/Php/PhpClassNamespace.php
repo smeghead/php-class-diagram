@@ -43,4 +43,23 @@ class PhpClassNamespace extends PhpClass {
             throw new \Exception('failed to find class.');
         }
     }
+
+    public function getExtends(): array {
+        $namespace = $this->syntax->name->parts;
+        $syntax = $this->findClassLike();
+        $extends = [];
+        if ( ! empty($syntax->extends)) {
+            $parts = $syntax->extends->parts;
+            $name = array_pop($parts);
+            $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $name);
+        }
+        if ( ! empty($syntax->implements)) {
+            foreach ($syntax->implements as $i) {
+                $parts = $i->parts;
+                $name = array_pop($parts);
+                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Interface', $name);
+            }
+        }
+        return $extends;
+    }
 }

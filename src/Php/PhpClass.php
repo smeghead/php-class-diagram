@@ -117,4 +117,6 @@ abstract class PhpClass {
             'public' => $method->isPublic(),
         ];
     }
+
+    abstract public function getExtends(): array;
 }

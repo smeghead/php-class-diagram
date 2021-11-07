@@ -105,4 +105,24 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('method1', $data->methods[0]->name, 'namespace name.');
         $this->assertSame('param1', $data->methods[0]->params[0]->name, 'parameter name.');
     }
+    public function testDump_with_extend(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/extends/product/Sub.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Sub', $data->type->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->type->namespace, 'namespace name.');
+        $this->assertSame('Super', $data->extends[0]->name, 'super class name.');
+    }
+    public function testDump_with_implements(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/extends/product/Implements_.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Implements_', $data->type->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->type->namespace, 'namespace name.');
+        $this->assertSame('Interface_', $data->extends[0]->name, 'super class name.');
+    }
 }
