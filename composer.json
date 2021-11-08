@@ -25,7 +25,7 @@
     ],
     "scripts": {
         "test": [
-            "php vendor/phpunit/phpunit/phpunit"
+            "php vendor/phpunit/phpunit/phpunit test/"
         ],
         "build": [
             "php -d phar.readonly=off ./vendor/bin/phar-composer build ./"
