@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
@@ -13,7 +14,7 @@ $options = getopt('h',[
 $arguments = array_slice($argv, $rest_index);
 
 $usage =<<<EOS
-usage: php PhpClassDiagram.php [OPTIONS] <target php source directory>
+usage: php-class-diagram [OPTIONS] <target php source directory>
 
 OPTIONS
   -h, --help                     show this help page.
@@ -24,6 +25,7 @@ OPTIONS
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
       --php8                     parse php source file as php8. (not suppoted)
+
 EOS;
 
 if (isset($options['h']) || isset($options['help'])) {

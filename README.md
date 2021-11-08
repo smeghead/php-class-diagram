@@ -1,6 +1,6 @@
 # php-class-diagram
 
-read php source and output PlantUML file.
+A CLI tool that parses the PHP source directory and outputs PlantUML scripts.
 
 ## How to execute
 
@@ -46,7 +46,7 @@ class Price {
 ```
 
 ```bash
-$ php src/PhpClassDiagram.php test/fixtures/no-namespace
+$ bin/php-class-diagram test/fixtures/no-namespace
 @startuml
   package "product" <<Rectangle>> {
     class Name

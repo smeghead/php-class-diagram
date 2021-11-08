@@ -32,6 +32,6 @@
         ]
     },
     "bin": [
-        "src/PhpClassDiagram.php"
+        "bin/php-class-diagram"
     ]
 }
