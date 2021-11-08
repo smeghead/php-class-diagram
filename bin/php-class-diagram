@@ -16,6 +16,8 @@ $arguments = array_slice($argv, $rest_index);
 $usage =<<<EOS
 usage: php-class-diagram [OPTIONS] <target php source directory>
 
+A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
+
 OPTIONS
   -h, --help                     show this help page.
       --enable-class-properties  describe properties in class diagram.

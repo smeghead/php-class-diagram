@@ -1,6 +1,6 @@
 # php-class-diagram
 
-A CLI tool that parses the PHP source directory and outputs PlantUML scripts.
+A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
 
 ## How to execute
 
