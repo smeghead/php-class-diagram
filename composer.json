@@ -1,7 +1,6 @@
 {
     "name": "smeghead/php-class-diagram",
     "description": "read php source and output PlantUML file.",
-    "version": "0.0.1",
     "type": "command",
     "require": {
         "php" : ">=7.4",
@@ -12,7 +11,7 @@
         "phpunit/phpunit": "^9.5",
         "clue/phar-composer": "^1.2"
     },
-    "license": "Apache License 2.0",
+    "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
             "Smeghead\\PhpClassDiagram\\": "src/"
