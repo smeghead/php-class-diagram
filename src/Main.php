@@ -10,6 +10,8 @@ use Smeghead\PhpClassDiagram\ {
 use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 class Main {
+    const VERSION = 'v0.0.0';
+
     public function __construct(string $directory, Options $options) {
         $finder = new Finder();
         $finder->files()->in($directory);

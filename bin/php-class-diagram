@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
+include_once './vendor/autoload.php';
 
-$options = getopt('h',[
+$options = getopt('hv',[
     'help',
+    'version',
     'enable-class-properties',
     'disable-class-properties',
     'enable-class-methods',
@@ -30,6 +32,10 @@ OPTIONS
 
 EOS;
 
+if (isset($options['v']) || isset($options['version'])) {
+    fputs(STDERR, \Smeghead\PhpClassDiagram\Main::VERSION . PHP_EOL);
+    exit(-1);
+}
 if (isset($options['h']) || isset($options['help'])) {
     fputs(STDERR, $usage);
     exit(-1);
@@ -47,7 +53,6 @@ if ( ! is_dir($directory)) {
     exit(-1);
 }
 
-include_once './vendor/autoload.php';
 use Smeghead\PhpClassDiagram\ {
     Options,
     Main,

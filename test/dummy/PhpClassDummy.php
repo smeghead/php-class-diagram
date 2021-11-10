@@ -51,9 +51,8 @@ class PhpClassDummy extends PhpClass {
     public function getExtends(): array {
         $namespace = [];
         $extends = [];
-        $es = $this->data->extends;
-        if ( ! empty($es)) {
-            foreach ($es as $extend) {
+        if ( ! empty($this->data->extends)) {
+            foreach ($this->data->extends as $extend) {
                 $extends[] = new PhpType($extend->namespace, $extend->meta, $extend->name);
             }
         }

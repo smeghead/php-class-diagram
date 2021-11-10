@@ -2,6 +2,16 @@
 
 A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
 
+![dogfood image.](dogfood.png)
+
+## Install
+
+```bash
+composer require smeghead/php-class-diagram
+```
+
+you can execute `./vendor/bin/php-class-diagram`.
+
 ## How to execute
 
  * php source files.
