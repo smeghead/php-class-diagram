@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
-class PhpProperty {
+class PhpMethodParameter {
     public string $name;
     public PhpType $type;
 

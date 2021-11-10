@@ -13,7 +13,6 @@ use PhpParser\Node\Stmt\ {
     Property,
     GroupUse,
 };
-use Smeghead\PhpClassDiagram\Php\PhpType;
 
 abstract class PhpClass {
     protected string $filename;
@@ -57,10 +56,10 @@ abstract class PhpClass {
                 $namespace = $this->findNamespaceByTypeParts($parts);
                 $typeName = end($parts);
             }
-            $props[] = (object)[
-                'name' => $p->props[0]->name->toString(),
-                'type' => new PhpType($namespace, $p->getType(), $typeName),
-            ];
+            $props[] = new PhpProperty(
+                $p->props[0]->name->toString(),
+                new PhpType($namespace, $p->getType(), $typeName)
+            );
         }
         return $props;
     }
@@ -68,7 +67,7 @@ abstract class PhpClass {
     /**
      * @return Property[] プロパティ一覧
      */
-    abstract public function getPropertiesFromSyntax(): array;
+    abstract protected function getPropertiesFromSyntax(): array;
 
 
     protected function findNamespaceByTypeParts(array $type_parts): array {
@@ -100,22 +99,8 @@ abstract class PhpClass {
 
     abstract public function getMethods(): array;
 
-    protected function getMethodInfo(ClassMethod $method): \stdClass {
-        $params = array_map(function($x){
-            $type = '';
-            if ( ! empty($x->type)) {
-                $type = $x->type->toString();
-            }
-            return (object)[
-                'name' => $x->var->name,
-                'type' => new PhpType([], '', $type),
-            ];
-        }, $method->getParams());
-        return (object)[
-            'name' => $method->name->toString(),
-            'params' => $params,
-            'public' => $method->isPublic(),
-        ];
+    protected function getMethodInfo(ClassMethod $method): PhpMethod {
+        return new PhpMethod($method);
     }
 
     abstract public function getExtends(): array;

@@ -3,8 +3,6 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Stmt\ClassMethod;
 
-use Smeghead\PhpClassDiagram\Php\PhpType;
-
 class PhpClassClass extends PhpClass {
 
     public function getClassType(): PhpType {
@@ -14,7 +12,7 @@ class PhpClassClass extends PhpClass {
     /**
      * @return PhpProperty[] プロパティ一覧
      */
-    public function getPropertiesFromSyntax(): array {
+    protected function getPropertiesFromSyntax(): array {
         return $this->syntax->getProperties();
     }
 
