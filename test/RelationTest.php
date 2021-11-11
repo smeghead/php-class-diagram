@@ -14,12 +14,12 @@ final class RelationTest extends TestCase {
     public function setUp(): void {
     }
 
-    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}}]}';
-    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]}}]}';
-    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
+    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}}]}';
+    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]},"modifier":{"private":true}}]}';
+    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
 
-    private string $product_with_tags_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}},{"name":"tags","type":{"name":"Tag[]","namespace":[]}}]}';
-    private string $tag_expression = '{"type":{"name":"Tag","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
+    private string $product_with_tags_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}},{"name":"tags","type":{"name":"Tag[]","namespace":[]},"modifier":{"private":true}}]}';
+    private string $tag_expression = '{"type":{"name":"Tag","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
 
     public function testInitialize(): void {
         $options = new Options([]);

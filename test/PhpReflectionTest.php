@@ -28,12 +28,14 @@ final class PhpReflectionTest extends TestCase {
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
-        $this->assertSame('name', $data->getProperties()[0]->name, 'type.');
-        $this->assertSame('Name', $data->getProperties()[0]->type->name, 'type.');
+        $this->assertSame('name', $data->getProperties()[0]->name, 'property name.');
+        $this->assertSame('Name', $data->getProperties()[0]->type->name, 'property name type.');
         $this->assertSame([], $data->getProperties()[0]->type->namespace, 'namespace.');
-        $this->assertSame('price', $data->getProperties()[1]->name, 'name.');
-        $this->assertSame('Price', $data->getProperties()[1]->type->name, 'type.');
+        $this->assertSame(true, $data->getProperties()[0]->accessModifier->private, 'property name Modifiers.');
+        $this->assertSame('price', $data->getProperties()[1]->name, 'property price.');
+        $this->assertSame('Price', $data->getProperties()[1]->type->name, 'property price type.');
         $this->assertSame([], $data->getProperties()[1]->type->namespace, 'namespace.');
+        $this->assertSame(true, $data->getProperties()[1]->accessModifier->private, 'property price Modifiers.');
     }
 
     public function testDump_with_namespace(): void {
@@ -93,6 +95,10 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('method1', $data->getMethods()[0]->name, 'namespace name.');
         $this->assertSame('param1', $data->getMethods()[0]->params[0]->name, 'parameter name.');
+        $this->assertSame(true, $data->getMethods()[0]->accessModifier->public, 'public.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->private, 'private.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->static, 'static.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->protected, 'protected.');
     }
     public function testDump_with_methods2(): void {
         $options = new Options([]);
@@ -104,6 +110,10 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('method1', $data->getMethods()[0]->name, 'namespace name.');
         $this->assertSame('param1', $data->getMethods()[0]->params[0]->name, 'parameter name.');
+        $this->assertSame(true, $data->getMethods()[0]->accessModifier->public, 'public.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->private, 'private.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->static, 'static.');
+        $this->assertSame(false, $data->getMethods()[0]->accessModifier->protected, 'protected.');
     }
     public function testDump_with_extend(): void {
         $options = new Options([]);

@@ -2,8 +2,6 @@
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\ {
-    Identifier,
-    Name,
     Stmt,
 };
 use PhpParser\Node\Stmt\ {
@@ -32,34 +30,7 @@ abstract class PhpClass {
         $properties = $this->getPropertiesFromSyntax();
         $props = [];
         foreach ($properties as $p) {
-            $docComment = $p->getDocComment();
-            $doc = '';
-            if ( ! empty($docComment)) {
-                $doc =  $docComment->getText();
-            }
-            if ( ! empty($doc)) {
-                $parts = [];
-                // @var に定義された型情報を取得する。
-                if (preg_match('/@var\s+(\S+)(\b|\s).*/', $doc, $matches)) {
-                    $parts = [$matches[1]];
-                }
-            } else if ($p->type instanceOf Identifier) {
-                $parts = [$p->type->name];
-            } else if ($p->type instanceOf Name) {
-                $parts = $p->type->parts;
-            } else {
-                $parts = []; //型なし
-            }
-            $namespace = [];
-            $typeName = '';
-            if (count($parts) > 0) {
-                $namespace = $this->findNamespaceByTypeParts($parts);
-                $typeName = end($parts);
-            }
-            $props[] = new PhpProperty(
-                $p->props[0]->name->toString(),
-                new PhpType($namespace, $p->getType(), $typeName)
-            );
+            $props[] = new PhpProperty($p, $this);
         }
         return $props;
     }
@@ -70,7 +41,7 @@ abstract class PhpClass {
     abstract protected function getPropertiesFromSyntax(): array;
 
 
-    protected function findNamespaceByTypeParts(array $type_parts): array {
+    public function findNamespaceByTypeParts(array $type_parts): array {
         $type = str_replace('[]', '', array_pop($type_parts));
         if ($this->syntax instanceOf ClassLike) {
             return $type_parts;

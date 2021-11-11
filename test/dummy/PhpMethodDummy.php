@@ -21,6 +21,6 @@ class PhpMethodDummy extends PhpMethod {
         }, $method->params);
         $this->name = $method->name;
         $this->params = $params;
-        $this->accessModifier = new PhpAccessModifierDummy($method);
+        $this->accessModifier = new PhpAccessModifierDummy($method->modifier);
     }
 }

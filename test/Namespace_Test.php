@@ -14,11 +14,75 @@ require_once(__DIR__ . '/dummy/PhpClassDummy.php');
 final class Namespace_Test extends TestCase {
     private $fixtureDir;
 
-    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]}},{"name":"price","type":{"name":"Price","namespace":[]}}]}';
-    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]}}]}';
-    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}]}';
-    private string $interface_expression = '{"type":{"name":"Interface_","meta":"Stmt_Interface","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}],"methods":[{"name":"method1","params":[{"name":"param1","type":{"name":"string"}}]}]}';
-    private string $implement_expression = '{"type":{"name":"Implement_","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]}}],"methods":[{"name":"method1","params":[{"name":"param1","type":{"name":"string"}}]}],"extends":[{"name":"Interface_","meta":"Stmt_Interface","namespace":[]}]}';
+    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}}]}';
+    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]},"modifier":{"private":true}}]}';
+    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
+    private string $interface_expression = <<<EOJ
+{
+    "type": {
+        "name":"Interface_",
+        "meta":"Stmt_Interface",
+        "namespace":[]
+    },
+    "properties":[
+        {
+            "name":"name",
+            "type":{
+                "name":"string",
+                "namespace":[]
+            },
+            "modifier":{"private":true}
+        }
+    ],
+    "methods":[
+        {
+            "name":"method1",
+            "params":[
+                {
+                    "name":"param1",
+                    "type":{"name":"string"}
+                }
+            ],
+            "modifier":{"private":true}
+        }
+    ]
+}
+EOJ;
+    private string $implement_expression = <<<EOJ
+{
+    "type":{
+        "name":"Implement_",
+        "meta":"Stmt_Class",
+        "namespace":[]
+    },
+    "properties":[
+        {
+            "name":"name",
+            "type":{"name":"string","namespace":[]},
+            "modifier":{"private":true}
+        }
+    ],
+    "methods":[
+        {
+            "name":"method1",
+            "params":[
+                {
+                    "name":"param1",
+                    "type":{"name":"string"}
+                }
+            ],
+            "modifier":{"private":true}
+        }
+    ],
+    "extends":[
+        {
+            "name":"Interface_",
+            "meta":"Stmt_Interface",
+            "namespace":[]
+        }
+    ]
+}
+EOJ;
 
     public function setUp(): void {
     }
@@ -118,7 +182,7 @@ EOS;
 @startuml
   package "product" <<Rectangle>> {
     interface Interface_ {
-      name : string
+      -name : string
     }
   }
 @enduml
@@ -135,7 +199,7 @@ EOS;
 @startuml
   package "product" <<Rectangle>> {
     interface Interface_ {
-      method1(param1)
+      -method1(param1)
     }
   }
 @enduml
@@ -153,10 +217,10 @@ EOS;
 @startuml
   package "product" <<Rectangle>> {
     interface Interface_ {
-      method1(param1)
+      -method1(param1)
     }
     class Implement_ {
-      method1(param1)
+      -method1(param1)
     }
   }
   Interface_ <|-- Implement_

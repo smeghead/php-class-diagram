@@ -33,7 +33,7 @@ OPTIONS
 EOS;
 
 if (isset($options['v']) || isset($options['version'])) {
-    fputs(STDERR, \Smeghead\PhpClassDiagram\Main::VERSION . PHP_EOL);
+    fputs(STDERR, sprintf('php-class-diagram %s%s', \Smeghead\PhpClassDiagram\Main::VERSION, PHP_EOL));
     exit(-1);
 }
 if (isset($options['h']) || isset($options['help'])) {
