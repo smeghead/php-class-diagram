@@ -10,7 +10,7 @@ use Smeghead\PhpClassDiagram\ {
 use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 class Main {
-    const VERSION = 'v0.0.0';
+    const VERSION = 'v0.0.1';
 
     public function __construct(string $directory, Options $options) {
         $finder = new Finder();
