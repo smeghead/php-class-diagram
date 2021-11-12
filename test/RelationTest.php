@@ -14,12 +14,147 @@ final class RelationTest extends TestCase {
     public function setUp(): void {
     }
 
-    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}}]}';
-    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]},"modifier":{"private":true}}]}';
-    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
+    private string $product_expression = <<<EOJ
+{
+    "type": {
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "Name",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        },
+        {
+            "name": "price",
+            "type": {
+                "name": "Price",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $price_expression = <<<EOJ
+{
+    "type": {
+        "name": "Price",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "price",
+            "type": {
+                "name": "int",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $name_expression = <<<EOJ
+{
+    "type": {
+        "name": "Name",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "string",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
 
-    private string $product_with_tags_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}},{"name":"tags","type":{"name":"Tag[]","namespace":[]},"modifier":{"private":true}}]}';
-    private string $tag_expression = '{"type":{"name":"Tag","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
+    private string $product_with_tags_expression = <<<EOJ
+{
+    "type": {
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "Name",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        },
+        {
+            "name": "price",
+            "type": {
+                "name": "Price",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        },
+        {
+            "name": "tags",
+            "type": {
+                "name": "Tag[]",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $tag_expression = <<<EOJ
+{
+    "type": {
+        "name": "Tag",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "string",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
 
     public function testInitialize(): void {
         $options = new Options([]);

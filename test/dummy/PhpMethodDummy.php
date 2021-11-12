@@ -11,6 +11,7 @@ require_once(__DIR__ . '/PhpAccessModifierDummy.php');
 
 class PhpMethodDummy extends PhpMethod {
     public string $name;
+    public PhpType $type;
     /** @var PhpMethodParameter[] パラメータ一覧 */
     public array $params;
     public PhpAccessModifier $accessModifier;
@@ -20,6 +21,7 @@ class PhpMethodDummy extends PhpMethod {
             return new PhpMethodParameter($x->name, new PhpType([], '', $x->type->name));
         }, $method->params);
         $this->name = $method->name;
+        $this->type = new PhpType($method->type->namespace, 'Stmt_Class', $method->type->name);
         $this->params = $params;
         $this->accessModifier = new PhpAccessModifierDummy($method->modifier);
     }

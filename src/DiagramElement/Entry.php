@@ -69,6 +69,15 @@ class Entry {
         foreach ($this->info->getProperties() as $p) {
             $arrows[] = new ArrowDependency($this->info->getClassType()->name, $p->type->name);
         }
+        foreach ($this->info->getMethods() as $m) {
+            if ( ! $m->accessModifier->public) {
+                continue;
+            }
+            if (count($m->params) > 0) {
+                continue;
+            }
+            $arrows[] = new ArrowDependency($this->info->getClassType()->name, $m->type->name);
+        }
         $extends = $this->info->getExtends();
         if ( ! empty($extends)) {
             //継承先に対してArrowを追加する。

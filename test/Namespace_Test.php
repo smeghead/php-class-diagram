@@ -14,9 +14,82 @@ require_once(__DIR__ . '/dummy/PhpClassDummy.php');
 final class Namespace_Test extends TestCase {
     private $fixtureDir;
 
-    private string $product_expression = '{"type":{"name":"Product","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"Name","namespace":[]},"modifier":{"private":true}},{"name":"price","type":{"name":"Price","namespace":[]},"modifier":{"private":true}}]}';
-    private string $price_expression = '{"type":{"name":"Price","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"price","type":{"name":"int","namespace":[]},"modifier":{"private":true}}]}';
-    private string $name_expression = '{"type":{"name":"Name","meta":"Stmt_Class","namespace":[]},"properties":[{"name":"name","type":{"name":"string","namespace":[]},"modifier":{"private":true}}]}';
+    private string $product_expression = <<<EOJ
+{
+    "type": {
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "Name",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        },
+        {
+            "name": "price",
+            "type": {
+                "name": "Price",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $price_expression = <<<EOJ
+{
+    "type": {
+        "name": "Price",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "price",
+            "type": {
+                "name": "int",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $name_expression = <<<EOJ
+{
+    "type": {
+        "name": "Name",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "string",
+                "namespace": []
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
     private string $interface_expression = <<<EOJ
 {
     "type": {
@@ -37,6 +110,10 @@ final class Namespace_Test extends TestCase {
     "methods":[
         {
             "name":"method1",
+            "type":{
+                "name":"Product",
+                "namespace":[]
+            },
             "params":[
                 {
                     "name":"param1",
@@ -65,6 +142,10 @@ EOJ;
     "methods":[
         {
             "name":"method1",
+            "type":{
+                "name":"Product",
+                "namespace":[]
+            },
             "params":[
                 {
                     "name":"param1",
@@ -79,6 +160,38 @@ EOJ;
             "name":"Interface_",
             "meta":"Stmt_Interface",
             "namespace":[]
+        }
+    ]
+}
+EOJ;
+    private string $product_method_expression = <<<EOJ
+{
+    "type": {
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [],
+    "methods":[
+        {
+            "name":"getName",
+            "type":{
+                "name":"Name",
+                "namespace":[]
+            },
+            "params":[
+            ],
+            "modifier":{"public":true}
+        },
+        {
+            "name":"getPrice",
+            "type":{
+                "name":"Price",
+                "namespace":[]
+            },
+            "params":[
+            ],
+            "modifier":{"private":true}
         }
     ]
 }
@@ -224,6 +337,27 @@ EOS;
     }
   }
   Interface_ <|-- Implement_
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+    public function testDump7(): void {
+        $options = new Options([]);
+        $entries = [
+            new Entry('product', new PhpClassDummy($this->product_method_expression), $options),
+            new Entry('product', new PhpClassDummy($this->price_expression), $options),
+            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+        ];
+        $rel = new Relation($entries, $options);
+
+        $expected =<<<EOS
+@startuml
+  package "product" <<Rectangle>> {
+    class Product
+    class Price
+    class Name
+  }
+  Product ..> Name
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');

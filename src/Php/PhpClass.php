@@ -40,7 +40,6 @@ abstract class PhpClass {
      */
     abstract protected function getPropertiesFromSyntax(): array;
 
-
     public function findNamespaceByTypeParts(array $type_parts): array {
         $type = str_replace('[]', '', array_pop($type_parts));
         if ($this->syntax instanceOf ClassLike) {
@@ -65,13 +64,20 @@ abstract class PhpClass {
                 }
             }
         }
+        // 探したいクラスが、自身の型だった場合
+        $t = $this->getClassType();
+        if ($type === $t->name) {
+            return $t->namespace;
+        }
+
         return [];
     }
 
+    /** @return PhpMethod[] メソッド一覧 */
     abstract public function getMethods(): array;
 
     protected function getMethodInfo(ClassMethod $method): PhpMethod {
-        return new PhpMethod($method);
+        return new PhpMethod($method, $this);
     }
 
     abstract public function getExtends(): array;
