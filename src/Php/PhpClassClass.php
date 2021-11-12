@@ -26,6 +26,9 @@ class PhpClassClass extends PhpClass {
         return $methods;
     }
 
+    /**
+     * @return PhpType[] 継承元と実装元型一覧
+     */
     public function getExtends(): array {
         $namespace = [];
         $extends = [];
