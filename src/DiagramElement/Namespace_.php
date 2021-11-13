@@ -76,6 +76,9 @@ class Namespace_ {
         return $lines;
     }
 
+    /**
+     * @return Arrow[] 矢印一覧
+     */
     public function getArrows(): array {
         $arrows = [];
         foreach ($this->entries as $e) {
@@ -87,6 +90,9 @@ class Namespace_ {
         return $arrows;
     }
 
+    /**
+     * @return Entry[] クラスなどの一覧
+     */ 
     public function getEntries(): array {
         $entries = $this->entries;
         foreach ($this->children as $n) {
