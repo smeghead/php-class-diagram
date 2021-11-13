@@ -1,8 +1,5 @@
 <?php declare(strict_types=1);
 
-use PhpParser\Node\ {
-    Stmt,
-};
 use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
     PhpType,
@@ -15,8 +12,11 @@ require_once(__DIR__ . '/PhpPropertyDummy.php');
  * Dummy Class for tests.
  */
 class PhpClassDummy extends PhpClass {
-    public function __construct(string $filename, Stmt $syntax = null) {
-        $d = json_decode($filename);
+    public function __construct(string $directory, string $filename, string $data) {
+        $dirs = preg_split('/[\\\\\/]/', $filename);
+        array_pop($dirs);
+        $this->dirs = $dirs;
+        $d = json_decode($data);
         if ($d === null) {
             throw new \Exception('failed to decode josn.' . $this->getJsonError());
         }

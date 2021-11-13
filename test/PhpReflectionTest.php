@@ -14,16 +14,18 @@ final class PhpReflectionTest extends TestCase {
 
     public function testInitialize(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $this->assertNotNull($class, 'initialize PhppReflection');
     }
 
     public function testDump(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -40,8 +42,9 @@ final class PhpReflectionTest extends TestCase {
 
     public function testDump_with_namespace(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -56,8 +59,9 @@ final class PhpReflectionTest extends TestCase {
 
     public function testDump_with_phpdoc(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/phpdoc', $this->fixtureDir);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -75,8 +79,9 @@ final class PhpReflectionTest extends TestCase {
 
     public function testDump_with_interface(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/interface', $this->fixtureDir);
         $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Interface_', $data->getClassType()->name, 'class type name.');
@@ -87,8 +92,9 @@ final class PhpReflectionTest extends TestCase {
     }
     public function testDump_with_methods(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -104,8 +110,9 @@ final class PhpReflectionTest extends TestCase {
     }
     public function testDump_with_methods2(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -121,8 +128,9 @@ final class PhpReflectionTest extends TestCase {
     }
     public function testDump_with_extend(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Sub.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Sub', $data->getClassType()->name, 'class type name.');
@@ -131,8 +139,9 @@ final class PhpReflectionTest extends TestCase {
     }
     public function testDump_with_implements(): void {
         $options = new Options([]);
+        $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Implements_.php', $this->fixtureDir);
-        $class = new PhpReflection($filename, $options);
+        $class = new PhpReflection($directory, $filename, $options);
 
         $data = $class->getInfo();
         $this->assertSame('Implements_', $data->getClassType()->name, 'class type name.');

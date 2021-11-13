@@ -13,12 +13,30 @@ use PhpParser\Node\Stmt\ {
 };
 
 abstract class PhpClass {
-    protected string $filename;
+    /** @var string[] directory parts */
+    protected array $dirs;
     protected Stmt $syntax;
 
     public function __construct(string $filename, Stmt $syntax) {
-        $this->filename = $filename;
+        $relativePath = dirname($filename);
+        if ($relativePath === '.') {
+            $dirs = [];
+        } else {
+            $dirs = preg_split('/[\\\\\/]/', $relativePath);
+        }
+        $this->dirs = $dirs;
         $this->syntax = $syntax;
+    }
+
+    /**
+     * return logical name.
+     * @return string logical name.
+     */
+    public function getLogicalName(): string {
+        $type = $this->getClassType();
+        $parts = $this->dirs; 
+        $parts[] = $type->name;
+        return implode('.', $parts);
     }
 
     abstract public function getClassType(): PhpType;
@@ -80,5 +98,8 @@ abstract class PhpClass {
         return new PhpMethod($method, $this);
     }
 
+    /**
+     * @return PhpType[] 継承元と実装元型一覧
+     */
     abstract public function getExtends(): array;
 }
