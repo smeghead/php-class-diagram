@@ -1,7 +1,7 @@
 {
     "name": "smeghead/php-class-diagram",
     "description": "A CLI tool that parses the PHP source directory and outputs PlantUML scripts.",
-    "type": "command",
+    "type": "library",
     "require": {
         "php" : ">=7.4",
         "symfony/finder": "^5.3",
