@@ -1,12 +1,19 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     ClassLike,
     ClassMethod,
 };
 
 class PhpClassNamespace extends PhpClass {
+
+    public function __construct(string $filename, Stmt $syntax) {
+        parent::__construct($filename, $syntax);
+        //check includeing class. if not include any class, throw exception.
+        $this->findClassLike();
+    }
 
     public function getClassType(): PhpType {
         $c = $this->findClassLike();
@@ -37,9 +44,7 @@ class PhpClassNamespace extends PhpClass {
                 return $c;
             }
         }
-        if ($syntax === null) {
-            throw new \Exception('failed to find class.');
-        }
+        throw new \Exception('failed to find class.');
     }
 
     public function getExtends(): array {
@@ -47,7 +52,11 @@ class PhpClassNamespace extends PhpClass {
         $syntax = $this->findClassLike();
         $extends = [];
         if ( ! empty($syntax->extends)) {
-            $parts = $syntax->extends->parts;
+            $Name = $syntax->extends;
+            if (is_array($syntax->extends)) {
+                $Name = $syntax->extends[0];
+            } 
+            $parts = $Name->parts;
             $name = array_pop($parts);
             $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $name);
         }

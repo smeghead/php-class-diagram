@@ -56,7 +56,11 @@ class PhpReflection {
             if ($element instanceOf ClassLike) {
                 return new PhpClassClass($relativePath, $element);
             } else if ($element instanceOf Namespace_) {
-                return new PhpClassNamespace($relativePath, $element);
+                try {
+                    return new PhpClassNamespace($relativePath, $element);
+                } catch (\Exception $e) {
+                    // cannot found class. ignore and try next element.
+                }
             }
         }
         // クラスが含まれていないファイル

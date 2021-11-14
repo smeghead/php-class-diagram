@@ -1,9 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Node\ {
-    Stmt,
-};
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,

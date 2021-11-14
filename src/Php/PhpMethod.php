@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node\ {
+    NullableType,
+};
 use PhpParser\Node\Stmt\ {
     ClassMethod,
 };
@@ -16,7 +19,11 @@ class PhpMethod {
         $params = array_map(function($x){
             $type = '';
             if ( ! empty($x->type)) {
-                $type = $x->type->toString();
+                $type = $x->type;
+                if ($x->type instanceOf NullableType) {
+                    $type = $type->type;
+                }
+                $type = $type->toString();
             }
             return new PhpMethodParameter($x->var->name, new PhpType([], '', $type)); //TODO パッケージとmetaを仮とする。
         }, $method->getParams());
