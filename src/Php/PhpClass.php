@@ -68,38 +68,24 @@ abstract class PhpClass {
         if (in_array($type, $primitives)) {
             return [];
         }
-        if ($this->syntax instanceOf ClassLike) {
-            return $type_parts;
-        } else if ($this->syntax instanceOf Namespace_) {
-            foreach ($this->syntax->stmts as $stmt) {
-                if ($stmt instanceOf GroupUse) {
-                    $prefix = $stmt->prefix->parts;
-                    foreach ($stmt->uses as $u) {
-                        $parts = $u->name->parts;
-                        $end = array_pop($parts);
-                        if ($end === $type) {
-                            return array_merge($prefix, $parts);
-                        }
-                    }
-                } else if ($stmt instanceOf Use_) {
-                    foreach ($stmt->uses as $u) {
-                        $parts = $u->name->parts;
-                        $end = array_pop($parts);
-                        if ($end === $type) {
-                            return $parts;
-                        }
-                    }
-                }
+        $targetType = new PhpType($type_parts, '', $type);
+        foreach ($this->getUses() as $u) {
+            if ($targetType->equals($u)) {
+                return $targetType->namespace;
             }
         }
         // 探したいクラスが、自身の型だった場合
         $t = $this->getClassType();
-        if ($type === $t->name) {
+        if ($targetType->equals($t)) {
             return $t->namespace;
         }
 
         // 暗黙的な参照と見做す
-        return $this->syntax->name->parts;
+        if ($this->syntax instanceOf PhpClassNamespace) {
+            return $this->syntax->name->parts;
+        } else {
+            return [];
+        }
     }
 
     /** @return PhpMethod[] メソッド一覧 */

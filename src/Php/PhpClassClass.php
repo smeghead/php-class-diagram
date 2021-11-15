@@ -1,9 +1,20 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\ {
+    ClassMethod,
+    GroupUse,
+    Use_,
+};
 
 class PhpClassClass extends PhpClass {
+    private array $full;
+
+    public function __construct(string $filename, Stmt $syntax, array $full) {
+        parent::__construct($filename, $syntax);
+        $this->full = $full; // useの情報が欲しいので全体の構文木を保持する。
+    }
 
     public function getClassType(): PhpType {
         return new PhpType([], $this->syntax->getType(), $this->syntax->name->name);
@@ -14,6 +25,22 @@ class PhpClassClass extends PhpClass {
      */
     public function getUses(): array {
         $uses = [];
+        foreach ($this->full as $stmt) {
+            if ($stmt instanceOf GroupUse) {
+                $prefix = $stmt->prefix->parts;
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias); 
+                }
+            } else if ($stmt instanceOf Use_) {
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType($parts, '', $name, $u->alias); 
+                }
+            }
+        }
         return $uses;
     }
 

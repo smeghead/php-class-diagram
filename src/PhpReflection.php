@@ -3,6 +3,7 @@ namespace Smeghead\PhpClassDiagram;
 
 use PhpParser\Error;
 use PhpParser\ParserFactory;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,
@@ -54,7 +55,7 @@ class PhpReflection {
         foreach ($ast as $element) {
             $relativePath = mb_substr($this->filename, mb_strlen($this->directory) + 1);
             if ($element instanceOf ClassLike) {
-                return new PhpClassClass($relativePath, $element);
+                return new PhpClassClass($relativePath, $element, $ast);
             } else if ($element instanceOf Namespace_) {
                 try {
                     return new PhpClassNamespace($relativePath, $element);

@@ -23,8 +23,8 @@ class PhpMethod {
             $type = '';
             if ( ! empty($x->type)) {
                 $t = $x->type;
-                if ($x->type instanceOf NullableType) {
-                    $t = $type->type;
+                if ($t instanceOf NullableType) {
+                    $t = $t->type;
                 }
                 if ($t instanceOf Name) {
                     $namespace = $t->parts;
@@ -45,25 +45,23 @@ class PhpMethod {
         if ( ! empty($docComment)) {
             $doc =  $docComment->getText();
         }
+        $t = $class->getClassType();
         $parts = [];
         if ( ! empty($doc)) {
             // @return に定義された型情報を取得する。
             if (preg_match('/@return\s+(\S+)(\b|\s).*/', $doc, $matches)) {
-                $parts = [$matches[1]];
+                $parts = $t->namespace;
+                $parts[] = $matches[1];
             }
         } else if ($method->returnType instanceOf Identifier) {
-            $parts = [$method->returnType->name];
+            $parts = $t->namespace;
+            $parts[] = $method->returnType->name;
         } else if ($method->returnType instanceOf Name) {
-            $parts = $method->returnType->parts;
-        } else {
-            $parts = []; //型なし
+            $parts = array_merge($t->namespace, $method->returnType->parts);
         }
-        $typeName = '';
-        $namespace = [];
         if (count($parts) > 0) {
-            $namespace = $class->findNamespaceByTypeParts($parts);
-            $typeName = end($parts);
+            $typeName = array_pop($parts);
         }
-        return new PhpType($namespace, $method->getType(), $typeName);
+        return new PhpType($parts, $method->getType(), $typeName ?? '');
     }
 }

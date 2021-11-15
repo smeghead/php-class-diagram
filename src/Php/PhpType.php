@@ -5,9 +5,9 @@ class PhpType {
     public string $name;
     public string $meta;
     public array $namespace;
-    public string $alias;
+    public ?string $alias;
 
-    public function __construct(array $namespace, string $meta, string $name, string $alias = '') {
+    public function __construct(array $namespace, string $meta, string $name, ?string $alias = null) {
         $this->namespace = $namespace;
         $this->meta = $meta;
         $this->name = $name;

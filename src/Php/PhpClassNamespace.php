@@ -5,6 +5,8 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     ClassLike,
     ClassMethod,
+    GroupUse,
+    Use_,
 };
 
 class PhpClassNamespace extends PhpClass {
@@ -25,6 +27,22 @@ class PhpClassNamespace extends PhpClass {
      */
     public function getUses(): array {
         $uses = [];
+        foreach ($this->syntax->stmts as $stmt) {
+            if ($stmt instanceOf GroupUse) {
+                $prefix = $stmt->prefix->parts;
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias); 
+                }
+            } else if ($stmt instanceOf Use_) {
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType($parts, '', $name, $u->alias); 
+                }
+            }
+        }
         return $uses;
     }
 
