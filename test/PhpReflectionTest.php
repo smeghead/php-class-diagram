@@ -180,4 +180,36 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[2]->namespace, 'use namespace.');
         $this->assertSame('Tag', $data->getUses()[2]->name, 'use name.');
     }
+    public function testNullable(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/nullable', $this->fixtureDir);
+        $filename = sprintf('%s/nullable/product/Product.php', $this->fixtureDir);
+        $class = new PhpReflection($directory, $filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame('nullable', $data->getMethods()[0]->name, 'namespace name.');
+        $this->assertSame('Name', $data->getMethods()[0]->type->name, 'return type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->type->namespace, 'return type namespace.');
+        $this->assertSame('name', $data->getMethods()[0]->params[0]->name, 'parameter name.');
+        $this->assertSame('Name', $data->getMethods()[0]->params[0]->type->name, 'parameter type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->params[0]->type->namespace, 'parameter type namespace.');
+    }
+    public function testNullableWithoutNamespace(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/nullable', $this->fixtureDir);
+        $filename = sprintf('%s/nullable/product/ProductWithoutNamespace.php', $this->fixtureDir);
+        $class = new PhpReflection($directory, $filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
+        $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame('nullable', $data->getMethods()[0]->name, 'namespace name.');
+        $this->assertSame('Name', $data->getMethods()[0]->type->name, 'return type.');
+        $this->assertSame([], $data->getMethods()[0]->type->namespace, 'return type namespace.');
+        $this->assertSame('name', $data->getMethods()[0]->params[0]->name, 'parameter name.');
+        $this->assertSame('Name', $data->getMethods()[0]->params[0]->type->name, 'parameter type.');
+        $this->assertSame([], $data->getMethods()[0]->params[0]->type->namespace, 'parameter type namespace.');
+    }
 }
