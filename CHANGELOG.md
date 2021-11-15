@@ -6,7 +6,8 @@
  * Changed the output class name to include the package name.
 
 ### Bug fix
- * fix to failed to parse NullableType method parameter.
+ * fix bug that failed to parse NullableType method parameter.
+ * fix bug that wrong namespace found when search use statements.
 
 ## v0.0.1 (2021-11-11)
 

@@ -61,9 +61,9 @@ abstract class PhpClass {
         if ($this->syntax instanceOf ClassLike) {
             return $type_parts;
         } else if ($this->syntax instanceOf Namespace_) {
-            $prefix = array_merge($this->syntax->name->parts, $type_parts);
             foreach ($this->syntax->stmts as $stmt) {
                 if ($stmt instanceOf GroupUse) {
+                    $prefix = $stmt->prefix->parts;
                     foreach ($stmt->uses as $u) {
                         $parts = $u->name->parts;
                         $end = array_pop($parts);
@@ -75,7 +75,7 @@ abstract class PhpClass {
                     $parts = $stmt->name->parts;
                     $end = array_pop($parts);
                     if ($end === $type) {
-                        return array_merge($prefix, $parts);
+                        return $parts;
                     }
                 }
             }

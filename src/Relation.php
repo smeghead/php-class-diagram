@@ -44,7 +44,8 @@ class Relation {
 //        });
         $relation_expressions = array_map(function($x) use ($entities){
             foreach ($entities as $e) {
-                if ($e->class->getClassType()->name == str_replace('[]', '', $x->to->name)) {
+                //if ($e->class->getClassType()->name == str_replace('[]', '', $x->to->name)) {
+                if ($e->class->getClassType()->equals($x->to)) {
                     return $x->toString($e->class);
                 }
             }
