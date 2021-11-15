@@ -139,4 +139,34 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Interface_', $data->getExtends()[0]->name, 'super class name.');
     }
+    public function testGetUses(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/uses/product/Product.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[0]->namespace, 'use namespace.');
+        $this->assertSame('Name', $data->getUses()[0]->namespace, 'use name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[1]->namespace, 'use namespace.');
+        $this->assertSame('Price', $data->getUses()[1]->namespace, 'use name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[2]->namespace, 'use namespace.');
+        $this->assertSame('Tag', $data->getUses()[2]->namespace, 'use name.');
+    }
+    public function testGetUsesWithoutNamespace(): void {
+        $options = new Options([]);
+        $filename = sprintf('%s/uses/product/ProductWithoutNamespace.php', $this->fixtureDir);
+        $class = new PhpReflection($filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
+        $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[0]->namespace, 'use namespace.');
+        $this->assertSame('Name', $data->getUses()[0]->namespace, 'use name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[1]->namespace, 'use namespace.');
+        $this->assertSame('Price', $data->getUses()[1]->namespace, 'use name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[2]->namespace, 'use namespace.');
+        $this->assertSame('Tag', $data->getUses()[2]->namespace, 'use name.');
+    }
 }

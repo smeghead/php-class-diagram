@@ -10,6 +10,14 @@ class PhpClassClass extends PhpClass {
     }
 
     /**
+     * @return PhpType[] use一覧
+     */
+    public function getUses(): array {
+        $uses = [];
+        return $uses;
+    }
+
+    /**
      * @return PhpProperty[] プロパティ一覧
      */
     protected function getPropertiesFromSyntax(): array {

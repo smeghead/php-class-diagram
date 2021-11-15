@@ -216,9 +216,9 @@ EOJ;
         $product = $namespace->children[0];
         $this->assertSame('product', $product->name, 'product namespace name');
 
-        $this->assertSame('Product', $product->entries[0]->info->getClassType()->name, 'product class name');
-        $this->assertSame('Price', $product->entries[1]->info->getClassType()->name, 'price class name');
-        $this->assertSame('Name', $product->entries[2]->info->getClassType()->name, 'name class name');
+        $this->assertSame('Product', $product->entries[0]->class->getClassType()->name, 'product class name');
+        $this->assertSame('Price', $product->entries[1]->class->getClassType()->name, 'price class name');
+        $this->assertSame('Name', $product->entries[2]->class->getClassType()->name, 'name class name');
 
     }
 

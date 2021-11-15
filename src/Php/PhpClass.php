@@ -40,6 +40,11 @@ abstract class PhpClass {
      */
     abstract protected function getPropertiesFromSyntax(): array;
 
+    /**
+     * @return PhpType[] use一覧
+     */
+    abstract public function getUses(): array;
+
     public function findNamespaceByTypeParts(array $type_parts): array {
         $type = str_replace('[]', '', array_pop($type_parts));
         if ($this->syntax instanceOf ClassLike) {

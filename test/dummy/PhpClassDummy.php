@@ -28,6 +28,14 @@ class PhpClassDummy extends PhpClass {
     }
 
     /**
+     * @return PhpType[] use一覧
+     */
+    public function getUses(): array {
+        $uses = [];
+        return $uses;
+    }
+
+    /**
      * @return PhpProperty[] プロパティ一覧
      */
     public function getProperties(): array {

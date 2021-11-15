@@ -10,26 +10,26 @@ use Smeghead\PhpClassDiagram\Php\ {
 class Entry {
     public Options $options;
     public string $directory;
-    public PhpClass $info;
-    public function __construct(string $directory, PhpClass $info, Options $options) {
+    public PhpClass $class;
+    public function __construct(string $directory, PhpClass $class, Options $options) {
         $this->directory = $directory;
-        $this->info = $info;
+        $this->class = $class;
         $this->options = $options;
     }
 
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->info->getClassType()->meta === 'Stmt_Interface' ? 'interface' : 'class';
+        $meta = $this->class->getClassType()->meta === 'Stmt_Interface' ? 'interface' : 'class';
         if ($this->options->classProperties() || $this->options->classMethods()) {
-            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->info->getClassType()->name);
+            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getClassType()->name);
             if ($this->options->classProperties()) {
-                foreach ($this->info->getProperties() as $p) {
+                foreach ($this->class->getProperties() as $p) {
                     $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->accessModifier), $p->name, $p->type->name);
                 }
             }
             if ($this->options->classMethods()) {
-                foreach ($this->info->getMethods() as $m) {
+                foreach ($this->class->getMethods() as $m) {
                     $params = array_map(function($x){
                         return $x->name;
                     }, $m->params);
@@ -38,7 +38,7 @@ class Entry {
             }
             $lines[] = sprintf('%s}', $indent);
         } else {
-            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->info->getClassType()->name);
+            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->class->getClassType()->name);
         }
         return $lines;
     }
@@ -66,23 +66,23 @@ class Entry {
     public function getArrows(): array {
         $arrows = [];
         //フィールド変数の型に対しての依存をArrowとして追加する。
-        foreach ($this->info->getProperties() as $p) {
-            $arrows[] = new ArrowDependency($this->info->getClassType()->name, $p->type->name);
+        foreach ($this->class->getProperties() as $p) {
+            $arrows[] = new ArrowDependency($this->class->getClassType()->name, $p->type->name);
         }
-        foreach ($this->info->getMethods() as $m) {
+        foreach ($this->class->getMethods() as $m) {
             if ( ! $m->accessModifier->public) {
                 continue;
             }
             if (count($m->params) > 0) {
                 continue;
             }
-            $arrows[] = new ArrowDependency($this->info->getClassType()->name, $m->type->name);
+            $arrows[] = new ArrowDependency($this->class->getClassType()->name, $m->type->name);
         }
-        $extends = $this->info->getExtends();
+        $extends = $this->class->getExtends();
         if ( ! empty($extends)) {
             //継承先に対してArrowを追加する。
             foreach ($extends as $extend) {
-                $arrows[] = new ArrowInheritance($this->info->getClassType()->name, $extend->name);
+                $arrows[] = new ArrowInheritance($this->class->getClassType()->name, $extend->name);
             }
         }
 

@@ -33,7 +33,7 @@ class Relation {
     }
 
     public function getRelations(): array {
-        $classNames = array_map(function($x){ return $x->info->getClassType()->name; }, $this->namespace->getEntries());
+        $classNames = array_map(function($x){ return $x->class->getClassType()->name; }, $this->namespace->getEntries());
         $arrows = array_filter($this->namespace->getArrows(), function($x) use ($classNames) {
             return in_array(str_replace('[]', '', $x->to), $classNames);
         });
