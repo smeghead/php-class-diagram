@@ -13,17 +13,12 @@ class PhpType {
     }
 
     public function equals(PhpType $other): bool {
-//        if ($this->namespace !== $other->namespace) {
-//            return false;
-//        }
+        if ($this->namespace !== $other->namespace) {
+            return false;
+        }
         if (str_replace('[]', '', $this->name) !== str_replace('[]', '', $other->name)) {
             return false;
         }
-//        if ($this->namespace !== $other->namespace) {
-//            echo '---' . $this->name . PHP_EOL;
-//            echo json_encode($this->namespace) . PHP_EOL;
-//            echo json_encode($other->namespace) . PHP_EOL;
-//        }
         return true;
     }
 }

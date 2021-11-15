@@ -8,6 +8,7 @@ use PhpParser\Node\Stmt\ {
     ClassMethod,
     Property,
     GroupUse,
+    Use_,
 };
 
 abstract class PhpClass {
@@ -58,6 +59,10 @@ abstract class PhpClass {
 
     public function findNamespaceByTypeParts(array $type_parts): array {
         $type = str_replace('[]', '', array_pop($type_parts));
+        $primitives = ['string', 'bool', 'boolean', 'int', 'integer', 'float', 'double', 'array', 'object', 'resource'];
+        if (in_array($type, $primitives)) {
+            return [];
+        }
         if ($this->syntax instanceOf ClassLike) {
             return $type_parts;
         } else if ($this->syntax instanceOf Namespace_) {
@@ -71,11 +76,13 @@ abstract class PhpClass {
                             return array_merge($prefix, $parts);
                         }
                     }
-                } else if ($stmt instanceOf UseUse) {
-                    $parts = $stmt->name->parts;
-                    $end = array_pop($parts);
-                    if ($end === $type) {
-                        return $parts;
+                } else if ($stmt instanceOf Use_) {
+                    foreach ($stmt->uses as $u) {
+                        $parts = $u->name->parts;
+                        $end = array_pop($parts);
+                        if ($end === $type) {
+                            return $parts;
+                        }
                     }
                 }
             }
@@ -86,7 +93,8 @@ abstract class PhpClass {
             return $t->namespace;
         }
 
-        return [];
+        // 暗黙的な参照と見做す
+        return $this->syntax->name->parts;
     }
 
     /** @return PhpMethod[] メソッド一覧 */
