@@ -22,7 +22,7 @@ class Entry {
         $lines = [];
         $meta = $this->class->getClassType()->meta === 'Stmt_Interface' ? 'interface' : 'class';
         if ($this->options->classProperties() || $this->options->classMethods()) {
-            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getClassType()->name);
+            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getLogicalName());
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
                     $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->accessModifier), $p->name, $p->type->name);
@@ -38,7 +38,7 @@ class Entry {
             }
             $lines[] = sprintf('%s}', $indent);
         } else {
-            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->class->getClassType()->name);
+            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->class->getLogicalName());
         }
         return $lines;
     }
@@ -67,7 +67,7 @@ class Entry {
         $arrows = [];
         //フィールド変数の型に対しての依存をArrowとして追加する。
         foreach ($this->class->getProperties() as $p) {
-            $arrows[] = new ArrowDependency($this->class->getClassType()->name, $p->type->name);
+            $arrows[] = new ArrowDependency($this->class, $p->type);
         }
         foreach ($this->class->getMethods() as $m) {
             if ( ! $m->accessModifier->public) {
@@ -76,13 +76,13 @@ class Entry {
             if (count($m->params) > 0) {
                 continue;
             }
-            $arrows[] = new ArrowDependency($this->class->getClassType()->name, $m->type->name);
+            $arrows[] = new ArrowDependency($this->class, $m->type);
         }
         $extends = $this->class->getExtends();
         if ( ! empty($extends)) {
             //継承先に対してArrowを追加する。
             foreach ($extends as $extend) {
-                $arrows[] = new ArrowInheritance($this->class->getClassType()->name, $extend->name);
+                $arrows[] = new ArrowInheritance($this->class, $extend);
             }
         }
 

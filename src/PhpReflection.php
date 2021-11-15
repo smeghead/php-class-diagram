@@ -15,9 +15,11 @@ use Smeghead\PhpClassDiagram\Php\ {
 };
 
 class PhpReflection {
+    private string $directory;
     private string $filename;
     private PhpClass $class;
-    public function __construct(string $filename, Options $options) {
+    public function __construct(string $directory, string $filename, Options $options) {
+        $this->directory = $directory;
         $this->filename = $filename;
         $code = file_get_contents($this->filename);
 
@@ -50,10 +52,15 @@ class PhpReflection {
             return null;
         }
         foreach ($ast as $element) {
+            $relativePath = mb_substr($this->filename, mb_strlen($this->directory) + 1);
             if ($element instanceOf ClassLike) {
-                return new PhpClassClass($this->filename, $element);
+                return new PhpClassClass($relativePath, $element);
             } else if ($element instanceOf Namespace_) {
-                return new PhpClassNamespace($this->filename, $element);
+                try {
+                    return new PhpClassNamespace($relativePath, $element);
+                } catch (\Exception $e) {
+                    // cannot found class. ignore and try next element.
+                }
             }
         }
         // クラスが含まれていないファイル

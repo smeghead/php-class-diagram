@@ -203,9 +203,9 @@ EOJ;
     public function testInitialize(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $namespace = $rel->getNamespace();
@@ -225,21 +225,21 @@ EOJ;
     public function testDump(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
 
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    class Product
-    class Price
-    class Name
+    class product.Product
+    class product.Price
+    class product.Name
   }
-  Product ..> Name
-  Product ..> Price
+  product.Product ..> product.Name
+  product.Product ..> product.Price
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -248,22 +248,22 @@ EOS;
     public function testDump2(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product/utility', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product/utility', new PhpClassDummy('product/utility', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    class Product
-    class Price
+    class product.Product
+    class product.Price
     package "utility" <<Rectangle>> {
-      class Name
+      class product.Name
     }
   }
-  Product ..> Name
-  Product ..> Price
+  product.Product ..> product.Name
+  product.Product ..> product.Price
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -272,13 +272,13 @@ EOS;
     public function testDump3(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->interface_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    interface Interface_
+    interface product.Interface_
   }
 @enduml
 EOS;
@@ -288,13 +288,13 @@ EOS;
     public function testDump4(): void {
         $options = new Options(['enable-class-properties' => true]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->interface_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    interface Interface_ {
+    interface product.Interface_ {
       -name : string
     }
   }
@@ -305,13 +305,13 @@ EOS;
     public function testDump5(): void {
         $options = new Options(['enable-class-methods' => true]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->interface_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    interface Interface_ {
+    interface product.Interface_ {
       -method1(param1)
     }
   }
@@ -322,21 +322,21 @@ EOS;
     public function testDump6(): void {
         $options = new Options(['enable-class-methods' => true]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->interface_expression), $options),
-            new Entry('product', new PhpClassDummy($this->implement_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Implement_.php', $this->implement_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    interface Interface_ {
+    interface product.Interface_ {
       -method1(param1)
     }
-    class Implement_ {
+    class product.Implement_ {
       -method1(param1)
     }
   }
-  Interface_ <|-- Implement_
+  product.Interface_ <|-- product.Implement_
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -344,20 +344,20 @@ EOS;
     public function testDump7(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_method_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_method_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
 
         $expected =<<<EOS
 @startuml
   package "product" <<Rectangle>> {
-    class Product
-    class Price
-    class Name
+    class product.Product
+    class product.Price
+    class product.Name
   }
-  Product ..> Name
+  product.Product ..> product.Name
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');

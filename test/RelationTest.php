@@ -159,9 +159,9 @@ EOJ;
     public function testInitialize(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
 
@@ -171,32 +171,32 @@ EOJ;
     public function testGetRelations1(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(2, count($relations), 'count');
-        $this->assertSame('  Product ..> Name', $relations[0], 'relation 1');
-        $this->assertSame('  Product ..> Price', $relations[1], 'relation 2');
+        $this->assertSame('  product.Product ..> product.Name', $relations[0], 'relation 1');
+        $this->assertSame('  product.Product ..> product.Price', $relations[1], 'relation 2');
     }
 
     public function testGetRelations2(): void {
         $options = new Options([]);
         $entries = [
-            new Entry('product', new PhpClassDummy($this->product_with_tags_expression), $options),
-            new Entry('product', new PhpClassDummy($this->price_expression), $options),
-            new Entry('product', new PhpClassDummy($this->name_expression), $options),
-            new Entry('product', new PhpClassDummy($this->tag_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_with_tags_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Tag.php', $this->tag_expression), $options),
         ];
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(3, count($relations), 'count');
-        $this->assertSame('  Product "1" ..> "*" Tag', $relations[0], 'relation 1');
-        $this->assertSame('  Product ..> Name', $relations[1], 'relation 2');
-        $this->assertSame('  Product ..> Price', $relations[2], 'relation 3');
+        $this->assertSame('  product.Product "1" ..> "*" product.Tag', $relations[0], 'relation 1');
+        $this->assertSame('  product.Product ..> product.Name', $relations[1], 'relation 2');
+        $this->assertSame('  product.Product ..> product.Price', $relations[2], 'relation 3');
     }
 }

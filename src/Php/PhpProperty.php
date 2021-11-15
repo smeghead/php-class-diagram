@@ -43,7 +43,8 @@ class PhpProperty {
             $typeName = end($parts);
         }
         $this->name = $p->props[0]->name->toString();
-        $this->type = new PhpType($namespace, $p->getType(), $typeName);
+
+        $this->type = new PhpType($namespace, '', $typeName);
         $this->accessModifier = new PhpAccessModifier($p);
     }
 }

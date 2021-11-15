@@ -41,7 +41,11 @@ class PhpClassClass extends PhpClass {
         $namespace = [];
         $extends = [];
         if ( ! empty($this->syntax->extends)) {
-            $parts = $this->syntax->extends->parts;
+            $Name = $this->syntax->extends;
+            if (is_array($this->syntax->extends)) {
+                $Name = $this->syntax->extends[0];
+            } 
+            $parts = $Name->parts;
             $name = array_pop($parts);
             $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $name);
         }
