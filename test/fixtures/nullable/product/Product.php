@@ -4,8 +4,8 @@ namespace hoge\fuga\product;
 use hoge\fuga\product\Name;
 use hoge\fuga\product\ {
     Price,
-    Tag,
 };
+use hoge\fuga\product\tags\Tag;
 
 class Product {
     /** @var Name 名前 */
@@ -17,7 +17,7 @@ class Product {
     /** @var Tag[] 付与されたタグ一覧 */
     private array $tags;
 
-    public function nullable(?Name $name): ?Name {
+    public function nullable(?Name $name, Tag $tag): ?Tag {
         return $name;
     }
 }

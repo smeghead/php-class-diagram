@@ -4,8 +4,8 @@ namespace hoge\fuga\product;
 use hoge\fuga\product\Name;
 use hoge\fuga\product\ {
     Price,
-    Tag,
 };
+use hoge\fuga\product\tags\Tag;
 
 class Product {
     /** @var Name 名前 */
