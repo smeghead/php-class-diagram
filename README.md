@@ -2,6 +2,12 @@
 
 A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
 
+# Feature
+
+ * Generating class diagrams from source code helps improve continuous design.
+ * Generates expressive class diagrams with an emphasis on namespaces and relationships.
+ * A simple CLI tool that is easy to handle.
+
 [![Latest Stable Version](http://poser.pugx.org/smeghead/php-class-diagram/v)](https://packagist.org/packages/smeghead/php-class-diagram) [![Total Downloads](http://poser.pugx.org/smeghead/php-class-diagram/downloads)](https://packagist.org/packages/smeghead/php-class-diagram) [![Latest Unstable Version](http://poser.pugx.org/smeghead/php-class-diagram/v/unstable)](https://packagist.org/packages/smeghead/php-class-diagram) [![License](http://poser.pugx.org/smeghead/php-class-diagram/license)](https://packagist.org/packages/smeghead/php-class-diagram) [![PHP Version Require](http://poser.pugx.org/smeghead/php-class-diagram/require/php)](https://packagist.org/packages/smeghead/php-class-diagram)
 
 ![dogfood image.](dogfood.png)
@@ -16,6 +22,7 @@ $ composer require smeghead/php-class-diagram
 ```
 
 you can execute `./vendor/bin/php-class-diagram`.
+for instance, try to display help message.
 
 ```bash
 $ vendor/bin/php-class-diagram --help
@@ -35,6 +42,8 @@ OPTIONS
 ```
 
 ## How to execute
+
+When three php source files that TYPE commented exist in `test/fixtures/no-namespace`,
 
  * php source files.
 
@@ -77,18 +86,22 @@ class Price {
 }
 ```
 
+To execute `php-class-diagram` will print PlantUML script.
+
 ```bash
 $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 @startuml
-  package "product" <<Rectangle>> {
-    class Name
-    class Price
-    class Product
+  package product as product <<Rectangle>> {
+    class product.Price
+    class product.Name
+    class product.Product
   }
-  Product ..> Name
-  Product ..> Price
+  product.Product ..> product.Name
+  product.Product ..> product.Price
 @enduml
 ```
+
+Use PlnatUML to convert the PlantUML script to an image.
 
 ![PlantUML output image.](output.png)
 
