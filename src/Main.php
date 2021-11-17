@@ -26,6 +26,15 @@ class Main {
             }
         }
         $relation = new Relation($entries, $options);
-        echo implode("\r\n", $relation->dump()) . "\r\n";
+        switch ($options->diagram()) {
+        case Options::DIAGRAM_CLASS:
+            echo implode("\r\n", $relation->dump()) . "\r\n";
+            break;
+        case OPTIONS::DIAGRAM_PACKAGE:
+            echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+            break;
+        default:
+            throw new \Exception('invalid diagram.');
+        }
     }
 }

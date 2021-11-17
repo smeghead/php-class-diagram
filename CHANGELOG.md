@@ -4,6 +4,8 @@
 
  * Added dependency arrows. The class has a dependency on the return type of the method with no public arguments.
  * Changed the output class name to include the package name.
+ * Added package diagram option.
+ * make package expression hierarchy in output script.
 
 ### Bug fix
  * fix bug that failed to parse NullableType method parameter.

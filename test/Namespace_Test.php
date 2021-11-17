@@ -233,7 +233,7 @@ EOJ;
 
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     class product.Product
     class product.Price
     class product.Name
@@ -255,10 +255,10 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     class product.Product
     class product.Price
-    package "utility" <<Rectangle>> {
+    package utility as product.utility <<Rectangle>> {
       class product.Name
     }
   }
@@ -277,7 +277,7 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     interface product.Interface_
   }
 @enduml
@@ -293,7 +293,7 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     interface product.Interface_ {
       -name : string
     }
@@ -310,7 +310,7 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     interface product.Interface_ {
       -method1(param1)
     }
@@ -328,7 +328,7 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     interface product.Interface_ {
       -method1(param1)
     }
@@ -352,7 +352,7 @@ EOS;
 
         $expected =<<<EOS
 @startuml
-  package "product" <<Rectangle>> {
+  package product as product <<Rectangle>> {
     class product.Product
     class product.Price
     class product.Name

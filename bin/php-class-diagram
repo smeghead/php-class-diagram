@@ -1,11 +1,13 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
-include_once './vendor/autoload.php';
+include_once __DIR__ . '/../vendor/autoload.php';
 
 $options = getopt('hv',[
     'help',
     'version',
+    'class-diagram',
+    'package-diagram',
     'enable-class-properties',
     'disable-class-properties',
     'enable-class-methods',
@@ -22,6 +24,8 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 OPTIONS
   -h, --help                     show this help page.
+      --class-diagram            output class diagram script. (default)
+      --package-diagram          output package diagram script.
       --enable-class-properties  describe properties in class diagram.
       --disable-class-properties not describe properties in class diagram.
       --enable-class-methods     describe methods in class diagram.

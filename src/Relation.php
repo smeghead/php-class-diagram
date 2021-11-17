@@ -13,7 +13,7 @@ class Relation {
     public function __construct(array $entries, Options $options) {
         $this->options = $options;
         Namespace_::init();
-        $this->namespace = new Namespace_('ROOT', $options);
+        $this->namespace = new Namespace_([], 'ROOT', $options);
         foreach ($entries as $e) {
             $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
         }
@@ -34,14 +34,6 @@ class Relation {
 
     public function getRelations(): array {
         $entities = $this->namespace->getEntries();
-        // TODO クラスの同一性をクラス名のみで判定している。本当はnamespaceも含めて判定する必要がある。
-//        $classNames = array_map(function($x){
-//            return $x->class->getClassType()->name;
-//        }, $entities);
-//        // 解析対象に含まれているクラスで絞り込む
-//        $arrows = array_filter($this->namespace->getArrows(), function($x) use ($classNames) {
-//            return in_array(str_replace('[]', '', $x->to->name), $classNames);
-//        });
         $relation_expressions = array_map(function($x) use ($entities){
             foreach ($entities as $e) {
                 //if ($e->class->getClassType()->name == str_replace('[]', '', $x->to->name)) {
@@ -54,5 +46,32 @@ class Relation {
         $relation_expressions = array_filter($relation_expressions);
         sort($relation_expressions);
         return $relation_expressions;
+    }
+
+    public function dumpPackages(): array {
+        $lines = ['@startuml'];
+        $lines = array_merge($lines, $this->namespace->dumpPackages());
+        $uses = $this->getUses();
+        foreach ($uses as $namespace => $us) {
+            // パッケージの依存を出力するには、パッケージの形式で出力する必要がある。
+            // クラス図では、パッケージを入れ子構造で名前だけ表示したが、
+            // パッケージ関連図では、パッケージを入れ子構造でかつ絶対パスの名前で表示したい。
+            // クラス図も同じようにした方がいいか？
+            //
+            // -> クラス図もパッケージ図もパッケージ名は名前でaliasを絶対パスにする。
+            // これで良ければ、パッケージ名の重複を気にしなくて済む
+            //
+            // package DiagramElement as hoge.DiagramElement <<Rectangle>> {
+            //     package Php as hoge.DiagramElement.Php <<Rectangle>> {
+            //     }
+            // }
+        }
+        $lines[] = '@enduml';
+
+        return $lines;
+    }
+
+    public function getUses(): array {
+        return $this->namespace->getUses([]);
     }
 }

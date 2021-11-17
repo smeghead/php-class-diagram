@@ -79,7 +79,7 @@ final class OptionsTest extends TestCase {
 
         $options = new Options($opt);
 
-        $this->assertSame('php7', $options->phpVersion(), 'php version is 7.');
+        $this->assertSame(Options::PHP7, $options->phpVersion(), 'php version is 7.');
     }
     public function testPhp2(): void {
         $opt = [
@@ -88,7 +88,33 @@ final class OptionsTest extends TestCase {
 
         $options = new Options($opt);
 
-        $this->assertSame('php8', $options->phpVersion(), 'php version is 8.');
+        $this->assertSame(Options::PHP8, $options->phpVersion(), 'php version is 8.');
+    }
+    public function testDiagram1(): void {
+        $opt = [
+            'class-diagram' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'diagram is class.');
+    }
+    public function testDiagram2(): void {
+        $opt = [
+            'package-diagram' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::DIAGRAM_PACKAGE, $options->diagram(), 'diagram is package.');
+    }
+    public function testDiagram3(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'default diagram is class.');
     }
 
 }
