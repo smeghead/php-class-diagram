@@ -1,11 +1,14 @@
 # CHANGELOG
 
+## v0.0.2 (2021-11-18)
+
 ### Added
 
  * Added dependency arrows. The class has a dependency on the return type of the method with no public arguments.
  * Changed the output class name to include the package name.
  * Added package diagram option.
  * make package expression hierarchy in output script.
+ * support package relation diagram.
 
 ### Bug fix
  * fix bug that failed to parse NullableType method parameter.

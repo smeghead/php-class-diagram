@@ -5,14 +5,10 @@ use Smeghead\PhpClassDiagram\Options;
 
 class Namespace_ {
     private Options $options;
-    private static $namesAlreadyUsed = [];
-    public static function init() {
-        self::$namesAlreadyUsed = [];
-    }
 
     public array $parents;
     public string $name;
-    public string $fixedName = '';
+    public string $namespace = '';
 
     /** @var Namespace_[] namespaces */
     public array $children = [];
@@ -31,6 +27,9 @@ class Namespace_ {
 
     public function addEntry(array $paths, Entry $entry): void {
         if (count($paths) === 0) {
+            if (empty($this->namespaces)) {
+                $this->namespace = implode('.', $entry->class->getClassType()->namespace);
+            }
             $this->entries[] = $entry;
             return;
         }
@@ -54,18 +53,6 @@ class Namespace_ {
         return end($this->children);
     }
 
-    /**
-     * 重複したパッケージ名があると、PlantUMLでエラーが発生するので避ける
-     */
-    private function avoidDuplicateName(string $name) {
-        if (in_array($name, self::$namesAlreadyUsed)) {
-            return $this->avoidDuplicateName(sprintf('%s_', $name));
-        }
-        self::$namesAlreadyUsed[] = $name;
-        $this->fixedName = $name;
-        return $name;
-    }
-
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
@@ -76,7 +63,6 @@ class Namespace_ {
                 $this->name,
                 $this->getLogicalName()
             );
-            //$lines[] = sprintf('%spackage "%s" <<Rectangle>> {', $indent, $this->avoidDuplicateName($this->name));
         }
         foreach ($this->entries as $e) {
             $lines = array_merge($lines, $e->dump($level + 1));
@@ -94,7 +80,12 @@ class Namespace_ {
         $indent = str_repeat('  ', $level);
         $lines = [];
         if ($this->name !== 'ROOT') {
-            $lines[] = sprintf('%spackage "%s" <<Rectangle>> {', $indent, $this->avoidDuplicateName($this->name));
+            $lines[] = sprintf(
+                '%spackage %s as %s {',
+                $indent,
+                $this->name,
+                $this->getLogicalName()
+            );
         }
         foreach ($this->children as $n) {
             $lines = array_merge($lines, $n->dumpPackages($level + 1));
@@ -138,9 +129,20 @@ class Namespace_ {
         foreach ($this->entries as $e) {
             $uses = array_merge($uses, $e->class->getUses());
         }
-        $acc[$this->fixedName] = $uses;
+        $acc[$this->namespace] = $uses;
         foreach ($this->children as $n) {
             $acc = array_merge($acc, $n->getUses($acc));
+        }
+        return $acc;
+    }
+
+    /**
+     * 解析対象になっているnamespace一覧を取得する。
+     */
+    public function getTargetNamespaces($acc = []) {
+        $acc[$this->namespace] = $this->name;
+        foreach ($this->children as $n) {
+            $acc = $n->getTargetNamespaces($acc);
         }
         return $acc;
     }

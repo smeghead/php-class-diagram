@@ -12,7 +12,6 @@ class Relation {
 
     public function __construct(array $entries, Options $options) {
         $this->options = $options;
-        Namespace_::init();
         $this->namespace = new Namespace_([], 'ROOT', $options);
         foreach ($entries as $e) {
             $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
@@ -36,7 +35,6 @@ class Relation {
         $entities = $this->namespace->getEntries();
         $relation_expressions = array_map(function($x) use ($entities){
             foreach ($entities as $e) {
-                //if ($e->class->getClassType()->name == str_replace('[]', '', $x->to->name)) {
                 if ($e->class->getClassType()->equals($x->to)) {
                     return $x->toString($e->class);
                 }
@@ -52,23 +50,47 @@ class Relation {
         $lines = ['@startuml'];
         $lines = array_merge($lines, $this->namespace->dumpPackages());
         $uses = $this->getUses();
+        $targetNamespaces = $this->namespace->getTargetNamespaces();
+        $all = [];
+        $packageRelations = [];
         foreach ($uses as $namespace => $us) {
-            // パッケージの依存を出力するには、パッケージの形式で出力する必要がある。
-            // クラス図では、パッケージを入れ子構造で名前だけ表示したが、
-            // パッケージ関連図では、パッケージを入れ子構造でかつ絶対パスの名前で表示したい。
-            // クラス図も同じようにした方がいいか？
-            //
-            // -> クラス図もパッケージ図もパッケージ名は名前でaliasを絶対パスにする。
-            // これで良ければ、パッケージ名の重複を気にしなくて済む
-            //
-            // package DiagramElement as hoge.DiagramElement <<Rectangle>> {
-            //     package Php as hoge.DiagramElement.Php <<Rectangle>> {
-            //     }
-            // }
+            $namespaces = array_unique(array_map(function($x){
+                return implode('.', $x->namespace);
+            }, $us));
+            // 対象となっているnamespace以外のnamespaceは、即席で定義する必要がある。
+            $all = array_unique(array_merge($all, $namespaces));
+            $packageRelations[$namespace] = array_map(function($x) use ($targetNamespaces){
+                return $this->displayNamespace($x, $targetNamespaces);
+            }, $namespaces);
+        }
+        foreach (array_diff($all, array_keys($targetNamespaces)) as $external) {
+            $lines[] = sprintf('  package %s', $external); 
+        }
+        foreach ($packageRelations as $namespace => $dependencies) {
+            $namespace = $this->displayNamespace($namespace, $targetNamespaces);
+            if ($namespace === 'ROOT') {
+                continue;
+            }
+            foreach ($dependencies as $d) {
+                if (empty($d)) {
+                    continue;
+                }
+                if ($d === 'ROOT') {
+                    continue;
+                }
+                $lines[] = sprintf('  %s --> %s', $namespace, $d);
+            }
         }
         $lines[] = '@enduml';
 
         return $lines;
+    }
+    private function displayNamespace($namespace, $targetNamespaces) {
+        if (in_array($namespace, array_keys($targetNamespaces))) {
+            return $targetNamespaces[$namespace]; // 解析対象のnamespaceはディレクトリ名で表示
+        } else {
+            return $namespace; //外部のnamespaceはnamespace表示
+        }
     }
 
     public function getUses(): array {
