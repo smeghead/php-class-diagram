@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.0.3 (2021-11-18)
+
+### Bug fix
+
+ * in `bin/php-class-diagram`, changed how to load `autoload.php`.
+
 ## v0.0.2 (2021-11-18)
 
 ### Added
@@ -11,6 +17,7 @@
  * support package relation diagram.
 
 ### Bug fix
+
  * fix bug that failed to parse NullableType method parameter.
  * fix bug that wrong namespace found when search use statements.
 
