@@ -4,9 +4,6 @@ namespace Smeghead\PhpClassDiagram\Php;
 use PhpParser\Node\Stmt\ {
     Property,
 };
-use Smeghead\PhpClassDiagram\Php\ {
-    PhpAccessModifier,
-};
 
 class PhpProperty {
     public string $name;

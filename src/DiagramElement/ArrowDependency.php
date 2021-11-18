@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
-use Smeghead\PhpClassDiagram\DiagramElement\Arrow;
 use Smeghead\PhpClassDiagram\Php\PhpClass;
 
 class ArrowDependency extends Arrow {
