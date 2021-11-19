@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     ClassLike,
@@ -82,9 +83,16 @@ class PhpClassNamespace extends PhpClass {
             if (is_array($syntax->extends)) {
                 $Name = $syntax->extends[0];
             } 
-            $parts = $Name->parts;
-            $name = array_pop($parts);
-            $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $name);
+            if ($Name instanceOf FullyQualified) {
+                $extends[] = new PhpType(
+                    array_slice($Name->parts, 0, count($Name->parts) - 1),
+                    '',
+                    end($Name->parts));
+            } else {
+                $parts = $Name->parts;
+                $name = array_pop($parts);
+                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $name);
+            }
         }
         if ( ! empty($syntax->implements)) {
             foreach ($syntax->implements as $i) {

@@ -7,6 +7,7 @@ use PhpParser\Node\ {
     Identifier,
     Name,
 };
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
     Namespace_,
@@ -124,6 +125,11 @@ abstract class PhpClass {
             }
         } else if ($type instanceOf Identifier) {
             $parts[] = $type->name;
+        } else if ($type instanceOf FullyQualified) {
+            return new PhpType(
+                array_slice($type->parts, 0, count($type->parts) - 1),
+                '',
+                end($type->parts));
         } else if ($type instanceOf Name) {
             $parts = $type->parts;
         }

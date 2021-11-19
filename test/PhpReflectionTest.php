@@ -215,4 +215,25 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Name', $data->getMethods()[0]->params[0]->type->name, 'parameter type.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->params[0]->type->namespace, 'parameter type namespace.');
     }
+    public function testFullyQualified(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
+        $filename = sprintf('%s/namespace/product/Exception.php', $this->fixtureDir);
+        $class = new PhpReflection($directory, $filename, $options);
+
+        $data = $class->getInfo();
+        $this->assertSame('Exception', $data->getClassType()->name, 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame('Exception', $data->getExtends()[0]->name, 'super class name.');
+        $this->assertSame([], $data->getExtends()[0]->namespace, 'super class namespace.');
+        $this->assertSame('getInner', $data->getMethods()[0]->name, 'method name.');
+        $this->assertSame('Exception', $data->getMethods()[0]->type->name, 'return type.');
+        $this->assertSame([], $data->getMethods()[0]->type->namespace, 'return type namespace.');
+        $this->assertSame('e', $data->getMethods()[0]->params[0]->name, 'parameter name.');
+        $this->assertSame('Exception', $data->getMethods()[0]->params[0]->type->name, 'parameter type.');
+        $this->assertSame([], $data->getMethods()[0]->params[0]->type->namespace, 'parameter type namespace.');
+        $this->assertSame('external', $data->getMethods()[1]->name, 'method name.');
+        $this->assertSame('Exception', $data->getMethods()[1]->type->name, 'return type.');
+        $this->assertSame(['external'], $data->getMethods()[1]->type->namespace, 'return type namespace.');
+    }
 }

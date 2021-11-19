@@ -5,6 +5,7 @@
 ### Bug fix
 
  * in `bin/php-class-diagram`, changed how to load `autoload.php`.
+ * fail to get namespace of FullyQualified.
 
 ## v0.0.2 (2021-11-18)
 
