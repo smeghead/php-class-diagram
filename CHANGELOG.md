@@ -2,6 +2,12 @@
 
 ## v0.0.3 (2021-11-18)
 
+### Added
+
+ * print ROOT package to package relation diagram. To make it easier to
+   distinguish from the package to be analyzed in the case of a package-related
+   diagram that includes an external namespace.
+
 ### Bug fix
 
  * in `bin/php-class-diagram`, changed how to load `autoload.php`.

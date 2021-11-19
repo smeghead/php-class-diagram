@@ -25,18 +25,24 @@ class Namespace_ {
         return implode('.', array_merge(array_slice($this->parents, 1), [$this->name]));
     }
 
-    public function addEntry(array $paths, Entry $entry): void {
+    public function addEntry(array $paths, Entry $entry): string {
         if (count($paths) === 0) {
             if (empty($this->namespaces)) {
                 $this->namespace = implode('.', $entry->class->getClassType()->namespace);
             }
             $this->entries[] = $entry;
-            return;
+            return $this->namespace;
         }
         $dir = array_shift($paths);
         $ns = $this->findChild($dir);
-        $ns->addEntry($paths, $entry);
-        return;
+        $childNamespace = $ns->addEntry($paths, $entry);
+        if (empty($this->namespace)) {
+            //子のnamespaceを元に親のnamespaceを決定する。ROOTのnamespaceの決定
+            $childParts = explode('.', $childNamespace);
+            array_pop($childParts);
+            $this->namespace = implode('.', $childParts);
+        }
+        return $this->namespace;
     }
 
     private function findChild(string $dir): Namespace_ {
@@ -76,23 +82,19 @@ class Namespace_ {
         return $lines;
     }
 
-    public function dumpPackages($level = 0): array {
+    public function dumpPackages($level = 1): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        if ($this->name !== 'ROOT') {
-            $lines[] = sprintf(
-                '%spackage %s as %s {',
-                $indent,
-                $this->name,
-                $this->getLogicalName()
-            );
-        }
+        $lines[] = sprintf(
+            '%spackage %s as %s {',
+            $indent,
+            $this->name === 'ROOT' ? (empty($this->namespace) ? 'ROOT': $this->namespace) : $this->name,
+            $this->getLogicalName()
+        );
         foreach ($this->children as $n) {
             $lines = array_merge($lines, $n->dumpPackages($level + 1));
         }
-        if ($this->name !== 'ROOT') {
-            $lines[] = sprintf('%s}', $indent);
-        }
+        $lines[] = sprintf('%s}', $indent);
         return $lines;
     }
 
