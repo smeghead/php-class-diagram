@@ -1,10 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
-use Smeghead\PhpClassDiagram\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\ {
-    Namespace_,
-};
+use Smeghead\PhpClassDiagram\DiagramElement\Namespace_;
 
 class Relation {
     private Options $options;
@@ -68,14 +65,8 @@ class Relation {
         }
         foreach ($packageRelations as $namespace => $dependencies) {
             $namespace = $this->displayNamespace($namespace, $targetNamespaces);
-            if ($namespace === 'ROOT') {
-                continue;
-            }
             foreach ($dependencies as $d) {
                 if (empty($d)) {
-                    continue;
-                }
-                if ($d === 'ROOT') {
                     continue;
                 }
                 $lines[] = sprintf('  %s --> %s', $namespace, $d);

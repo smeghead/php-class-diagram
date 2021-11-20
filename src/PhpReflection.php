@@ -8,7 +8,6 @@ use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,
 };
-use Smeghead\PhpClassDiagram\Options;
 use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
 };
