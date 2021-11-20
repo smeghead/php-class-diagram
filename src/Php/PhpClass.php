@@ -18,12 +18,13 @@ use PhpParser\Node\Stmt\ {
     Use_,
 };
 
-abstract class PhpClass {
+class PhpClass {
     /** @var string[] directory parts */
     protected array $dirs;
     protected Stmt $syntax;
+    protected array $full;
 
-    public function __construct(string $filename, Stmt $syntax) {
+    public function __construct(string $filename, Stmt $syntax, array $full) {
         $relativePath = dirname($filename);
         if ($relativePath === '.') {
             $dirs = [];
@@ -32,6 +33,16 @@ abstract class PhpClass {
         }
         $this->dirs = $dirs;
         $this->syntax = $syntax;
+        $this->full = $full;
+    }
+
+    public function getNamespace(): array {
+        foreach($this->full as $stmt) {
+            if ($stmt instanceOf Namespace_) {
+                return $stmt->name->parts;
+            }
+        }
+        return [];
     }
 
     /**
@@ -45,7 +56,19 @@ abstract class PhpClass {
         return implode('.', $parts);
     }
 
-    abstract public function getClassType(): PhpType;
+    public function getClassType(): PhpType {
+        $namespace = [];
+        foreach ($this->full as $stmt) {
+            if ($stmt instanceOf Namespace_) {
+                $namespace = $stmt->name->parts;
+                if ($namespace === null) {
+                    var_dump($stmt);
+                }
+                break;
+            }
+        }
+        return new PhpType($namespace, $this->syntax->getType(), $this->syntax->name->name);
+    }
 
     /**
      * @return PhpProperty[] プロパティ一覧
@@ -60,14 +83,40 @@ abstract class PhpClass {
     }
 
     /**
-     * @return Property[] プロパティ一覧
+     * @return PhpProperty[] プロパティ一覧
      */
-    abstract protected function getPropertiesFromSyntax(): array;
+    protected function getPropertiesFromSyntax(): array {
+        return $this->syntax->getProperties();
+    }
 
     /**
      * @return PhpType[] use一覧
      */
-    abstract public function getUses(): array;
+    public function getUses(): array {
+        return $this->getUsesRec($this->full);
+    }
+
+    private function getUsesRec($stmts, $uses = []) {
+        foreach ($stmts as $stmt) {
+            if ($stmt instanceOf GroupUse) {
+                $prefix = $stmt->prefix->parts;
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias); 
+                }
+            } else if ($stmt instanceOf Use_) {
+                foreach ($stmt->uses as $u) {
+                    $parts = $u->name->parts;
+                    $name = array_pop($parts);
+                    $uses[] = new PhpType($parts, '', $name, $u->alias); 
+                }
+            } else if ($stmt instanceOf Namespace_) {
+                $uses = array_merge($uses, $this->getUsesRec($stmt->stmts, $uses));
+            }
+        }
+        return $uses;
+    }
 
     /**
      * クラス名が、どのnamespaceに属しているかを判定する。
@@ -94,11 +143,12 @@ abstract class PhpClass {
         }
 
         // 暗黙的な参照と見做す
-        if ($this->syntax instanceOf Namespace_) {
-            return $this->syntax->name->parts;
-        } else {
-            return [];
-        }
+        return $this->getNamespace();
+//        if ($this->syntax instanceOf Namespace_) {
+//            return $this->syntax->name->parts;
+//        } else {
+//            return [];
+//        }
     }
 
     /**
@@ -142,7 +192,15 @@ abstract class PhpClass {
     }
 
     /** @return PhpMethod[] メソッド一覧 */
-    abstract public function getMethods(): array;
+    public function getMethods(): array {
+        $methods = [];
+        foreach ($this->syntax->stmts as $stmt) {
+            if ($stmt instanceOf ClassMethod) {
+                $methods[] = $this->getMethodInfo($stmt);
+            }
+        }
+        return $methods;
+    }
 
     protected function getMethodInfo(ClassMethod $method): PhpMethod {
         return new PhpMethod($method, $this);
@@ -151,5 +209,39 @@ abstract class PhpClass {
     /**
      * @return PhpType[] 継承元と実装元型一覧
      */
-    abstract public function getExtends(): array;
+    public function getExtends(): array {
+        $extends = [];
+        if ( ! empty($this->syntax->extends)) {
+            $Name = $this->syntax->extends;
+            if (is_array($this->syntax->extends)) {
+                $Name = $this->syntax->extends[0];
+            } 
+            if ($Name instanceOf FullyQualified) {
+                $extends[] = new PhpType(
+                    array_slice($Name->parts, 0, count($Name->parts) - 1),
+                    '',
+                    end($Name->parts));
+            } else {
+                $parts = $Name->parts;
+                $namespace = [];
+                if (count($parts) > 0) {
+                    $namespace = $this->findNamespaceByTypeParts($parts);
+                    $typeName = array_pop($parts);
+                }
+                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $typeName);
+            }
+        }
+        if ( ! empty($this->syntax->implements)) {
+            foreach ($this->syntax->implements as $i) {
+                $parts = $i->parts;
+                $namespace = [];
+                if (count($parts) > 0) {
+                    $namespace = $this->findNamespaceByTypeParts($parts);
+                    $typeName = array_pop($parts);
+                }
+                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Interface', $typeName);
+            }
+        }
+        return $extends;
+    }
 }

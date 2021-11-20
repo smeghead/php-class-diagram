@@ -136,6 +136,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Sub', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Super', $data->getExtends()[0]->name, 'super class name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getExtends()[0]->namespace, 'super class namespace.');
     }
     public function testDump_with_implements(): void {
         $options = new Options([]);
@@ -147,6 +148,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Implements_', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Interface_', $data->getExtends()[0]->name, 'super class name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getExtends()[0]->namespace, 'super class namespace.');
     }
     public function testGetUses(): void {
         $options = new Options([]);
@@ -236,4 +238,20 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Exception', $data->getMethods()[1]->type->name, 'return type.');
         $this->assertSame(['external'], $data->getMethods()[1]->type->namespace, 'return type namespace.');
     }
+//    public function testFullyQualified(): void {
+//        $options = new Options([]);
+//        $directory = sprintf('%s/classes', $this->fixtureDir);
+//        $filename = sprintf('%s/classes/product/Product.php', $this->fixtureDir);
+//        $parsed = PhpReflection::parseFile($directory, $filename, $options);
+//
+//        $data = $parsed[0]->getInfo();
+//        $this->assertSame('Product', $data->getClassType()->name, '1st class type name.');
+//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '1st namespace name.');
+//        $data = $parsed[1]->getInfo();
+//        $this->assertSame('Name', $data->getClassType()->name, '2nd class type name.');
+//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '2nd namespace name.');
+//        $data = $parsed[2]->getInfo();
+//        $this->assertSame('Price', $data->getClassType()->name, '3rd class type name.');
+//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '3rd namespace name.');
+//    }
 }

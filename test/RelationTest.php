@@ -155,6 +155,24 @@ EOJ;
     "methods":[]
 }
 EOJ;
+    private string $subtag_expression = <<<EOJ
+{
+    "type": {
+        "name": "SubTag",
+        "meta": "Stmt_Class",
+        "namespace": []
+    },
+    "properties": [],
+    "methods":[],
+    "extends": [
+        {
+            "name": "Tag",
+            "meta": "Stmt_Class",
+            "namespace": []
+        }
+    ]
+}
+EOJ;
 
     public function testInitialize(): void {
         $options = new Options([]);
@@ -198,5 +216,18 @@ EOJ;
         $this->assertSame('  product.Product "1" ..> "*" product.Tag', $relations[0], 'relation 1');
         $this->assertSame('  product.Product ..> product.Name', $relations[1], 'relation 2');
         $this->assertSame('  product.Product ..> product.Price', $relations[2], 'relation 3');
+    }
+
+    public function testGetRelations_extends1(): void {
+        $options = new Options([]);
+        $entries = [
+            new Entry('product', new PhpClassDummy('product', 'product/Tag.php', $this->tag_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/SubTag.php', $this->subtag_expression), $options),
+        ];
+        $rel = new Relation($entries, $options);
+        $relations = $rel->getRelations();
+
+        $this->assertSame(1, count($relations), 'count');
+        $this->assertSame('  product.Tag <|-- product.SubTag', $relations[0], 'relation 1');
     }
 }

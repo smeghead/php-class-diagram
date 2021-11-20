@@ -11,8 +11,6 @@ use PhpParser\Node\Stmt\ {
 use Smeghead\PhpClassDiagram\Options;
 use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
-    PhpClassClass,
-    PhpClassNamespace,
 };
 
 class PhpReflection {
@@ -55,12 +53,12 @@ class PhpReflection {
         foreach ($ast as $element) {
             $relativePath = mb_substr($this->filename, mb_strlen($this->directory) + 1);
             if ($element instanceOf ClassLike) {
-                return new PhpClassClass($relativePath, $element, $ast);
+                return new PhpClass($relativePath, $element, $ast);
             } else if ($element instanceOf Namespace_) {
-                try {
-                    return new PhpClassNamespace($relativePath, $element);
-                } catch (\Exception $e) {
-                    // cannot found class. ignore and try next element.
+                foreach ($element->stmts as $e) {
+                    if ($e instanceOf ClassLike) {
+                        return new PhpClass($relativePath, $e, $ast);
+                    }
                 }
             }
         }

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+
+### Added
+
+ * refactor class structure. remove PhpClassClass and PhpClassNamespace.
+
+### Bug fix
+
+ * fix a bug wrong extends and implements class type.
+
 ## v0.0.3 (2021-11-18)
 
 ### Added
