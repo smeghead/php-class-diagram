@@ -8,6 +8,7 @@
 ### Bug fix
 
  * fix a bug wrong extends and implements class type.
+ * Corrected to analyze all classes when there are two or more classes in one file.
 
 ## v0.0.3 (2021-11-18)
 

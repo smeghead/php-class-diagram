@@ -144,11 +144,6 @@ class PhpClass {
 
         // 暗黙的な参照と見做す
         return $this->getNamespace();
-//        if ($this->syntax instanceOf Namespace_) {
-//            return $this->syntax->name->parts;
-//        } else {
-//            return [];
-//        }
     }
 
     /**

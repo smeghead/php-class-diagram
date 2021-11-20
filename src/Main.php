@@ -14,8 +14,10 @@ class Main {
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflection = new PhpReflection(realpath($directory), $file->getRealPath(), $options);
-                $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
+                $reflections = PhpReflection::parseFile(realpath($directory), $file->getRealPath(), $options);
+                foreach ($reflections as $reflection) {
+                  $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
+                }
             } catch (\Exception $e) {
                 fputs(STDERR, $e->getMessage() . "\r\n");
             }

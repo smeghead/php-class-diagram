@@ -19,9 +19,6 @@ class PhpType {
             return false;
         }
         if ($this->namespace !== $other->namespace) {
-//            var_dump('---' . $this->name);
-//            var_dump(json_encode($this->namespace));
-//            var_dump(json_encode($other->namespace));
             return false;
         }
         return true;

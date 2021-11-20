@@ -16,18 +16,18 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $this->assertNotNull($class, 'initialize PhppReflection');
+        $this->assertNotNull($classes[0], 'initialize PhppReflection');
     }
 
     public function testDump(): void {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('name', $data->getProperties()[0]->name, 'property name.');
@@ -44,9 +44,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('name', $data->getProperties()[0]->name, 'type.');
@@ -61,9 +61,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/phpdoc', $this->fixtureDir);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame('Stmt_Class', $data->getClassType()->meta, 'class meta name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
@@ -81,9 +81,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Interface_', $data->getClassType()->name, 'class type name.');
         $this->assertSame('Stmt_Interface', $data->getClassType()->meta, 'class meta name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
@@ -94,9 +94,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('method1', $data->getMethods()[0]->name, 'namespace name.');
@@ -112,9 +112,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('method1', $data->getMethods()[0]->name, 'namespace name.');
@@ -130,9 +130,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Sub.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Sub', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Super', $data->getExtends()[0]->name, 'super class name.');
@@ -142,9 +142,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Implements_.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Implements_', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Interface_', $data->getExtends()[0]->name, 'super class name.');
@@ -154,9 +154,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[0]->namespace, 'use namespace.');
@@ -170,9 +170,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/ProductWithoutNamespace.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[0]->namespace, 'use namespace.');
@@ -186,9 +186,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/Product.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('nullable', $data->getMethods()[0]->name, 'namespace name.');
@@ -205,9 +205,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/ProductWithoutNamespace.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
         $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('nullable', $data->getMethods()[0]->name, 'namespace name.');
@@ -221,9 +221,9 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Exception.php', $this->fixtureDir);
-        $class = new PhpReflection($directory, $filename, $options);
+        $classes = PhpReflection::parseFile($directory, $filename, $options);
 
-        $data = $class->getInfo();
+        $data = $classes[0]->getInfo();
         $this->assertSame('Exception', $data->getClassType()->name, 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, 'namespace name.');
         $this->assertSame('Exception', $data->getExtends()[0]->name, 'super class name.');
@@ -238,20 +238,20 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Exception', $data->getMethods()[1]->type->name, 'return type.');
         $this->assertSame(['external'], $data->getMethods()[1]->type->namespace, 'return type namespace.');
     }
-//    public function testFullyQualified(): void {
-//        $options = new Options([]);
-//        $directory = sprintf('%s/classes', $this->fixtureDir);
-//        $filename = sprintf('%s/classes/product/Product.php', $this->fixtureDir);
-//        $parsed = PhpReflection::parseFile($directory, $filename, $options);
-//
-//        $data = $parsed[0]->getInfo();
-//        $this->assertSame('Product', $data->getClassType()->name, '1st class type name.');
-//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '1st namespace name.');
-//        $data = $parsed[1]->getInfo();
-//        $this->assertSame('Name', $data->getClassType()->name, '2nd class type name.');
-//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '2nd namespace name.');
-//        $data = $parsed[2]->getInfo();
-//        $this->assertSame('Price', $data->getClassType()->name, '3rd class type name.');
-//        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '3rd namespace name.');
-//    }
+    public function testClassesInAFile(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/classes', $this->fixtureDir);
+        $filename = sprintf('%s/classes/product/Product.php', $this->fixtureDir);
+        $parsed = PhpReflection::parseFile($directory, $filename, $options);
+
+        $data = $parsed[0]->getInfo();
+        $this->assertSame('Product', $data->getClassType()->name, '1st class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '1st namespace name.');
+        $data = $parsed[1]->getInfo();
+        $this->assertSame('Name', $data->getClassType()->name, '2nd class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '2nd namespace name.');
+        $data = $parsed[2]->getInfo();
+        $this->assertSame('Price', $data->getClassType()->name, '3rd class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->namespace, '3rd namespace name.');
+    }
 }

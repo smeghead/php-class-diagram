@@ -16,10 +16,15 @@ class PhpReflection {
     private string $directory;
     private string $filename;
     private PhpClass $class;
-    public function __construct(string $directory, string $filename, Options $options) {
+
+    private function __construct(string $directory, string $filename, PhpClass $class) {
         $this->directory = $directory;
         $this->filename = $filename;
-        $code = file_get_contents($this->filename);
+        $this->class = $class;
+    }
+
+    public static function parseFile(string $directory, string $filename, Options $options) {
+        $code = file_get_contents($filename);
 
         $targetVesion = ParserFactory::PREFER_PHP7;
         switch ($options->phpVersion()) {
@@ -39,30 +44,36 @@ class PhpReflection {
         try {
             $ast = $parser->parse($code);
         } catch (Error $error) {
-            throw new \Exception("Parse error: {$error->getMessage()} file: {$this->filename}\n");
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
 
-        $this->class = $this->getClass($ast);
+        $relativePath = mb_substr($filename, mb_strlen($directory) + 1);
+        foreach (self::getClasses($relativePath, $ast) as $class) {
+            $classes[] = new self($directory, $filename, $class);
+        }
+        return $classes;
     }
 
-    private function getClass($ast): PhpClass {
+    /**
+     * @return PhpClass[]
+     */
+    private static function getClasses(string $relativePath, array $ast): array {
         if (count($ast) === 0) {
             return null;
         }
+        $classes = [];
         foreach ($ast as $element) {
-            $relativePath = mb_substr($this->filename, mb_strlen($this->directory) + 1);
             if ($element instanceOf ClassLike) {
-                return new PhpClass($relativePath, $element, $ast);
+                $classes[] = new PhpClass($relativePath, $element, $ast);
             } else if ($element instanceOf Namespace_) {
                 foreach ($element->stmts as $e) {
                     if ($e instanceOf ClassLike) {
-                        return new PhpClass($relativePath, $e, $ast);
+                        $classes[] = new PhpClass($relativePath, $e, $ast);
                     }
                 }
             }
         }
-        // クラスが含まれていないファイル
-        throw new \Exception('not found class.' . $this->filename);
+        return $classes;
     }
 
     public function getInfo(): PhpClass {
