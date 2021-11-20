@@ -5,7 +5,7 @@ use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 class Main {
-    const VERSION = 'v0.0.3';
+    const VERSION = 'v0.0.4';
 
     public function __construct(string $directory, Options $options) {
         $finder = new Finder();
