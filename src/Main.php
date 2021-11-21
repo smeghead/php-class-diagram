@@ -3,6 +3,7 @@ namespace Smeghead\PhpClassDiagram;
 
 use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\DiagramElement\Entry;
+use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 class Main {
     const VERSION = 'v0.0.4';
@@ -14,7 +15,7 @@ class Main {
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflections = PhpReflection::parseFile(realpath($directory), $file->getRealPath(), $options);
+                $reflections = PhpReader::parseFile(realpath($directory), $file->getRealPath(), $options);
                 foreach ($reflections as $reflection) {
                   $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
                 }

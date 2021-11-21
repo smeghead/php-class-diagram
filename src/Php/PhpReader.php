@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Smeghead\PhpClassDiagram;
+namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Error;
 use PhpParser\ParserFactory;
@@ -8,11 +8,9 @@ use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,
 };
-use Smeghead\PhpClassDiagram\Php\ {
-    PhpClass,
-};
+use Smeghead\PhpClassDiagram\Options;
 
-class PhpReflection {
+class PhpReader {
     private string $directory;
     private string $filename;
     private PhpClass $class;
@@ -24,7 +22,7 @@ class PhpReflection {
     }
 
     /**
-     * @return PhpReflection[]
+     * @return PhpReader[]
      */
     public static function parseFile(string $directory, string $filename, Options $options): array {
         $code = file_get_contents($filename);

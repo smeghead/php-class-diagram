@@ -3,6 +3,7 @@
 ### Added
 
  * refactor class name. rename Namespace\_ to Package.
+ * refactor class name. rename PhpRelection to Php\PhpReader.
 
 ## v0.0.4 (2021-11-21)
 

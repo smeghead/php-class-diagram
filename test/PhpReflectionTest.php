@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\ {
-    Options,
-    PhpReflection,
-};
+use Smeghead\PhpClassDiagram\Options;
+use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 final class PhpReflectionTest extends TestCase {
     private $fixtureDir;
@@ -16,7 +14,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $this->assertNotNull($classes[0], 'initialize PhppReflection');
     }
@@ -25,7 +23,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -44,7 +42,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -61,7 +59,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/phpdoc', $this->fixtureDir);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -81,7 +79,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Interface_', $data->getClassType()->name, 'class type name.');
@@ -94,7 +92,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -112,7 +110,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -130,7 +128,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Sub.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Sub', $data->getClassType()->name, 'class type name.');
@@ -142,7 +140,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Implements_.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Implements_', $data->getClassType()->name, 'class type name.');
@@ -154,7 +152,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -170,7 +168,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/ProductWithoutNamespace.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
@@ -186,7 +184,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/Product.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, 'class type name.');
@@ -205,7 +203,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/ProductWithoutNamespace.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('ProductWithoutNamespace', $data->getClassType()->name, 'class type name.');
@@ -221,7 +219,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Exception.php', $this->fixtureDir);
-        $classes = PhpReflection::parseFile($directory, $filename, $options);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $classes[0]->getInfo();
         $this->assertSame('Exception', $data->getClassType()->name, 'class type name.');
@@ -242,7 +240,7 @@ final class PhpReflectionTest extends TestCase {
         $options = new Options([]);
         $directory = sprintf('%s/classes', $this->fixtureDir);
         $filename = sprintf('%s/classes/product/Product.php', $this->fixtureDir);
-        $parsed = PhpReflection::parseFile($directory, $filename, $options);
+        $parsed = PhpReader::parseFile($directory, $filename, $options);
 
         $data = $parsed[0]->getInfo();
         $this->assertSame('Product', $data->getClassType()->name, '1st class type name.');
