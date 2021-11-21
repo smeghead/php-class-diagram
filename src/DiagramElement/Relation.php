@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-namespace Smeghead\PhpClassDiagram;
+namespace Smeghead\PhpClassDiagram\DiagramElement;
 
-use Smeghead\PhpClassDiagram\DiagramElement\Package;
+use Smeghead\PhpClassDiagram\Options;
 
 class Relation {
     private Options $options;

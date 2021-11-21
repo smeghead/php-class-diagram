@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\ {
-    Options,
-    Relation,
-};
+use Smeghead\PhpClassDiagram\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\ {
+    Relation,
     Entry,
     Package,
 };

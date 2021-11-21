@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\ {
-    Options,
+use Smeghead\PhpClassDiagram\Options;
+use Smeghead\PhpClassDiagram\DiagramElement\ {
+    Entry,
     Relation,
 };
-use Smeghead\PhpClassDiagram\DiagramElement\Entry;
 
 require_once(__DIR__ . '/dummy/PhpClassDummy.php');
 
