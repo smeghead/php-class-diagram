@@ -21,6 +21,14 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 ## Install
 
+### From DockerHub
+
+You can use docker image includes php-class-diagram and plantuml, from below URL.
+
+ * https://hub.docker.com/r/smeghead7/php-class-diagram
+
+### From Composer
+
 ```bash
 $ mkdir sample
 $ cd sample
