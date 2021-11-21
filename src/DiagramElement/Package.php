@@ -3,14 +3,14 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Options;
 
-class Namespace_ {
+class Package {
     private Options $options;
 
     public array $parents;
     public string $name;
     public string $namespace = '';
 
-    /** @var Namespace_[] namespaces */
+    /** @var Package[] namespaces */
     public array $children = [];
     /** @var Entry[] entries */
     public array $entries = [];
@@ -45,7 +45,7 @@ class Namespace_ {
         return $this->namespace;
     }
 
-    private function findChild(string $dir): Namespace_ {
+    private function findChild(string $dir): Package {
         if (empty($dir)) {
             return $this;
         }
@@ -54,7 +54,7 @@ class Namespace_ {
                 return $c;
             }
         }
-        // if not exists, generate Namespace_.
+        // if not exists, generate Package.
         $this->children[] = new self(array_merge($this->parents, [$this->name]), $dir, $this->options);
         return end($this->children);
     }

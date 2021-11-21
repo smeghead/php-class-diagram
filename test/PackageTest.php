@@ -7,11 +7,11 @@ use Smeghead\PhpClassDiagram\ {
 };
 use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
-    Namespace_,
+    Package,
 };
 require_once(__DIR__ . '/dummy/PhpClassDummy.php');
 
-final class Namespace_Test extends TestCase {
+final class PackageTest extends TestCase {
     private $fixtureDir;
 
     private string $product_expression = <<<EOJ
@@ -210,7 +210,7 @@ EOJ;
         $rel = new Relation($entries, $options);
         $namespace = $rel->getNamespace();
 
-        $this->assertInstanceOf(Namespace_::class, $namespace, 'namespace instance');
+        $this->assertInstanceOf(Package::class, $namespace, 'namespace instance');
         $this->assertSame('ROOT', $namespace->name, 'ROOT namespace name');
 
         $product = $namespace->children[0];

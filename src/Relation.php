@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
 
-use Smeghead\PhpClassDiagram\DiagramElement\Namespace_;
+use Smeghead\PhpClassDiagram\DiagramElement\Package;
 
 class Relation {
     private Options $options;
-    private Namespace_ $namespace;
+    private Package $namespace;
 
     public function __construct(array $entries, Options $options) {
         $this->options = $options;
-        $this->namespace = new Namespace_([], 'ROOT', $options);
+        $this->namespace = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
             $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
         }
     }
 
-    public function getNamespace(): Namespace_ {
+    public function getNamespace(): Package {
         return $this->namespace;
     }
 

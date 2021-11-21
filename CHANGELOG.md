@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Added
+
+ * refactor class name. rename Namespace\_ to Package.
+
 ## v0.0.4 (2021-11-21)
 
 ### Added

@@ -23,7 +23,10 @@ class PhpReflection {
         $this->class = $class;
     }
 
-    public static function parseFile(string $directory, string $filename, Options $options) {
+    /**
+     * @return PhpReflection[]
+     */
+    public static function parseFile(string $directory, string $filename, Options $options): array {
         $code = file_get_contents($filename);
 
         $targetVesion = ParserFactory::PREFER_PHP7;
