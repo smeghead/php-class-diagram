@@ -11,7 +11,13 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 [![Latest Stable Version](http://poser.pugx.org/smeghead/php-class-diagram/v)](https://packagist.org/packages/smeghead/php-class-diagram) [![Total Downloads](http://poser.pugx.org/smeghead/php-class-diagram/downloads)](https://packagist.org/packages/smeghead/php-class-diagram) [![Latest Unstable Version](http://poser.pugx.org/smeghead/php-class-diagram/v/unstable)](https://packagist.org/packages/smeghead/php-class-diagram) [![License](http://poser.pugx.org/smeghead/php-class-diagram/license)](https://packagist.org/packages/smeghead/php-class-diagram) [![PHP Version Require](http://poser.pugx.org/smeghead/php-class-diagram/require/php)](https://packagist.org/packages/smeghead/php-class-diagram)
 
-![dogfood image.](dogfood.png)
+### php-class-diagram class diagram
+
+![dogfood class diagram image.](dogfood.png)
+
+### php-class-diagram package related diagram
+
+![dogfood package related diagram image.](dogfood-package.png)
 
 ## Install
 
