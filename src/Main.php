@@ -10,7 +10,7 @@ use Smeghead\PhpClassDiagram\DiagramElement\ {
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 class Main {
-    const VERSION = 'v0.0.4';
+    const VERSION = 'v0.0.5';
 
     public function __construct(string $directory, Options $options) {
         $finder = new Finder();
@@ -33,6 +33,10 @@ class Main {
             echo implode("\r\n", $relation->dump()) . "\r\n";
             break;
         case OPTIONS::DIAGRAM_PACKAGE:
+            echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+            break;
+        case OPTIONS::DIAGRAM_JIG:
+            echo implode("\r\n", $relation->dump()) . "\r\n";
             echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
             break;
         default:

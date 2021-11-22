@@ -20,7 +20,7 @@ class Relation {
     }
 
     public function dump(): array {
-        $lines = ['@startuml'];
+        $lines = ['@startuml class-diagram'];
         $lines = array_merge($lines, $this->namespace->dump());
         $lines = array_merge($lines, $this->getRelations());
         $lines[] = '@enduml';
@@ -44,7 +44,7 @@ class Relation {
     }
 
     public function dumpPackages(): array {
-        $lines = ['@startuml'];
+        $lines = ['@startuml package-related-diagram'];
         $lines = array_merge($lines, $this->namespace->dumpPackages());
         $uses = $this->getUses();
         $targetNamespaces = $this->namespace->getTargetNamespaces();

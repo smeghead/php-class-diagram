@@ -49,6 +49,7 @@ OPTIONS
   -h, --help                     show this help page.
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
+      --jig-diagram              output class diagram and package diagram script.
       --enable-class-properties  describe properties in class diagram.
       --disable-class-properties not describe properties in class diagram.
       --enable-class-methods     describe methods in class diagram.

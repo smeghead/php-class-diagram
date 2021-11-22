@@ -10,6 +10,7 @@ class Options {
 
     const DIAGRAM_CLASS = 'class';
     const DIAGRAM_PACKAGE = 'package';
+    const DIAGRAM_JIG = 'jig';
 
     public function __construct(array $opt) {
         $this->opt = $opt;
@@ -31,6 +32,9 @@ class Options {
         }
         if (isset($this->opt['package-diagram'])) {
             return self::DIAGRAM_PACKAGE;
+        }
+        if (isset($this->opt['jig-diagram'])) {
+            return self::DIAGRAM_JIG;
         }
         // default
         return self::DIAGRAM_CLASS;
