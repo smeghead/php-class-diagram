@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram;
+
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
         require $file;
@@ -62,9 +63,7 @@ if ( ! is_dir($directory)) {
     exit(-1);
 }
 
-use Smeghead\PhpClassDiagram\ {
-    Options,
-    Main,
-};
+use Smeghead\PhpClassDiagram\Config\Options;
+use Smeghead\PhpClassDiagram\Main;
 
 new Main($directory, new Options($options));

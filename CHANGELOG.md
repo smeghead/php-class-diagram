@@ -5,6 +5,7 @@
  * refactor class name. rename Namespace\_ to Package.
  * refactor class name. rename PhpRelection to Php\PhpReader.
  * refactor class name. rename Relation to DiagramElement\Relation.
+ * refactor class name. rename Options to Config\Options.
 
 ## v0.0.4 (2021-11-21)
 

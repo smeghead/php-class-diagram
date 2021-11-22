@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-use Smeghead\PhpClassDiagram\Options;
+use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
     Relation,

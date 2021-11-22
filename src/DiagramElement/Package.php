@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
-use Smeghead\PhpClassDiagram\Options;
+use Smeghead\PhpClassDiagram\Config\Options;
 
 class Package {
     private Options $options;

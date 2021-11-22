@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Smeghead\PhpClassDiagram;
+namespace Smeghead\PhpClassDiagram\Config;
 
 class Options {
     private array $opt;

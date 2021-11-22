@@ -8,7 +8,7 @@ use PhpParser\Node\Stmt\ {
     Namespace_,
     ClassLike,
 };
-use Smeghead\PhpClassDiagram\Options;
+use Smeghead\PhpClassDiagram\Config\Options;
 
 class PhpReader {
     private string $directory;

@@ -2,6 +2,7 @@
 namespace Smeghead\PhpClassDiagram;
 
 use Symfony\Component\Finder\Finder;
+use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
     Relation,
