@@ -1,11 +1,14 @@
 # CHANGELOG
 
+## v0.0.5 (2021-11-22)
+
 ### Added
 
  * refactor class name. rename Namespace\_ to Package.
  * refactor class name. rename PhpRelection to Php\PhpReader.
  * refactor class name. rename Relation to DiagramElement\Relation.
  * refactor class name. rename Options to Config\Options.
+ * add --jig-diagram option that shows class-diagram and package-related-diagram.
 
 ## v0.0.4 (2021-11-21)
 
