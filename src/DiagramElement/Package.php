@@ -8,9 +8,9 @@ class Package {
 
     public array $parents;
     public string $name;
-    public string $namespace = '';
+    public string $package = '';
 
-    /** @var Package[] namespaces */
+    /** @var Package[] packages */
     public array $children = [];
     /** @var Entry[] entries */
     public array $entries = [];
@@ -27,22 +27,22 @@ class Package {
 
     public function addEntry(array $paths, Entry $entry): string {
         if (count($paths) === 0) {
-            if (empty($this->namespaces)) {
-                $this->namespace = implode('.', $entry->class->getClassType()->namespace);
+            if (empty($this->package)) {
+                $this->package = implode('.', $entry->class->getClassType()->namespace);
             }
             $this->entries[] = $entry;
-            return $this->namespace;
+            return $this->package;
         }
         $dir = array_shift($paths);
         $ns = $this->findChild($dir);
         $childNamespace = $ns->addEntry($paths, $entry);
-        if (empty($this->namespace)) {
-            //子のnamespaceを元に親のnamespaceを決定する。ROOTのnamespaceの決定
+        if (empty($this->package)) {
+            //子のpackageを元に親のpackageを決定する。ROOTのpackageの決定
             $childParts = explode('.', $childNamespace);
             array_pop($childParts);
-            $this->namespace = implode('.', $childParts);
+            $this->package = implode('.', $childParts);
         }
-        return $this->namespace;
+        return $this->package;
     }
 
     private function findChild(string $dir): Package {
@@ -88,7 +88,7 @@ class Package {
         $lines[] = sprintf(
             '%spackage %s as %s {',
             $indent,
-            $this->name === 'ROOT' ? (empty($this->namespace) ? 'ROOT': $this->namespace) : $this->name,
+            $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
             $this->getLogicalName()
         );
         foreach ($this->children as $n) {
@@ -131,7 +131,7 @@ class Package {
         foreach ($this->entries as $e) {
             $uses = array_merge($uses, $e->class->getUses());
         }
-        $acc[$this->namespace] = $uses;
+        $acc[$this->package] = $uses;
         foreach ($this->children as $n) {
             $acc = array_merge($acc, $n->getUses($acc));
         }
@@ -139,12 +139,12 @@ class Package {
     }
 
     /**
-     * 解析対象になっているnamespace一覧を取得する。
+     * 解析対象になっているpackage一覧を取得する。
      */
-    public function getTargetNamespaces($acc = []) {
-        $acc[$this->namespace] = $this->name;
+    public function getTargetPackages($acc = []) {
+        $acc[$this->package] = $this->name;
         foreach ($this->children as $n) {
-            $acc = $n->getTargetNamespaces($acc);
+            $acc = $n->getTargetPackages($acc);
         }
         return $acc;
     }

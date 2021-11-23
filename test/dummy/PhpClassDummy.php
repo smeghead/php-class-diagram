@@ -32,6 +32,12 @@ class PhpClassDummy extends PhpClass {
      */
     public function getUses(): array {
         $uses = [];
+        if (empty($this->data->uses)) {
+          return $uses;
+        }
+        foreach ($this->data->uses as $t) {
+          $uses[] = new PhpType($t->namespace, $t->meta, $t->name);
+        }
         return $uses;
     }
 

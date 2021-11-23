@@ -46,6 +46,13 @@ final class PackageTest extends TestCase {
 EOJ;
     private string $price_expression = <<<EOJ
 {
+    "uses": [
+        {
+            "name": "PhpParser",
+            "meta": "Stmt_Class",
+            "namespace": ["PhpParse"]
+        }
+    ],
     "type": {
         "name": "Price",
         "meta": "Stmt_Class",
@@ -206,7 +213,7 @@ EOJ;
             new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
         ];
         $rel = new Relation($entries, $options);
-        $namespace = $rel->getNamespace();
+        $namespace = $rel->getPackage();
 
         $this->assertInstanceOf(Package::class, $namespace, 'namespace instance');
         $this->assertSame('ROOT', $namespace->name, 'ROOT namespace name');
@@ -359,5 +366,26 @@ EOS;
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+    public function testDumpPackage1(): void {
+        $options = new Options([]);
+        $entries = [
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_method_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
+            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
+        ];
+        $rel = new Relation($entries, $options);
+
+        $expected =<<<EOS
+@startuml package-related-diagram
+  package ROOT as ROOT {
+    package product as product {
+    }
+  }
+  package PhpParse
+  product --> PhpParse
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');
     }
 }

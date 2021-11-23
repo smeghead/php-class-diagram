@@ -1,5 +1,10 @@
 # CHANGELOG
 
+
+### Added
+
+ * refactor properties names and variable names. rename Namespace to Package.
+
 ## v0.0.5 (2021-11-22)
 
 ### Added

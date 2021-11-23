@@ -5,23 +5,23 @@ use Smeghead\PhpClassDiagram\Config\Options;
 
 class Relation {
     private Options $options;
-    private Package $namespace;
+    private Package $package;
 
     public function __construct(array $entries, Options $options) {
         $this->options = $options;
-        $this->namespace = new Package([], 'ROOT', $options);
+        $this->package = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
-            $this->namespace->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
+            $this->package->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
         }
     }
 
-    public function getNamespace(): Package {
-        return $this->namespace;
+    public function getPackage(): Package {
+        return $this->package;
     }
 
     public function dump(): array {
         $lines = ['@startuml class-diagram'];
-        $lines = array_merge($lines, $this->namespace->dump());
+        $lines = array_merge($lines, $this->package->dump());
         $lines = array_merge($lines, $this->getRelations());
         $lines[] = '@enduml';
 
@@ -29,7 +29,7 @@ class Relation {
     }
 
     public function getRelations(): array {
-        $entities = $this->namespace->getEntries();
+        $entities = $this->package->getEntries();
         $relation_expressions = array_map(function($x) use ($entities){
             foreach ($entities as $e) {
                 if ($e->class->getClassType()->equals($x->to)) {
@@ -37,7 +37,7 @@ class Relation {
                 }
             }
             return null;
-        }, $this->namespace->getArrows());
+        }, $this->package->getArrows());
         $relation_expressions = array_filter($relation_expressions);
         sort($relation_expressions);
         return $relation_expressions;
@@ -45,46 +45,46 @@ class Relation {
 
     public function dumpPackages(): array {
         $lines = ['@startuml package-related-diagram'];
-        $lines = array_merge($lines, $this->namespace->dumpPackages());
+        $lines = array_merge($lines, $this->package->dumpPackages());
         $uses = $this->getUses();
-        $targetNamespaces = $this->namespace->getTargetNamespaces();
+        $targetPackages = $this->package->getTargetPackages();
         $all = [];
         $packageRelations = [];
         foreach ($uses as $namespace => $us) {
-            $namespaces = array_unique(array_map(function($x){
+            $packages = array_unique(array_map(function($x){
                 return implode('.', $x->namespace);
             }, $us));
-            // 対象となっているnamespace以外のnamespaceは、即席で定義する必要がある。
-            $all = array_unique(array_merge($all, $namespaces));
-            $packageRelations[$namespace] = array_map(function($x) use ($targetNamespaces){
-                return $this->displayNamespace($x, $targetNamespaces);
-            }, $namespaces);
+            // 対象となっているpackage以外のpackageは、即席で定義する必要がある。
+            $all = array_unique(array_merge($all, $packages));
+            $packageRelations[$namespace] = array_map(function($x) use ($targetPackages){
+                return $this->displayPackage($x, $targetPackages);
+            }, $packages);
         }
-        foreach (array_diff($all, array_keys($targetNamespaces)) as $external) {
+        foreach (array_diff($all, array_keys($targetPackages)) as $external) {
             $lines[] = sprintf('  package %s', $external); 
         }
-        foreach ($packageRelations as $namespace => $dependencies) {
-            $namespace = $this->displayNamespace($namespace, $targetNamespaces);
+        foreach ($packageRelations as $package => $dependencies) {
+            $package = $this->displayPackage($package, $targetPackages);
             foreach ($dependencies as $d) {
                 if (empty($d)) {
                     continue;
                 }
-                $lines[] = sprintf('  %s --> %s', $namespace, $d);
+                $lines[] = sprintf('  %s --> %s', $package, $d);
             }
         }
         $lines[] = '@enduml';
 
         return $lines;
     }
-    private function displayNamespace($namespace, $targetNamespaces) {
-        if (in_array($namespace, array_keys($targetNamespaces))) {
-            return $targetNamespaces[$namespace]; // 解析対象のnamespaceはディレクトリ名で表示
+    private function displayPackage($package, $targetPackages) {
+        if (in_array($package, array_keys($targetPackages))) {
+            return $targetPackages[$package]; // 解析対象のpackageはディレクトリ名で表示
         } else {
-            return $namespace; //外部のnamespaceはnamespace表示
+            return $package; //外部のpackageはpackage表示
         }
     }
 
     public function getUses(): array {
-        return $this->namespace->getUses([]);
+        return $this->package->getUses([]);
     }
 }
