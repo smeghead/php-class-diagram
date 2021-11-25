@@ -201,6 +201,70 @@ EOJ;
     ]
 }
 EOJ;
+    private string $packaged_product_expression = <<<EOJ
+{
+    "uses": [{
+        "name": "Name",
+        "meta": "Stmt_Class",
+        "namespace": ["hoge", "fuga", "product", "utility"]
+    }],
+    "type": {
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": ["hoge", "fuga", "product"]
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "Name",
+                "namespace": ["hoge", "fuga", "product", "utility"]
+            },
+            "modifier": {
+                "private": true
+            }
+        },
+        {
+            "name": "price",
+            "type": {
+                "name": "Price",
+                "namespace": ["hoge", "fuga", "product"]
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
+    private string $packaged_name_expression = <<<EOJ
+{
+    "uses": [{
+        "name": "Product",
+        "meta": "Stmt_Class",
+        "namespace": ["hoge", "fuga", "product"]
+    }],
+    "type": {
+        "name": "Name",
+        "meta": "Stmt_Class",
+        "namespace": ["hoge", "fuga", "product", "utility"]
+    },
+    "properties": [
+        {
+            "name": "name",
+            "type": {
+                "name": "string",
+                "namespace": ["hoge", "fuga", "product"]
+            },
+            "modifier": {
+                "private": true
+            }
+        }
+    ],
+    "methods":[]
+}
+EOJ;
 
     public function setUp(): void {
     }
@@ -384,6 +448,26 @@ EOS;
   }
   package PhpParse
   product --> PhpParse
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');
+    }
+    public function testDumpPackage_bothSideArrows(): void {
+        $options = new Options([]);
+        $entries = [
+            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->packaged_product_expression), $options),
+            new Entry('product/utility', new PhpClassDummy('product/utility', 'product/utility/Name.php', $this->packaged_name_expression), $options),
+        ];
+        $rel = new Relation($entries, $options);
+        $expected =<<<EOS
+@startuml package-related-diagram
+  package hoge.fuga as ROOT {
+    package product as product {
+      package utility as product.utility {
+      }
+    }
+  }
+  product <-[#red,plain,thickness=4]-> product.utility
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');

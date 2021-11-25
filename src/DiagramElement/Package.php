@@ -142,7 +142,7 @@ class Package {
      * 解析対象になっているpackage一覧を取得する。
      */
     public function getTargetPackages($acc = []) {
-        $acc[$this->package] = $this->name;
+        $acc[$this->package] = $this->getLogicalName();
         foreach ($this->children as $n) {
             $acc = $n->getTargetPackages($acc);
         }
