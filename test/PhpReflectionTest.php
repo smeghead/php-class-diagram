@@ -73,6 +73,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->type->namespace, 'Price namespace.');
         $this->assertSame('Tag[]', $data->getProperties()[2]->type->name, 'type.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[2]->type->namespace, 'Tag[] namespace.');
+        $this->assertSame('Ban[]', $data->getProperties()[3]->type->name, 'full package name, Ban type.');
+        $this->assertSame(['ban', 'ban', 'ban'], $data->getProperties()[3]->type->namespace, 'full package name, ban.ban.ban.Ban[] namespace.');
     }
 
     public function testDump_with_interface(): void {

@@ -2,9 +2,9 @@
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 class PackageRelations {
-    /** @var PhpType[] */
+    /** @var Smeghead\PhpClassDiagram\Php\PhpType[] */
     private array $uses;
-    /** @var PhpType[] */
+    /** @var Smeghead\PhpClassDiagram\Php\PhpType[] */
     private array $targetPackages;
 
     public function __construct(array $uses, array $targetPackages) {
@@ -19,6 +19,7 @@ class PackageRelations {
             return $package; //外部のpackageはpackage表示
         }
     }
+    
     public function getArrows(): array {
         $lines = [];
         $all = [];

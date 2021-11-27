@@ -50,42 +50,10 @@ class Relation {
         $targetPackages = $this->package->getTargetPackages();
         $packageRelations = new PackageRelations($uses, $targetPackages);
         $lines = array_merge($lines, $packageRelations->getArrows());
-//        $all = [];
-//        $packageRelations = [];
-//        foreach ($uses as $namespace => $us) {
-//            $packages = array_unique(array_map(function($x){
-//                return implode('.', $x->namespace);
-//            }, $us));
-//            // 対象となっているpackage以外のpackageは、即席で定義する必要がある。
-//            $all = array_unique(array_merge($all, $packages));
-//            $packageRelations[$namespace] = array_map(function($x) use ($targetPackages){
-//                return $this->displayPackage($x, $targetPackages);
-//            }, $packages);
-//        }
-//        foreach (array_diff($all, array_keys($targetPackages)) as $external) {
-//            $lines[] = sprintf('  package %s', $external); 
-//        }
-//        foreach ($packageRelations as $package => $dependencies) {
-//            $package = $this->displayPackage($package, $targetPackages);
-//            foreach ($dependencies as $d) {
-//                if (empty($d)) {
-//                    continue;
-//                }
-//                $lines[] = sprintf('  %s --> %s', $package, $d);
-//            }
-//        }
-
         $lines[] = '@enduml';
 
         return $lines;
     }
-//    private function displayPackage($package, $targetPackages) {
-//        if (in_array($package, array_keys($targetPackages))) {
-//            return $targetPackages[$package]; // 解析対象のpackageはディレクトリ名で表示
-//        } else {
-//            return $package; //外部のpackageはpackage表示
-//        }
-//    }
 
     public function getUses(): array {
         return $this->package->getUses([]);

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * fix recognize FullyQualified type name in php doc.
+
 ## v0.0.6 (2021-11-27)
 
 ### Features

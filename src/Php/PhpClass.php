@@ -164,9 +164,16 @@ class PhpClass {
             $type = $type->type;
         }
         if ( ! empty($doc) && ! empty($docAttribute)) {
-            // @return に定義された型情報を取得する。
+            // @{$docAttribute} に定義された型情報を取得する。
             if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s).*/', $docAttribute), $doc, $matches)) {
-                $parts[] = $matches[1];
+                $typeString = $matches[1];
+                if (mb_substr($typeString, 0, 1) === '\\') {
+                    $parts = explode('\\', mb_substr($typeString, 1));
+                    $typeName = array_pop($parts);
+                    return new PhpType($parts, '', $typeName);
+                }
+
+                $parts = explode('\\', $typeString);
             }
         } else if ($type instanceOf Identifier) {
             $parts[] = $type->name;
