@@ -2,9 +2,9 @@
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 class PackageRelations {
-    /** @var Smeghead\PhpClassDiagram\Php\PhpType[] */
+    /** @var \Smeghead\PhpClassDiagram\Php\PhpType[] */
     private array $uses;
-    /** @var Smeghead\PhpClassDiagram\Php\PhpType[] */
+    /** @var \Smeghead\PhpClassDiagram\Php\PhpType[] */
     private array $targetPackages;
 
     public function __construct(array $uses, array $targetPackages) {
