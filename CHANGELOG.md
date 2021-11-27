@@ -1,12 +1,16 @@
 # CHANGELOG
 
+## v0.0.6 (2021-11-27)
 
-### Added
+### Features
 
  * refactor properties names and variable names. rename Namespace to Package.
  * In the package relationship diagram, the dependency in both directions is
    shown by a thick red line. Two-way dependencies may indicate a bad design.
    
+### Bug fix
+
+ * In the package relationship diagram, relation name dose not included package name.
 
 ## v0.0.5 (2021-11-22)
 
