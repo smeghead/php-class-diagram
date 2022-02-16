@@ -270,7 +270,10 @@ EOJ;
     }
 
     public function testInitialize(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
@@ -292,7 +295,10 @@ EOJ;
     }
 
     public function testDump(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
@@ -315,7 +321,10 @@ EOS;
     }
 
     public function testDump2(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
@@ -340,6 +349,10 @@ EOS;
 
     public function testDump3(): void {
         $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
@@ -355,7 +368,10 @@ EOS;
     }
 
     public function testDump4(): void {
-        $options = new Options(['enable-class-properties' => true]);
+        $options = new Options([
+            'enable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
@@ -372,7 +388,10 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
     public function testDump5(): void {
-        $options = new Options(['enable-class-methods' => true]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'enable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
         ];
@@ -389,7 +408,10 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
     public function testDump6(): void {
-        $options = new Options(['enable-class-methods' => true]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'enable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Interface_.php', $this->interface_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Implement_.php', $this->implement_expression), $options),
@@ -411,7 +433,10 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
     public function testDump7(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_method_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
@@ -432,7 +457,10 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
     public function testDumpPackage1(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_method_expression), $options),
             new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
@@ -453,7 +481,10 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');
     }
     public function testDumpPackage_bothSideArrows(): void {
-        $options = new Options([]);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
         $entries = [
             new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->packaged_product_expression), $options),
             new Entry('product/utility', new PhpClassDummy('product/utility', 'product/utility/Name.php', $this->packaged_name_expression), $options),

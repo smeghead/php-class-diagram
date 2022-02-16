@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.0.7 (2022-02-16)
+
+### Features
+
+ * `--enable-class-properties` and `--enable-class-methos` options is on by default.
+
 ### Bug fix
 
  * fix recognize FullyQualified type name in php doc.

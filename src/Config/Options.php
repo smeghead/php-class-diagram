@@ -48,7 +48,7 @@ class Options {
             return false;
         }
         // default
-        return false;
+        return true;
     }
 
     public function classMethods(): bool {
@@ -59,7 +59,7 @@ class Options {
             return false;
         }
         // default
-        return false;
+        return true;
     }
 
     public function phpVersion(): string {

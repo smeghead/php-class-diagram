@@ -54,6 +54,14 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(false, $options->classProperties(), 'classProperties is off.');
     }
+    public function testClassProperties3(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(true, $options->classProperties(), 'classProperties is default on.');
+    }
     public function testClassMethods1(): void {
         $opt = [
             'enable-class-methods' => true,
@@ -71,6 +79,14 @@ final class OptionsTest extends TestCase {
         $options = new Options($opt);
 
         $this->assertSame(false, $options->classMethods(), 'classMethods is off.');
+    }
+    public function testClassMethods3(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(true, $options->classMethods(), 'classMethods is default on.');
     }
     public function testPhp1(): void {
         $opt = [

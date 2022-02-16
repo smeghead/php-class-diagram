@@ -34,9 +34,9 @@ OPTIONS
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
       --jig-diagram              output class diagram and package diagram script.
-      --enable-class-properties  describe properties in class diagram.
+      --enable-class-properties  describe properties in class diagram. (default)
       --disable-class-properties not describe properties in class diagram.
-      --enable-class-methods     describe methods in class diagram.
+      --enable-class-methods     describe methods in class diagram. (default)
       --disable-class-methods    not describe methods in class diagram.
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
