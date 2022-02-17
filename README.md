@@ -50,9 +50,9 @@ OPTIONS
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
       --jig-diagram              output class diagram and package diagram script.
-      --enable-class-properties  describe properties in class diagram.
+      --enable-class-properties  describe properties in class diagram. (default)
       --disable-class-properties not describe properties in class diagram.
-      --enable-class-methods     describe methods in class diagram.
+      --enable-class-methods     describe methods in class diagram. (default)
       --disable-class-methods    not describe methods in class diagram.
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
@@ -108,11 +108,19 @@ To execute `php-class-diagram` will print PlantUML script.
 
 ```bash
 $ vendor/bin/php-class-diagram test/fixtures/no-namespace
-@startuml
+@startuml class-diagram
   package product as product <<Rectangle>> {
-    class product.Price
-    class product.Name
-    class product.Product
+    class product.Price {
+      -price : 
+    }
+    class product.Name {
+      -name : string
+    }
+    class product.Product {
+      -name : Name
+      -price : Price
+      +method1(param1)
+    }
   }
   product.Product ..> product.Name
   product.Product ..> product.Price
