@@ -83,7 +83,7 @@ class PhpClass {
     }
 
     /**
-     * @return PhpProperty[] プロパティ一覧
+     * @return Property[] プロパティ一覧
      */
     protected function getPropertiesFromSyntax(): array {
         return $this->syntax->getProperties();

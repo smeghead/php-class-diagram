@@ -38,6 +38,21 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(true, $data->getProperties()[1]->accessModifier->private, 'property price Modifiers.');
     }
 
+    public function testDump_Price(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/no-namespace', $this->fixtureDir);
+        $filename = sprintf('%s/no-namespace/product/Price.php', $this->fixtureDir);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
+
+        $data = $classes[0]->getInfo();
+        $this->assertSame('Price', $data->getClassType()->name, 'class type name.');
+        $this->assertSame([], $data->getClassType()->namespace, 'namespace name.');
+        $this->assertSame('price', $data->getProperties()[0]->name, 'property price.');
+        $this->assertSame('int', $data->getProperties()[0]->type->name, 'property price type.');
+        $this->assertSame([], $data->getProperties()[0]->type->namespace, 'namespace.');
+        $this->assertSame(true, $data->getProperties()[0]->accessModifier->private, 'property price Modifiers.');
+    }
+
     public function testDump_with_namespace(): void {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
