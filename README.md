@@ -111,7 +111,7 @@ $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 @startuml class-diagram
   package product as product <<Rectangle>> {
     class product.Price {
-      -price : 
+      -price : int
     }
     class product.Name {
       -name : string
