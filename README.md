@@ -33,7 +33,7 @@ You can use docker image includes php-class-diagram and plantuml, from below URL
 $ mkdir sample
 $ cd sample
 $ composer init
-$ composer require smeghead/php-class-diagram
+$ composer require --dev smeghead/php-class-diagram
 ```
 
 you can execute `./vendor/bin/php-class-diagram`.
