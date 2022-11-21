@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.0.8 (2022-11-21)
+
+### Features
+
+ * add `--header` options.
+
+
 ## v0.0.7 (2022-02-16)
 
 ### Features
