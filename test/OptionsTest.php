@@ -141,5 +141,27 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_JIG, $options->diagram(), 'diagram is jig.');
     }
+    public function testHeader(): void {
+        $opt = [
+            'header' => 'title PHP Class Diagram',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('title PHP Class Diagram', $options->headers()[0], 'specified header.');
+    }
+    public function testMultipleHeaders(): void {
+        $opt = [
+            'header' => [
+                'title PHP Class Diagram',
+                'skinparam pageMargin 10',
+            ],
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('title PHP Class Diagram', $options->headers()[0], 'specified header. title');
+        $this->assertSame('skinparam pageMargin 10', $options->headers()[1], 'specified header. pageMargin');
+    }
 
 }

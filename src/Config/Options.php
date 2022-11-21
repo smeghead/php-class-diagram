@@ -75,4 +75,18 @@ class Options {
         // default
         return self::PHP7;
     }
+
+    /**
+     * @return string[] specified headers
+     */
+    public function headers(): array {
+        $headers = [];
+        if (isset($this->opt['header'])) {
+            $headers = $this->opt['header'];
+            if ( ! is_array($headers)) {
+                $headers = [$headers];
+            }
+        }
+        return $headers;
+    }
 }

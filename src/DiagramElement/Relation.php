@@ -21,6 +21,7 @@ class Relation {
 
     public function dump(): array {
         $lines = ['@startuml class-diagram'];
+        $lines = array_merge($lines, $this->options->headers());
         $lines = array_merge($lines, $this->package->dump());
         $lines = array_merge($lines, $this->getRelations());
         $lines[] = '@enduml';
@@ -45,6 +46,7 @@ class Relation {
 
     public function dumpPackages(): array {
         $lines = ['@startuml package-related-diagram'];
+        $lines = array_merge($lines, $this->options->headers());
         $lines = array_merge($lines, $this->package->dumpPackages());
         $uses = $this->getUses();
         $targetPackages = $this->package->getTargetPackages();

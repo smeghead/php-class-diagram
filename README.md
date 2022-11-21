@@ -57,6 +57,7 @@ OPTIONS
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
       --php8                     parse php source file as php8. (not suppoted)
+      --header='header string'   additional header string. You can specify multiple header values.
 ```
 
 ## How to execute
