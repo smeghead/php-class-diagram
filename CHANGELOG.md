@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * add package diagram description to README.
+
 ## v0.0.8 (2022-11-21)
 
 ### Features
