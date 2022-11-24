@@ -2,14 +2,14 @@
 
 A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
 
+[![Latest Stable Version](http://poser.pugx.org/smeghead/php-class-diagram/v)](https://packagist.org/packages/smeghead/php-class-diagram) [![Total Downloads](http://poser.pugx.org/smeghead/php-class-diagram/downloads)](https://packagist.org/packages/smeghead/php-class-diagram) [![Latest Unstable Version](http://poser.pugx.org/smeghead/php-class-diagram/v/unstable)](https://packagist.org/packages/smeghead/php-class-diagram) [![License](http://poser.pugx.org/smeghead/php-class-diagram/license)](https://packagist.org/packages/smeghead/php-class-diagram) [![PHP Version Require](http://poser.pugx.org/smeghead/php-class-diagram/require/php)](https://packagist.org/packages/smeghead/php-class-diagram)
+
 # Features
 
  * Generating class diagrams from source code helps improve continuous design.
  * Generates expressive class diagrams with an emphasis on namespaces and relationships.
  * A simple CLI tool that is easy to handle.
  * It is also possible to output a package relationship diagram that visualizes the dependency on the external namespace.
-
-[![Latest Stable Version](http://poser.pugx.org/smeghead/php-class-diagram/v)](https://packagist.org/packages/smeghead/php-class-diagram) [![Total Downloads](http://poser.pugx.org/smeghead/php-class-diagram/downloads)](https://packagist.org/packages/smeghead/php-class-diagram) [![Latest Unstable Version](http://poser.pugx.org/smeghead/php-class-diagram/v/unstable)](https://packagist.org/packages/smeghead/php-class-diagram) [![License](http://poser.pugx.org/smeghead/php-class-diagram/license)](https://packagist.org/packages/smeghead/php-class-diagram) [![PHP Version Require](http://poser.pugx.org/smeghead/php-class-diagram/require/php)](https://packagist.org/packages/smeghead/php-class-diagram)
 
 ### php-class-diagram class diagram
 
@@ -61,6 +61,8 @@ OPTIONS
 ```
 
 ## How to execute
+
+### Class Diagram
 
 When three php source files that TYPE commented exist in `test/fixtures/no-namespace`,
 
@@ -131,6 +133,36 @@ $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 Use PlnatUML to convert the PlantUML script to an image.
 
 ![PlantUML output image.](output.png)
+
+
+### Package Diagram
+
+You can visualize package dependencies by creating a package relationship diagram with php-class-diagram.
+
+```bash
+$ vendor/bin/php-class-diagram --package-diagram test/fixtures/dependency-loops
+@startuml package-related-diagram
+  package hoge.fuga as ROOT {
+    package product as product {
+      package attribute as product.attribute {
+      }
+      package config as product.config {
+      }
+    }
+  }
+  product --> product.attribute
+  product <-[#red,plain,thickness=4]-> product.config
+@enduml
+```
+
+Packages that depend on each other are not desirable.
+If it finds packages that depend on each other, it will warn you with a thick red line.
+
+![PlantUML output image.](output-package-dep-loop.png)
+
+
+![PlantUML output image.](output-package.png)
+
 
 ## Development
 
