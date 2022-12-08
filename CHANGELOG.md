@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.1.0 (2202-12-08)
+
 ### Features
 
  * add package diagram description to README.

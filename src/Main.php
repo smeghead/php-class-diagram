@@ -18,7 +18,7 @@ class Main {
         $finder->files()->name($options->includes());
         $excludes = $options->excludes();
         if (count($excludes) > 0) {
-            $finder->files()->notName($excludes);
+            $finder->files()->notName($excludes)->notPath($excludes);
         }
         $entries = [];
         foreach ($finder as $file) {

@@ -47,6 +47,7 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 OPTIONS
   -h, --help                     show this help page.
+  -v, --version                  show version.
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
       --jig-diagram              output class diagram and package diagram script.
@@ -58,6 +59,8 @@ OPTIONS
       --php7                     parse php source file as php7.
       --php8                     parse php source file as php8. (not suppoted)
       --header='header string'   additional header string. You can specify multiple header values.
+      --include='wildcard'       include target file pattern. (default: `*.php`) You can specify multiple include patterns.
+      --exclude='wildcard'       exclude target file pattern. You can specify multiple exclude patterns.
 ```
 
 ## How to execute
@@ -134,6 +137,30 @@ Use PlnatUML to convert the PlantUML script to an image.
 
 ![PlantUML output image.](output.png)
 
+
+#### option `header`
+
+You can specify the string to be output to the PlantUML header.
+
+```bash
+$ vendor/bin/php-class-diagram --header='title "This is the class diagram"' test/fixtures/no-namespace
+```
+
+#### option `include`
+
+You can add patterns to find target files to process.
+
+```bash
+$ vendor/bin/php-class-diagram --include='*.php' --include='*.php4' test/fixtures/no-namespace
+```
+
+#### option `exclude`
+
+You can specify patterns to exclude files from being processed.
+
+```bash
+$ vendor/bin/php-class-diagram --exclude='test' --include='*Exception.php' test/fixtures/no-namespace
+```
 
 ### Package Diagram
 
