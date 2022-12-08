@@ -143,7 +143,9 @@ Use PlnatUML to convert the PlantUML script to an image.
 You can specify the string to be output to the PlantUML header.
 
 ```bash
-$ vendor/bin/php-class-diagram --header='title "This is the class diagram"' test/fixtures/no-namespace
+$ vendor/bin/php-class-diagram \
+    --header='title "This is the class diagram"' \
+    path/to/src
 ```
 
 #### option `include`
@@ -151,7 +153,10 @@ $ vendor/bin/php-class-diagram --header='title "This is the class diagram"' test
 You can add patterns to find target files to process.
 
 ```bash
-$ vendor/bin/php-class-diagram --include='*.php' --include='*.php4' test/fixtures/no-namespace
+$ vendor/bin/php-class-diagram \
+    --include='*.php' \
+    --include='*.php4' \
+    path/to/src
 ```
 
 #### option `exclude`
@@ -159,7 +164,10 @@ $ vendor/bin/php-class-diagram --include='*.php' --include='*.php4' test/fixture
 You can specify patterns to exclude files from being processed.
 
 ```bash
-$ vendor/bin/php-class-diagram --exclude='test' --include='*Exception.php' test/fixtures/no-namespace
+$ vendor/bin/php-class-diagram \
+    --exclude='test' \
+    --include='*Exception.php' \
+    path/to/src
 ```
 
 ### Package Diagram
