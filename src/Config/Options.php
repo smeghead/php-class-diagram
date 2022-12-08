@@ -89,4 +89,34 @@ class Options {
         }
         return $headers;
     }
+
+    /**
+     * @return string[] specified includes
+     */
+    public function includes(): array {
+        $includes = [];
+        if (isset($this->opt['include'])) {
+            $includes = $this->opt['include'];
+            if ( ! is_array($includes)) {
+                $includes = [$includes];
+            }
+        } else {
+            $includes[] = '*.php';
+        }
+        return $includes;
+    }
+
+    /**
+     * @return string[] specified excludes
+     */
+    public function excludes(): array {
+        $excludes = [];
+        if (isset($this->opt['exclude'])) {
+            $excludes = $this->opt['exclude'];
+            if ( ! is_array($excludes)) {
+                $excludes = [$excludes];
+            }
+        }
+        return $excludes;
+    }
 }

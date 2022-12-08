@@ -22,6 +22,8 @@ $options = getopt('hv',[
     'php7',
     'php8',
     'header::',
+    'include::',
+    'exclude::',
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
@@ -32,6 +34,7 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 OPTIONS
   -h, --help                     show this help page.
+  -v, --version                  show version.
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
       --jig-diagram              output class diagram and package diagram script.
@@ -43,6 +46,8 @@ OPTIONS
       --php7                     parse php source file as php7.
       --php8                     parse php source file as php8. (not suppoted)
       --header='header string'   additional header string. You can specify multiple header values.
+      --include='wildcard'       include target file pattern. (default: `*.php`) You can specify multiple include patterns.
+      --exclude='wildcard'       exclude target file pattern. You can specify multiple exclude patterns.
 
 EOS;
 

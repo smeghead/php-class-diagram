@@ -163,5 +163,65 @@ final class OptionsTest extends TestCase {
         $this->assertSame('title PHP Class Diagram', $options->headers()[0], 'specified header. title');
         $this->assertSame('skinparam pageMargin 10', $options->headers()[1], 'specified header. pageMargin');
     }
+    public function testInclude(): void {
+        $opt = [
+            'include' => '*.php8',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*.php8', $options->includes()[0], 'specified include.');
+    }
+    public function testMultipleInclude(): void {
+        $opt = [
+            'include' => [
+                '*.php7',
+                '*.php8',
+            ],
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*.php7', $options->includes()[0], 'specified include. php7');
+        $this->assertSame('*.php8', $options->includes()[1], 'specified include. php8');
+    }
+    public function testIncludeDefault(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*.php', $options->includes()[0], 'default include.');
+    }
+    public function testexclude(): void {
+        $opt = [
+            'exclude' => '*Exception.php',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*Exception.php', $options->excludes()[0], 'specified exclude.');
+    }
+    public function testMultipleExclude(): void {
+        $opt = [
+            'exclude' => [
+                '*Exception.php',
+                'config.php',
+            ],
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*Exception.php', $options->excludes()[0], 'specified exclude. *Exception.php');
+        $this->assertSame('config.php', $options->excludes()[1], 'specified exclude. config.php');
+    }
+    public function testExcludeDefault(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(0, count($options->excludes()), 'default exclude is empty.');
+    }
 
 }

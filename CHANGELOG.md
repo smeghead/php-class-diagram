@@ -3,6 +3,9 @@
 ### Features
 
  * add package diagram description to README.
+ * Updated the PHP version of the development environment to 8.1.
+ * add `--include` option. Enabled to specify the search pattern of the PHP source code to be processed.
+ * add `--exclude` option. Enabled to specify the exclusion pattern of the PHP source code to be processed.
 
 ## v0.0.8 (2022-11-21)
 
