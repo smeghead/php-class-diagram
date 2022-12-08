@@ -166,7 +166,7 @@ You can specify patterns to exclude files from being processed.
 ```bash
 $ vendor/bin/php-class-diagram \
     --exclude='test' \
-    --include='*Exception.php' \
+    --exclude='*Exception.php' \
     path/to/src
 ```
 
