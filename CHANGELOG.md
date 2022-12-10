@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Fixed to align the indentation of the line specified in header options.
+
 ## v0.1.0 (2202-12-08)
 
 ### Features

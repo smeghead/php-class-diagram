@@ -21,7 +21,7 @@ class Relation {
 
     public function dump(): array {
         $lines = ['@startuml class-diagram'];
-        $lines = array_merge($lines, $this->options->headers());
+        $lines = array_merge($lines, array_map(function($x){ return '  ' . $x;}, $this->options->headers()));
         $lines = array_merge($lines, $this->package->dump());
         $lines = array_merge($lines, $this->getRelations());
         $lines[] = '@enduml';
