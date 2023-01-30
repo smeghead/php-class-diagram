@@ -6,6 +6,7 @@ use PhpParser\Node\ {
     NullableType,
     Identifier,
     Name,
+    UnionType,
 };
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
@@ -184,6 +185,8 @@ class PhpClass {
                 end($type->parts));
         } else if ($type instanceOf Name) {
             $parts = $type->parts;
+        } else if ($type instanceOf UnionType) {
+
         }
         $namespace = [];
         if (count($parts) > 0) {
