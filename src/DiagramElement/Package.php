@@ -28,7 +28,7 @@ class Package {
     public function addEntry(array $paths, Entry $entry): string {
         if (count($paths) === 0) {
             if (empty($this->package)) {
-                $this->package = implode('.', $entry->class->getClassType()->namespace);
+                $this->package = implode('.', $entry->class->getClassType()->getNamespace());
             }
             $this->entries[] = $entry;
             return $this->package;

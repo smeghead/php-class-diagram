@@ -26,7 +26,7 @@ class PackageRelations {
         $packageRelations = [];
         foreach ($this->uses as $namespace => $us) {
             $packages = array_unique(array_map(function($x){
-                return implode('.', $x->namespace);
+                return implode('.', $x->getNamespace());
             }, $us));
             // 対象となっているpackage以外のpackageは、即席で定義する必要がある。
             $all = array_unique(array_merge($all, $packages));

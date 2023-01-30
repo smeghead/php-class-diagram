@@ -20,12 +20,12 @@ class Entry {
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->class->getClassType()->meta === 'Stmt_Interface' ? 'interface' : 'class';
+        $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
         if ($this->options->classProperties() || $this->options->classMethods()) {
             $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getLogicalName());
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
-                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->accessModifier), $p->name, $p->type->name);
+                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->accessModifier), $p->name, $p->type->getName());
                 }
             }
             if ($this->options->classMethods()) {
