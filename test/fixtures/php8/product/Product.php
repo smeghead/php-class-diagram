@@ -8,6 +8,7 @@ use hoge\fuga\product\ {
 
 class Product {
     private ?string $nullableString;
+    private int|string $intOrString;
     private Name $name;
     private Price $price;
 
