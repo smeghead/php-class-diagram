@@ -4,6 +4,8 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Identifier;
 use PhpParser\Node\NullableType;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\UnionType;
 use PhpParser\NodeAbstract;
 
 class PhpTypeExpression {
@@ -15,6 +17,16 @@ class PhpTypeExpression {
 
     public function __construct(NodeAbstract $stmt, string $targetType) {
         $type = $stmt->{$targetType};
+        if ($type instanceOf UnionType) {
+            foreach ($type->types as $t) {
+                $this->types[] = $this->parseType($t);
+            }
+        } else {
+            $this->types[] = $this->parseType($type);
+        }
+    }
+
+    private function parseType(Property|Identifier|NullableType $type) {
         $nullable = false;
         if ($type instanceOf NullableType) {
             $type = $type->type;
@@ -26,7 +38,8 @@ class PhpTypeExpression {
         }
         $namespace = [];
         $typeName = array_pop($parts);
-        $this->types[] = new PhpType($namespace, $stmt->getType(), $typeName ?? '', null, $nullable);
+        return new PhpType($namespace, $type->getType(), $typeName ?? '', null, $nullable);
+
     }
     /**
      * @return PhpType[] types
