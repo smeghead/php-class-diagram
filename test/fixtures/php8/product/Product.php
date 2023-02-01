@@ -11,6 +11,8 @@ class Product {
     private int|string $intOrString;
     private Name $name;
     private Price $price;
+    private \Exception $error;
+    private bar\Boo $boo;
 
     /** @return Product product */
     public function method1(string $param1) {

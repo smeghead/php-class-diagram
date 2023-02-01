@@ -3,6 +3,8 @@
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
@@ -15,18 +17,22 @@ class PhpTypeExpression {
     /** @var PhpType[] */
     private array $types;
 
-    public function __construct(NodeAbstract $stmt, string $targetType) {
+    public function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace) {
         $type = $stmt->{$targetType};
         if ($type instanceOf UnionType) {
             foreach ($type->types as $t) {
-                $this->types[] = $this->parseType($t);
+                $this->types[] = $this->parseType($t, $currentNamespace);
             }
         } else {
-            $this->types[] = $this->parseType($type);
+            $this->types[] = $this->parseType($type, $currentNamespace);
         }
     }
 
-    private function parseType(Property|Identifier|NullableType $type) {
+    /**
+     * @param Property|Identifier|NullableType|Name $type 型を表すAST
+     * @param string[] $currentNamespace 名前空間配列
+     */
+    private function parseType(Property|Identifier|NullableType|Name $type, array $currentNamespace) {
         $nullable = false;
         if ($type instanceOf NullableType) {
             $type = $type->type;
@@ -35,12 +41,15 @@ class PhpTypeExpression {
         $parts = [];
         if ($type instanceOf Identifier) {
             $parts[] = $type->name;
+        } else if ($type instanceOf FullyQualified) {
+            $parts = $type->parts;
+        } else if ($type instanceOf Name) {
+            $parts = array_merge($currentNamespace, $type->parts);
         }
-        $namespace = [];
         $typeName = array_pop($parts);
-        return new PhpType($namespace, $type->getType(), $typeName ?? '', null, $nullable);
-
+        return new PhpType($parts, $type->getType(), $typeName ?? '', null, $nullable);
     }
+    
     /**
      * @return PhpType[] types
      */
