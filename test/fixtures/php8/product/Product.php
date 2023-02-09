@@ -13,6 +13,9 @@ class Product {
     private Price $price;
     private \Exception $error;
     private bar\Boo $boo;
+    private \hoge\fuga\product\bar\Boo $boo2;
+    /** @var bur\Bon $docString */
+    private bar\Boo $docString;
 
     /** @return Product product */
     public function method1(string $param1) {
