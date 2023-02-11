@@ -16,8 +16,13 @@ class Product {
     private \hoge\fuga\product\bar\Boo $boo2;
     /** @var bur\Bon $docString */
     private bar\Boo $docString;
+    /** @var string|int $docString */
+    private $docStringUnion;
 
-    /** @return Product product */
+    /**
+     * @param string|int $param1  
+     * @return Product product
+     */
     public function method1(string $param1) {
     }
 }
