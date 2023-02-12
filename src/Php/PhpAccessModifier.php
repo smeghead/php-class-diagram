@@ -7,12 +7,12 @@ use PhpParser\Node\Stmt\ {
 };
 
 class PhpAccessModifier {
-    public bool $public = false;
-    public bool $protected = false;
-    public bool $private = false;
-    public bool $abstract = false;
-    public bool $final = false;
-    public bool $static = false;
+    protected bool $public = false;
+    protected bool $protected = false;
+    protected bool $private = false;
+    protected bool $abstract = false;
+    protected bool $final = false;
+    protected bool $static = false;
 
     public function __construct(Stmt $stmt) {
         $this->public = $stmt->isPublic();
@@ -22,5 +22,29 @@ class PhpAccessModifier {
         if ($stmt instanceOf ClassMethod) {
             $this->abstract = $stmt->isAbstract();
         }
+    }
+
+    public function isPublic(): bool {
+        return $this->public;
+    }
+
+    public function isProtected(): bool {
+        return $this->protected;
+    }
+
+    public function isPrivate(): bool {
+        return $this->private;
+    }
+
+    public function isAbstract(): bool {
+        return $this->abstract;
+    }
+
+    public function isFinal(): bool {
+        return $this->final;
+    }
+
+    public function isStatic(): bool {
+        return $this->static;
     }
 }

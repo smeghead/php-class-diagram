@@ -10,11 +10,11 @@ use Smeghead\PhpClassDiagram\Php\ {
 require_once(__DIR__ . '/PhpAccessModifierDummy.php');
 
 class PhpMethodDummy extends PhpMethod {
-    public string $name;
-    public PhpType $type;
-    /** @var PhpMethodParameter[] パラメータ一覧 */
-    public array $params;
-    public PhpAccessModifier $accessModifier;
+    // public string $name;
+    // public PhpType $type;
+    // /** @var PhpMethodParameter[] パラメータ一覧 */
+    // public array $params;
+    // public PhpAccessModifier $accessModifier;
 
     public function __construct(\stdClass $method) {
         $params = array_map(function($x){

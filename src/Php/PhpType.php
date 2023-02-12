@@ -2,10 +2,10 @@
 namespace Smeghead\PhpClassDiagram\Php;
 
 class PhpType {
-    public string $name;
-    public string $meta;
-    public array $namespace;
-    public string $alias;
+    private string $name;
+    private string $meta;
+    private array $namespace;
+    private string $alias;
 
     public function __construct(array $namespace, string $meta, string $name, $alias = null) {
         $this->namespace = $namespace;
@@ -22,5 +22,24 @@ class PhpType {
             return false;
         }
         return true;
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function getMeta(): string {
+        return $this->meta;
+    }
+
+    /**
+     * @return string[] 
+     */
+    public function getNamespace(): array {
+        return $this->namespace;
+    }
+
+    public function getAlias(): string {
+        return $this->alias;
     }
 }

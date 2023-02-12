@@ -10,11 +10,11 @@ use PhpParser\Node\Stmt\ {
 };
 
 class PhpMethod {
-    public string $name;
-    public PhpType $type;
+    protected string $name;
+    protected PhpType $type;
     /** @var PhpMethodParameter[] パラメータ一覧 */
-    public array $params;
-    public PhpAccessModifier $accessModifier;
+    protected array $params;
+    protected PhpAccessModifier $accessModifier;
 
     public function __construct(ClassMethod $method, PhpClass $class) {
         $params = array_map(function($x) use ($class){
@@ -29,5 +29,24 @@ class PhpMethod {
 
     private function getTypeFromMethod(ClassMethod $method, PhpClass $class): PhpType {
         return $class->findTypeByTypeParts($method, 'returnType', 'return');
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function getType(): PhpType {
+        return $this->type;
+    }
+
+    /**
+     * @return PhpMethodParameter[]
+     */
+    public function getParams(): array {
+        return $this->params;
+    }
+
+    public function getAccessModifier(): PhpAccessModifier {
+        return $this->accessModifier;
     }
 }

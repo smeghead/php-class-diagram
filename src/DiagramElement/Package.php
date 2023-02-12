@@ -28,7 +28,7 @@ class Package {
     public function addEntry(array $paths, Entry $entry): string {
         if (count($paths) === 0) {
             if (empty($this->package)) {
-                $this->package = implode('.', $entry->class->getClassType()->namespace);
+                $this->package = implode('.', $entry->getClass()->getClassType()->getNamespace());
             }
             $this->entries[] = $entry;
             return $this->package;
@@ -129,7 +129,7 @@ class Package {
     public function getUses($acc): array {
         $uses = [];
         foreach ($this->entries as $e) {
-            $uses = array_merge($uses, $e->class->getUses());
+            $uses = array_merge($uses, $e->getClass()->getUses());
         }
         $acc[$this->package] = $uses;
         foreach ($this->children as $n) {

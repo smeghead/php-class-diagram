@@ -5,35 +5,49 @@ use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
     PhpAccessModifier,
+    PhpMethodParameter,
 };
 
 class Entry {
-    public Options $options;
-    public string $directory;
-    public PhpClass $class;
+    private Options $options;
+    private string $directory;
+    private PhpClass $class;
+
     public function __construct(string $directory, PhpClass $class, Options $options) {
         $this->directory = $directory;
         $this->class = $class;
         $this->options = $options;
     }
 
+    public function getOptions(): Options {
+        return $this->options;
+    }
+
+    public function getDirectory(): string {
+        return $this->directory;
+    }
+
+    public function getClass(): PhpClass {
+        return $this->class;
+    }
+
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->class->getClassType()->meta === 'Stmt_Interface' ? 'interface' : 'class';
+        $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
         if ($this->options->classProperties() || $this->options->classMethods()) {
             $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getLogicalName());
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
-                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->accessModifier), $p->name, $p->type->name);
+                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
                 }
             }
             if ($this->options->classMethods()) {
                 foreach ($this->class->getMethods() as $m) {
-                    $params = array_map(function($x){
-                        return $x->name;
-                    }, $m->params);
-                    $lines[] = sprintf('  %s%s%s(%s)', $indent, $this->modifier($m->accessModifier), $m->name, implode(', ', $params));
+                    $params = array_map(function(PhpMethodParameter $x){
+                        return $x->getName();
+                    }, $m->getParams());
+                    $lines[] = sprintf('  %s%s%s(%s)', $indent, $this->modifier($m->getAccessModifier()), $m->getName(), implode(', ', $params));
                 }
             }
             $lines[] = sprintf('%s}', $indent);
@@ -45,19 +59,19 @@ class Entry {
 
     private function modifier(PhpAccessModifier $modifier): string {
         $expressions = [];
-        if ($modifier->static) {
+        if ($modifier->isStatic()) {
             $expressions[] = '{static}';
         }
-        if ($modifier->abstract) {
+        if ($modifier->isAbstract()) {
             $expressions[] = '{abstract}';
         }
-        if ($modifier->public) {
+        if ($modifier->isPublic()) {
             $expressions[] = '+';
         }
-        if ($modifier->protected) {
+        if ($modifier->isProtected()) {
             $expressions[] = '#';
         }
-        if ($modifier->private) {
+        if ($modifier->isPrivate()) {
             $expressions[] = '-';
         }
         return implode(' ' , $expressions);
@@ -67,16 +81,16 @@ class Entry {
         $arrows = [];
         //フィールド変数の型に対しての依存をArrowとして追加する。
         foreach ($this->class->getProperties() as $p) {
-            $arrows[] = new ArrowDependency($this->class, $p->type);
+            $arrows[] = new ArrowDependency($this->class, $p->getType());
         }
         foreach ($this->class->getMethods() as $m) {
-            if ( ! $m->accessModifier->public) {
+            if ( ! $m->getAccessModifier()->isPublic()) {
                 continue;
             }
-            if (count($m->params) > 0) {
+            if (count($m->getParams()) > 0) {
                 continue;
             }
-            $arrows[] = new ArrowDependency($this->class, $m->type);
+            $arrows[] = new ArrowDependency($this->class, $m->getType());
         }
         $extends = $this->class->getExtends();
         if ( ! empty($extends)) {

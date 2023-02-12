@@ -5,12 +5,12 @@ use Smeghead\PhpClassDiagram\Php\ {
 };
 
 class PhpAccessModifierDummy extends PhpAccessModifier {
-    public bool $public = false;
-    public bool $protected = false;
-    public bool $private = false;
-    public bool $abstract = false;
-    public bool $final = false;
-    public bool $static = false;
+    // public bool $public = false;
+    // public bool $protected = false;
+    // public bool $private = false;
+    // public bool $abstract = false;
+    // public bool $final = false;
+    // public bool $static = false;
 
     public function __construct(\stdClass $method) {
         $this->public = isset($method->public);

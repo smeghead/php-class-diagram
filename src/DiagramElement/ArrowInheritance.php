@@ -7,6 +7,6 @@ class ArrowInheritance extends Arrow {
     protected string $figure = '<|--';
 
     public function toString(PhpClass $toClass): string {
-        return sprintf('  %s %s %s', $toClass->getLogicalName(), $this->figure, $this->from->getLogicalName());
+        return sprintf('  %s %s %s', $toClass->getLogicalName(), $this->figure, $this->getFrom()->getLogicalName());
     }
 }

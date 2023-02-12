@@ -6,13 +6,25 @@ use PhpParser\Node\Stmt\ {
 };
 
 class PhpProperty {
-    public string $name;
-    public PhpType $type;
-    public PhpAccessModifier $accessModifier;
+    protected string $name;
+    protected PhpType $type;
+    protected PhpAccessModifier $accessModifier;
 
     public function __construct(Property $p, PhpClass $class) {
         $this->name = $p->props[0]->name->toString();
-        $this->type = $type = $class->findTypeByTypeParts($p, 'type', 'var');
+        $this->type = $class->findTypeByTypeParts($p, 'type', 'var');
         $this->accessModifier = new PhpAccessModifier($p);
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function getType(): PhpType {
+        return $this->type;
+    }
+
+    public function getAccessModifier(): PhpAccessModifier {
+        return $this->accessModifier;
     }
 }

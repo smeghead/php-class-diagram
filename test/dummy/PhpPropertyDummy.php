@@ -11,9 +11,9 @@ use Smeghead\PhpClassDiagram\Php\ {
 };
 
 class PhpPropertyDummy extends PhpProperty {
-    public string $name;
-    public PhpType $type;
-    public PhpAccessModifier $accessModifier;
+    // public string $name;
+    // public PhpType $type;
+    // public PhpAccessModifier $accessModifier;
 
     public function __construct(string $name, PhpType $type, \stdClass $modifier) {
         $this->name = $name;

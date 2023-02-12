@@ -7,11 +7,14 @@ class Relation {
     private Options $options;
     private Package $package;
 
+    /**
+     * @param Entry[] $entries
+     */
     public function __construct(array $entries, Options $options) {
         $this->options = $options;
         $this->package = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
-            $this->package->addEntry(preg_split('/[\\\\\/]/', $e->directory), $e);
+            $this->package->addEntry(preg_split('/[\\\\\/]/', $e->getDirectory()), $e);
         }
     }
 
@@ -31,10 +34,10 @@ class Relation {
 
     public function getRelations(): array {
         $entities = $this->package->getEntries();
-        $relation_expressions = array_map(function($x) use ($entities){
+        $relation_expressions = array_map(function(Arrow $x) use ($entities){
             foreach ($entities as $e) {
-                if ($e->class->getClassType()->equals($x->to)) {
-                    return $x->toString($e->class);
+                if ($e->getClass()->getClassType()->equals($x->getTo())) {
+                    return $x->toString($e->getClass());
                 }
             }
             return null;

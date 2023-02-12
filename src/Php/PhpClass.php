@@ -52,7 +52,7 @@ class PhpClass {
     public function getLogicalName(): string {
         $type = $this->getClassType();
         $parts = $this->dirs; 
-        $parts[] = $type->name;
+        $parts[] = $type->getName();
         return implode('.', $parts);
     }
 
@@ -132,14 +132,14 @@ class PhpClass {
             return [];
         }
         foreach ($this->getUses() as $u) {
-            if ($u->name === $type) {
-                return $u->namespace;
+            if ($u->getName() === $type) {
+                return $u->getNamespace();
             }
         }
         // 探したいクラスが、自身の型だった場合
         $t = $this->getClassType();
-        if ($t->name === $type) {
-            return $t->namespace;
+        if ($t->getName() === $type) {
+            return $t->getNamespace();
         }
 
         // 暗黙的な参照と見做す
