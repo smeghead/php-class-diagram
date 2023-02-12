@@ -16,13 +16,26 @@ class Product {
     private \hoge\fuga\product\bar\Boo $boo2;
     /** @var bur\Bon $docString */
     private bar\Boo $docString;
-    /** @var string|int $docString */
+    /** @var string|int $docStringUnion */
     private $docStringUnion;
+    /** @var string|bar\Bon $docStringUnion2 */
+    private $docStringUnion2;
 
     /**
      * @param string|int $param1  
-     * @return Product product
      */
-    public function method1(string $param1) {
+    public function method1(int $paramInt, ?Price $price, string $param1): int {
+        return 0;
+    }
+
+    /**
+     * @return Product product (優先される情報)
+     */
+    public function method2(): int {
+        return 0;
+    }
+
+    public function method3(): array {
+        return [];
     }
 }

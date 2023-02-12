@@ -129,8 +129,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
     public function testDocStringUnion(): void {
-        // /** @var bur\Bon $docString */
-        // private bar\Boo $docString;
+        // /** @var string|int $docStringUnion */
+        // private $docStringUnion;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -148,6 +148,66 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('int', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
+    public function testDocStringUnion2(): void {
+        // /** @var string|bar\Bon $docStringUnion2 */
+        // private $docStringUnion2;
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[1]->stmts[9], ['hoge', 'fuga', 'product']);
+        $types = $expression->getTypes();
+
+        $this->assertSame([], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('string', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+        $this->assertSame(['hoge', 'fuga', 'product', 'bar'], $types[1]->getNamespace(), 'namespace');
+        $this->assertSame('Bon', $types[1]->getName(), 'name');
+        $this->assertSame(false, $types[1]->getNullable(), 'nullable');
+    }
+    public function testMethodParameterInt(): void {
+        // /** @params string|int $param1 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
+        $doc = $ast[0]->stmts[1]->stmts[10]->getDocComment();
+        $docString = $doc->getText();
+        $param = $ast[0]->stmts[1]->stmts[10]->getParams()[0];
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'paramint');
+        $types = $expression->getTypes();
+
+        $this->assertSame([], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('int', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+    }
+    public function testMethodParameterPrice(): void {
+        // /** @params string|int $param1 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
+        $doc = $ast[0]->stmts[1]->stmts[10]->getDocComment();
+        $docString = $doc->getText();
+        $param = $ast[0]->stmts[1]->stmts[10]->getParams()[1];
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'paramint');
+        $types = $expression->getTypes();
+
+        $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('Price', $types[0]->getName(), 'name');
+        $this->assertSame(true, $types[0]->getNullable(), 'nullable');
+    }
     public function testMethodParameterDocString(): void {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -158,7 +218,10 @@ final class PhpTypeExpressionTest extends TestCase {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
         // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $expression = PhpTypeExpression::buildByMethodParam($ast[0]->stmts[1]->stmts[9], ['hoge', 'fuga', 'product']);
+        $doc = $ast[0]->stmts[1]->stmts[10]->getDocComment();
+        $docString = $doc->getText();
+        $param = $ast[0]->stmts[1]->stmts[10]->getParams()[2];
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'param1');
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -167,6 +230,60 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame([], $types[1]->getNamespace(), 'namespace');
         $this->assertSame('int', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
+    }
+    public function testMethodReturnInt(): void {
+        // /** @params string|int $param1 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $method = $ast[0]->stmts[1]->stmts[10];
+        // var_dump($method);die();
+        $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product']);
+        $types = $expression->getTypes();
+
+        $this->assertSame([], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('int', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+    }
+    public function testMethodReturnProduct(): void {
+        // /** @params string|int $param1 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $method = $ast[0]->stmts[1]->stmts[11];
+        // var_dump($method);die();
+        $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product']);
+        $types = $expression->getTypes();
+
+        $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('Product', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+    }
+    public function testMethodReturnArray(): void {
+        // /** @params string|int $param1 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $method = $ast[0]->stmts[1]->stmts[12];
+        // var_dump($method);die();
+        $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product']);
+        $types = $expression->getTypes();
+
+        $this->assertSame([], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('array', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
 
 }

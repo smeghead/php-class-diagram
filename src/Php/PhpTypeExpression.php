@@ -51,6 +51,26 @@ class PhpTypeExpression {
         }
         return new self($stmt, self::VAR, $currentNamespace, $typeString);
     }
+    public static function buildByMethodParam(NodeAbstract $stmt, array $currentNamespace, string $docString, string $paramName): self {
+        $typeString = '';
+        if (!empty($docString)) {
+            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s)\s*\$%s.*/', 'param', $paramName), $docString, $matches)) {
+                $typeString = $matches[1];
+            }
+        }
+        return new self($stmt, self::PARAM, $currentNamespace, $typeString);
+    }
+    public static function buildByMethodReturn(NodeAbstract $stmt, array $currentNamespace): self {
+        $doc = $stmt->getDocComment();
+        $typeString = '';
+        if ($doc instanceof Doc) {
+            $docString = $doc->getText();
+            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s).*/', 'return'), $docString, $matches)) {
+                $typeString = $matches[1];
+            }
+        }
+        return new self($stmt, self::RETURN_TYPE, $currentNamespace, $typeString);
+    }
 
     /**
      * @param Property|Identifier|NullableType|Name $type 型を表すAST
@@ -77,6 +97,8 @@ class PhpTypeExpression {
                 if (mb_substr($typeString, 0, 1) === '\\') {
                     $docString = mb_substr($typeString, 1);
                 } else {
+                    // TODO usesを検索して適切なnamespaceを探す必要がある。
+                    
                     $docString = sprintf('%s\\%s', implode('\\', $currentNamespace), $typeString);
                 }
                 $parts = explode('\\', $docString);
@@ -93,6 +115,8 @@ class PhpTypeExpression {
             } else if ($type instanceOf FullyQualified) {
                 $parts = $type->parts;
             } else if ($type instanceOf Name) {
+                // TODO usesを検索して適切なnamespaceを探す必要がある。
+
                 $parts = array_merge($currentNamespace, $type->parts);
             }
         }
