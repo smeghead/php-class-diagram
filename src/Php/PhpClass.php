@@ -150,7 +150,6 @@ class PhpClass {
     /**
      * php-parserの解析結果の情報から、指定のクラスの型情報を取得します。
      * クラスのuseの状態から、namespaceを解決したPhpTypeを返却します。
-     *
      * @param NodeAbstract ClassMethod または Property または Param が渡されることを想定
      */
     public function findTypeByTypeParts(NodeAbstract $stmt, string $property, string $docAttribute = ''): PhpType {
