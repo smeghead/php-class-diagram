@@ -20,11 +20,21 @@ class PhpTypeExpression {
     private string $docString = '';
     /** @var PhpType[] */
     private array $types;
+    /** @var PhpType[] */
+    private array $uses;
 
-    private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString) {
+    /**
+     * @param NodeAbstract $stmt 対象のツリー
+     * @param string $targetType 
+     * @param string[] $currentNamespace
+     * @param string $docString
+     * @param PhpType[] $uses
+     */
+    private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString, array $uses) {
         if ( ! in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE])) {
             throw new \Exception('invalid tag.');
         }
+        $this->uses = $uses;
 
         $type = $stmt->{$targetType === self::RETURN_TYPE ? 'returnType' : 'type'};
         if ( ! empty($docString)) {
@@ -40,7 +50,17 @@ class PhpTypeExpression {
         }
     }
 
-    public static function buildByVar(NodeAbstract $stmt, array $currentNamespace): self {
+    /**
+     * @param NodeAbstract $stmt
+     * @param string[] $currentNamespace
+     * @param PhpType[] $uses
+     * @return self
+     */
+    public static function buildByVar(
+        NodeAbstract $stmt,
+        array $currentNamespace,
+        array $uses
+    ): self {
         $doc = $stmt->getDocComment();
         $typeString = '';
         if ($doc instanceof Doc) {
@@ -49,18 +69,43 @@ class PhpTypeExpression {
                 $typeString = $matches[1];
             }
         }
-        return new self($stmt, self::VAR, $currentNamespace, $typeString);
+        return new self($stmt, self::VAR, $currentNamespace, $typeString, $uses);
     }
-    public static function buildByMethodParam(NodeAbstract $stmt, array $currentNamespace, string $docString, string $paramName): self {
+
+    /**
+     * @param NodeAbstract $stmt
+     * @param string[] $currentNamespace
+     * @param string $docString
+     * @param PhpType[] $uses
+     * @return self
+     */
+    public static function buildByMethodParam(
+        NodeAbstract $stmt,
+        array $currentNamespace,
+        string $docString,
+        string $paramName,
+        array $uses
+    ): self {
         $typeString = '';
         if (!empty($docString)) {
             if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s)\s*\$%s.*/', 'param', $paramName), $docString, $matches)) {
                 $typeString = $matches[1];
             }
         }
-        return new self($stmt, self::PARAM, $currentNamespace, $typeString);
+        return new self($stmt, self::PARAM, $currentNamespace, $typeString, $uses);
     }
-    public static function buildByMethodReturn(NodeAbstract $stmt, array $currentNamespace): self {
+
+    /**
+     * @param NodeAbstract $stmt
+     * @param string[] $currentNamespace
+     * @param PhpType[] $uses
+     * @return self
+     */
+    public static function buildByMethodReturn(
+        NodeAbstract $stmt,
+        array $currentNamespace,
+        array $uses
+    ): self {
         $doc = $stmt->getDocComment();
         $typeString = '';
         if ($doc instanceof Doc) {
@@ -69,7 +114,7 @@ class PhpTypeExpression {
                 $typeString = $matches[1];
             }
         }
-        return new self($stmt, self::RETURN_TYPE, $currentNamespace, $typeString);
+        return new self($stmt, self::RETURN_TYPE, $currentNamespace, $typeString, $uses);
     }
 
     /**
@@ -96,12 +141,21 @@ class PhpTypeExpression {
             } else {
                 if (mb_substr($typeString, 0, 1) === '\\') {
                     $docString = mb_substr($typeString, 1);
+                    $parts = explode('\\', $docString);
                 } else {
-                    // TODO usesを検索して適切なnamespaceを探す必要がある。
-                    
-                    $docString = sprintf('%s\\%s', implode('\\', $currentNamespace), $typeString);
+                    // usesを検索して適切なnamespaceを探す必要がある。
+                    $targets = array_filter($this->uses, function(PhpType $t) use($typeString) {
+                        $xParts = explode('\\', $typeString);
+                        $name = array_pop($xParts);
+                        return $name === $t->getName();
+                    });
+                    if (count($targets) > 0) {
+                        $parts = array_merge($targets[0]->getNamespace());
+                    } else {
+                        $docString = sprintf('%s\\%s', implode('\\', $currentNamespace), $typeString);
+                        $parts = explode('\\', $docString);
+                    }
                 }
-                $parts = explode('\\', $docString);
             }
         }
         $nullable = false;
@@ -115,9 +169,17 @@ class PhpTypeExpression {
             } else if ($type instanceOf FullyQualified) {
                 $parts = $type->parts;
             } else if ($type instanceOf Name) {
-                // TODO usesを検索して適切なnamespaceを探す必要がある。
-
-                $parts = array_merge($currentNamespace, $type->parts);
+                $typeParts = $type->parts;
+                // usesを検索して適切なnamespaceを探す必要がある。
+                $targets = array_filter($this->uses, function(PhpType $t) use($typeParts) {
+                    $name = array_pop($typeParts);
+                    return $name === $t->getName();
+                });
+                if (count($targets) > 0) {
+                    $parts = array_merge($targets[0]->getNamespace(), [array_pop($typeParts)]);
+                } else {
+                    $parts = array_merge($currentNamespace, $type->parts);
+                }
             }
         }
         $typeName = array_pop($parts);

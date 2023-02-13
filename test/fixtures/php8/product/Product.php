@@ -5,6 +5,7 @@ use hoge\fuga\product\ {
     Name,
     Price,
 };
+use hoge\fuga\product\tag\Tag;
 
 class Product {
     private ?string $nullableString;
@@ -36,6 +37,10 @@ class Product {
     }
 
     public function method3(): array {
+        return [];
+    }
+
+    public function method4(Tag $tag): array {
         return [];
     }
 }
