@@ -3,9 +3,9 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 class PhpMethodParameter {
     private string $name;
-    private PhpType $type;
+    private PhpTypeExpression $type;
 
-    public function __construct(string $name, PhpType $type) {
+    public function __construct(string $name, PhpTypeExpression $type) {
         $this->name = $name;
         $this->type = $type;
     }
@@ -14,7 +14,7 @@ class PhpMethodParameter {
         return $this->name;
     }
 
-    public function getType(): PhpType {
+    public function getType(): PhpTypeExpression {
         return $this->type;
     }
 }

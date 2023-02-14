@@ -5,6 +5,7 @@ use Smeghead\PhpClassDiagram\Php\ {
   PhpMethod,
   PhpAccessModifier,
   PhpMethodParameter,
+    PhpTypeExpression,
 };
 
 require_once(__DIR__ . '/PhpAccessModifierDummy.php');
@@ -18,7 +19,7 @@ class PhpMethodDummy extends PhpMethod {
 
     public function __construct(\stdClass $method) {
         $params = array_map(function($x){
-            return new PhpMethodParameter($x->name, new PhpType([], '', $x->type->name));
+            return new PhpMethodParameter($x->name, PhpTypeExpression::buildByPhpType(new PhpType([], '', $x->type->name)));
         }, $method->params);
         $this->name = $method->name;
         $this->type = new PhpType($method->type->namespace, 'Stmt_Class', $method->type->name);

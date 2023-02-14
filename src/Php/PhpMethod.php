@@ -17,8 +17,14 @@ class PhpMethod {
     protected PhpAccessModifier $accessModifier;
 
     public function __construct(ClassMethod $method, PhpClass $class) {
-        $params = array_map(function($x) use ($class){
-            $type = $class->findTypeByTypeParts($x, 'type');
+        $docString = '';
+        $doc = $method->getDocComment();
+        if ( ! empty($doc)) {
+            $docString = $doc->getText();
+        }
+        $params = array_map(function($x) use ($class, $docString){
+            // $type = $class->findTypeByTypeParts($x, 'type');
+            $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $docString, $x->var->name, $class->getUses());
             return new PhpMethodParameter($x->var->name, $type);
         }, $method->getParams());
         $this->name = $method->name->toString();

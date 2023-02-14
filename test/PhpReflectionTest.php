@@ -224,11 +224,11 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Tag', $data->getMethods()[0]->getType()->getName(), 'return type.');
         $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
         $this->assertSame('name', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
-        $this->assertSame('Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame('?Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
         $this->assertSame('tag', $data->getMethods()[0]->getParams()[1]->getName(), 'parameter name. tag');
         $this->assertSame('Tag', $data->getMethods()[0]->getParams()[1]->getType()->getName(), 'parameter type. tag');
-        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getParams()[1]->getType()->getNamespace(), 'parameter type namespace. tag');
+        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getParams()[1]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace. tag');
     }
     public function testNullableWithoutNamespace(): void {
         $options = new Options([]);
@@ -243,8 +243,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Name', $data->getMethods()[0]->getType()->getName(), 'return type.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
         $this->assertSame('name', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
-        $this->assertSame('Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame('?Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
     }
     public function testFullyQualified(): void {
         $options = new Options([]);
@@ -262,7 +262,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame([], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
         $this->assertSame('e', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
         $this->assertSame('Exception', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
         $this->assertSame('external', $data->getMethods()[1]->getName(), 'method name.');
         $this->assertSame('Exception', $data->getMethods()[1]->getType()->getName(), 'return type.');
         $this->assertSame(['external'], $data->getMethods()[1]->getType()->getNamespace(), 'return type namespace.');
