@@ -6,6 +6,7 @@ use PhpParser\Node\ {
     NullableType,
     Identifier,
     Name,
+    UnionType,
 };
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
@@ -144,53 +145,6 @@ class PhpClass {
 
         // 暗黙的な参照と見做す
         return $this->getNamespace();
-    }
-
-    /**
-     * php-parserの解析結果の情報から、指定のクラスの型情報を取得します。
-     * クラスのuseの状態から、namespaceを解決したPhpTypeを返却します。
-     *
-     * @param NodeAbstract ClassMethod または Property または Param が渡されることを想定
-     */
-    public function findTypeByTypeParts(NodeAbstract $stmt, string $property, string $docAttribute = ''): PhpType {
-        $docComment = $stmt->getDocComment();
-        $doc = '';
-        if ( ! empty($docComment)) {
-            $doc =  $docComment->getText();
-        }
-        $parts = [];
-        $type = $stmt->{$property};
-        if ($type instanceOf NullableType) {
-            $type = $type->type;
-        }
-        if ( ! empty($doc) && ! empty($docAttribute)) {
-            // @{$docAttribute} に定義された型情報を取得する。
-            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s).*/', $docAttribute), $doc, $matches)) {
-                $typeString = $matches[1];
-                if (mb_substr($typeString, 0, 1) === '\\') {
-                    $parts = explode('\\', mb_substr($typeString, 1));
-                    $typeName = array_pop($parts);
-                    return new PhpType($parts, '', $typeName);
-                }
-
-                $parts = explode('\\', $typeString);
-            }
-        } else if ($type instanceOf Identifier) {
-            $parts[] = $type->name;
-        } else if ($type instanceOf FullyQualified) {
-            return new PhpType(
-                array_slice($type->parts, 0, count($type->parts) - 1),
-                '',
-                end($type->parts));
-        } else if ($type instanceOf Name) {
-            $parts = $type->parts;
-        }
-        $namespace = [];
-        if (count($parts) > 0) {
-            $namespace = $this->findNamespaceByTypeParts($parts);
-            $typeName = array_pop($parts);
-        }
-        return new PhpType($namespace, $stmt->getType(), $typeName ?? '');
     }
 
     /** @return PhpMethod[] メソッド一覧 */

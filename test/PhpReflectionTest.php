@@ -30,11 +30,11 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame([], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('name', $data->getProperties()[0]->getName(), 'property name.');
         $this->assertSame('Name', $data->getProperties()[0]->getType()->getName(), 'property name type.');
-        $this->assertSame([], $data->getProperties()[0]->getType()->getNamespace(), 'namespace.');
+        $this->assertSame([], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
         $this->assertSame(true, $data->getProperties()[0]->getAccessModifier()->isPrivate(), 'property name Modifiers.');
         $this->assertSame('price', $data->getProperties()[1]->getName(), 'property price.');
         $this->assertSame('Price', $data->getProperties()[1]->getType()->getName(), 'property price type.');
-        $this->assertSame([], $data->getProperties()[1]->getType()->getNamespace(), 'namespace.');
+        $this->assertSame([], $data->getProperties()[1]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
         $this->assertSame(true, $data->getProperties()[1]->getAccessModifier()->isPrivate(), 'property price Modifiers.');
     }
 
@@ -49,9 +49,23 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame([], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('price', $data->getProperties()[0]->getName(), 'property price.');
         $this->assertSame('int', $data->getProperties()[0]->getType()->getName(), 'property price type.');
-        $this->assertSame([], $data->getProperties()[0]->getType()->getNamespace(), 'namespace.');
+        $this->assertSame([], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
         $this->assertSame(true, $data->getProperties()[0]->getAccessModifier()->isPrivate(), 'property price Modifiers.');
     }
+    // public function testDump_php8_Price(): void {
+    //     $options = new Options([]);
+    //     $directory = sprintf('%s/php8', $this->fixtureDir);
+    //     $filename = sprintf('%s/php8/product/Price.php', $this->fixtureDir);
+    //     $classes = PhpReader::parseFile($directory, $filename, $options);
+
+    //     $data = $classes[0]->getInfo();
+    //     $this->assertSame('Price', $data->getClassType()->name, 'class type name.');
+    //     $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
+    //     $this->assertSame('price', $data->getProperties()[0]->name, 'property price.');
+    //     $this->assertSame('int|float', $data->getProperties()[0]->type->getName(), 'property price type. php8 union type.');
+    //     $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->type->getNamespace(), 'namespace.');
+    //     $this->assertSame(true, $data->getProperties()[0]->accessModifier->private, 'property price Modifiers.');
+    // }
 
     public function testDump_with_namespace(): void {
         $options = new Options([]);
@@ -64,10 +78,10 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('name', $data->getProperties()[0]->getName(), 'type.');
         $this->assertSame('Name', $data->getProperties()[0]->getType()->getName(), 'type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->getType()->getNamespace(), 'namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
         $this->assertSame('price', $data->getProperties()[1]->getName(), 'name.');
         $this->assertSame('Price', $data->getProperties()[1]->getType()->getName(), 'type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->getType()->getNamespace(), 'namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
     }
 
     public function testDump_with_phpdoc(): void {
@@ -80,16 +94,16 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Product', $data->getClassType()->getName(), 'class type name.');
         $this->assertSame('Stmt_Class', $data->getClassType()->getMeta(), 'class meta name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
-        $this->assertSame('name', $data->getProperties()[0]->getName(), 'type.');
+        $this->assertSame('name', $data->getProperties()[0]->getName(), 'name.');
         $this->assertSame('Name', $data->getProperties()[0]->getType()->getName(), 'type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->getType()->getNamespace(), 'Name namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'Name namespace.');
         $this->assertSame('price', $data->getProperties()[1]->getName(), 'name.');
         $this->assertSame('Price', $data->getProperties()[1]->getType()->getName(), 'type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->getType()->getNamespace(), 'Price namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->getType()->getTypes()[0]->getNamespace(), 'Price namespace.');
         $this->assertSame('Tag[]', $data->getProperties()[2]->getType()->getName(), 'type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[2]->getType()->getNamespace(), 'Tag[] namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[2]->getType()->getTypes()[0]->getNamespace(), 'Tag[] namespace.');
         $this->assertSame('Ban[]', $data->getProperties()[3]->getType()->getName(), 'full package name, Ban type.');
-        $this->assertSame(['ban', 'ban', 'ban'], $data->getProperties()[3]->getType()->getNamespace(), 'full package name, ban.ban.ban.Ban[] namespace.');
+        $this->assertSame(['ban', 'ban', 'ban'], $data->getProperties()[3]->getType()->getTypes()[0]->getNamespace(), 'full package name, ban.ban.ban.Ban[] namespace.');
     }
 
     public function testDump_with_interface(): void {
@@ -117,7 +131,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('method1', $data->getMethods()[0]->getName(), 'namespace name.');
         $this->assertSame('param1', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
         $this->assertSame('Product', $data->getMethods()[0]->getType()->getName(), 'return type.');
-        $this->assertSame([], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame([], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
         $this->assertSame(true, $data->getMethods()[0]->getAccessModifier()->isPublic(), 'public.');
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isPrivate(), 'private.');
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isStatic(), 'static.');
@@ -134,7 +148,7 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('method1', $data->getMethods()[0]->getName(), 'namespace name.');
         $this->assertSame('Product', $data->getMethods()[0]->getType()->getName(), 'return type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
         $this->assertSame('param1', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
         $this->assertSame(true, $data->getMethods()[0]->getAccessModifier()->isPublic(), 'public.');
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isPrivate(), 'private.');
@@ -207,14 +221,14 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Product', $data->getClassType()->getName(), 'class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('nullable', $data->getMethods()[0]->getName(), 'namespace name.');
-        $this->assertSame('Tag', $data->getMethods()[0]->getType()->getName(), 'return type.');
-        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame('?Tag', $data->getMethods()[0]->getType()->getName(), 'return type.');
+        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
         $this->assertSame('name', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
-        $this->assertSame('Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame('?Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
         $this->assertSame('tag', $data->getMethods()[0]->getParams()[1]->getName(), 'parameter name. tag');
         $this->assertSame('Tag', $data->getMethods()[0]->getParams()[1]->getType()->getName(), 'parameter type. tag');
-        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getParams()[1]->getType()->getNamespace(), 'parameter type namespace. tag');
+        $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getParams()[1]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace. tag');
     }
     public function testNullableWithoutNamespace(): void {
         $options = new Options([]);
@@ -226,11 +240,11 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('ProductWithoutNamespace', $data->getClassType()->getName(), 'class type name.');
         $this->assertSame([], $data->getClassType()->getNamespace(), 'namespace name.');
         $this->assertSame('nullable', $data->getMethods()[0]->getName(), 'namespace name.');
-        $this->assertSame('Name', $data->getMethods()[0]->getType()->getName(), 'return type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame('?Name', $data->getMethods()[0]->getType()->getName(), 'return type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
         $this->assertSame('name', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
-        $this->assertSame('Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame('?Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
     }
     public function testFullyQualified(): void {
         $options = new Options([]);
@@ -245,13 +259,13 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame([], $data->getExtends()[0]->getNamespace(), 'super class namespace.');
         $this->assertSame('getInner', $data->getMethods()[0]->getName(), 'method name.');
         $this->assertSame('Exception', $data->getMethods()[0]->getType()->getName(), 'return type.');
-        $this->assertSame([], $data->getMethods()[0]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame([], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
         $this->assertSame('e', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
         $this->assertSame('Exception', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
-        $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getNamespace(), 'parameter type namespace.');
+        $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
         $this->assertSame('external', $data->getMethods()[1]->getName(), 'method name.');
         $this->assertSame('Exception', $data->getMethods()[1]->getType()->getName(), 'return type.');
-        $this->assertSame(['external'], $data->getMethods()[1]->getType()->getNamespace(), 'return type namespace.');
+        $this->assertSame(['external'], $data->getMethods()[1]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
     }
     public function testClassesInAFile(): void {
         $options = new Options([]);

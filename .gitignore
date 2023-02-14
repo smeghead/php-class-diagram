@@ -1,3 +1,4 @@
 /vendor/
 *.phar
 *.un~
+composer.lock

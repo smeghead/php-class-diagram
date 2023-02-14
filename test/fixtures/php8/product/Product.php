@@ -1,0 +1,46 @@
+<?php
+namespace hoge\fuga\product;
+
+use hoge\fuga\product\ {
+    Name,
+    Price,
+};
+use hoge\fuga\product\tag\Tag;
+
+class Product {
+    private ?string $nullableString;
+    private int|string $intOrString;
+    private Name $name;
+    private Price $price;
+    private \Exception $error;
+    private bar\Boo $boo;
+    private \hoge\fuga\product\bar\Boo $boo2;
+    /** @var bur\Bon $docString */
+    private bar\Boo $docString;
+    /** @var string|int $docStringUnion */
+    private $docStringUnion;
+    /** @var string|bar\Bon $docStringUnion2 */
+    private $docStringUnion2;
+
+    /**
+     * @param string|int $param1  
+     */
+    public function method1(int $paramInt, ?Price $price, string $param1): int {
+        return 0;
+    }
+
+    /**
+     * @return Product product (優先される情報)
+     */
+    public function method2(): int {
+        return 0;
+    }
+
+    public function method3(): array {
+        return [];
+    }
+
+    public function method4(Tag $tag): array {
+        return [];
+    }
+}

@@ -3,7 +3,7 @@
     "description": "A CLI tool that parses the PHP source directory and outputs PlantUML scripts.",
     "type": "library",
     "require": {
-        "php" : ">=7.4",
+        "php" : ">=8.0",
         "symfony/finder": "^5.3",
         "nikic/php-parser": "^4.13"
     },
