@@ -12,7 +12,6 @@ class PhpProperty {
 
     public function __construct(Property $p, PhpClass $class) {
         $this->name = $p->props[0]->name->toString();
-        // $this->type = $class->findTypeByTypeParts($p, 'type', 'var');
         $this->type = PhpTypeExpression::buildByVar($p, $class->getNamespace(), $class->getUses());
         $this->accessModifier = new PhpAccessModifier($p);
     }

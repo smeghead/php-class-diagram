@@ -11,7 +11,7 @@ use PhpParser\Node\Stmt\ {
 
 class PhpMethod {
     protected string $name;
-    protected PhpType $type;
+    protected PhpTypeExpression $type;
     /** @var PhpMethodParameter[] パラメータ一覧 */
     protected array $params;
     protected PhpAccessModifier $accessModifier;
@@ -23,7 +23,6 @@ class PhpMethod {
             $docString = $doc->getText();
         }
         $params = array_map(function($x) use ($class, $docString){
-            // $type = $class->findTypeByTypeParts($x, 'type');
             $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $docString, $x->var->name, $class->getUses());
             return new PhpMethodParameter($x->var->name, $type);
         }, $method->getParams());
@@ -33,15 +32,15 @@ class PhpMethod {
         $this->accessModifier = new PhpAccessModifier($method);
     }
 
-    private function getTypeFromMethod(ClassMethod $method, PhpClass $class): PhpType {
-        return $class->findTypeByTypeParts($method, 'returnType', 'return');
+    private function getTypeFromMethod(ClassMethod $method, PhpClass $class): PhpTypeExpression {
+        return PhpTypeExpression::buildByMethodReturn($method, $class->getNamespace(), $class->getUses());
     }
 
     public function getName(): string {
         return $this->name;
     }
 
-    public function getType(): PhpType {
+    public function getType(): PhpTypeExpression {
         return $this->type;
     }
 

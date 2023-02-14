@@ -165,8 +165,7 @@ class PhpTypeExpression {
                     if (count($targets) > 0) {
                         $parts = array_merge($targets[0]->getNamespace(), [$targets[0]->getName()]);
                     } else {
-                        $docString = sprintf('%s\\%s', implode('\\', $currentNamespace), $typeString);
-                        $parts = explode('\\', $docString);
+                        $parts = array_merge($currentNamespace, explode('\\', $typeString));
                     }
                 }
             }

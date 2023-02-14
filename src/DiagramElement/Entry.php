@@ -92,7 +92,9 @@ class Entry {
             if (count($m->getParams()) > 0) {
                 continue;
             }
-            $arrows[] = new ArrowDependency($this->class, $m->getType());
+            foreach ($m->getType()->getTypes() as $t) {
+                $arrows[] = new ArrowDependency($this->class, $t);
+            }
         }
         $extends = $this->class->getExtends();
         if ( ! empty($extends)) {
