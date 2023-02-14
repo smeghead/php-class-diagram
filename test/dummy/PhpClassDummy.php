@@ -4,6 +4,7 @@ use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
     PhpType,
     PhpProperty,
+    PhpTypeExpression,
 };
 require_once(__DIR__ . '/PhpMethodDummy.php');
 require_once(__DIR__ . '/PhpPropertyDummy.php');
@@ -47,7 +48,7 @@ class PhpClassDummy extends PhpClass {
     public function getProperties(): array {
         $props = [];
         foreach ($this->data->properties as $p) {
-            $props[] = new PhpPropertyDummy($p->name, new PhpType($p->type->namespace, '', $p->type->name), $p->modifier);
+            $props[] = new PhpPropertyDummy($p->name, PhpTypeExpression::buildByPhpType(new PhpType($p->type->namespace, '', $p->type->name)), $p->modifier);
         }
         return $props;
     }

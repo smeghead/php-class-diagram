@@ -8,6 +8,7 @@ use Smeghead\PhpClassDiagram\Php\ {
     PhpType,
     PhpProperty,
     PhpAccessModifier,
+    PhpTypeExpression,
 };
 
 class PhpPropertyDummy extends PhpProperty {
@@ -15,7 +16,7 @@ class PhpPropertyDummy extends PhpProperty {
     // public PhpType $type;
     // public PhpAccessModifier $accessModifier;
 
-    public function __construct(string $name, PhpType $type, \stdClass $modifier) {
+    public function __construct(string $name, PhpTypeExpression $type, \stdClass $modifier) {
         $this->name = $name;
         $this->type = $type;
         $this->accessModifier = new PhpAccessModifierDummy($modifier);

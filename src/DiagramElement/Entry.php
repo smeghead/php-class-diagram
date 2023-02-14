@@ -81,7 +81,9 @@ class Entry {
         $arrows = [];
         //フィールド変数の型に対しての依存をArrowとして追加する。
         foreach ($this->class->getProperties() as $p) {
-            $arrows[] = new ArrowDependency($this->class, $p->getType());
+            foreach ($p->getType()->getTypes() as $t) {
+                $arrows[] = new ArrowDependency($this->class, $t);
+            }
         }
         foreach ($this->class->getMethods() as $m) {
             if ( ! $m->getAccessModifier()->isPublic()) {

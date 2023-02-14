@@ -15,6 +15,7 @@ class PhpTypeExpression {
     public const VAR = 'var';
     public const PARAM = 'param';
     public const RETURN_TYPE = 'return';
+    public const FOR_TEST = 'for_test';
 
     /** @var string  */
     private string $docString = '';
@@ -31,8 +32,11 @@ class PhpTypeExpression {
      * @param PhpType[] $uses
      */
     private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString, array $uses) {
-        if ( ! in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE])) {
+        if ( ! in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE, self::FOR_TEST])) {
             throw new \Exception('invalid tag.');
+        }
+        if ($targetType === self::FOR_TEST) {
+            return; // 単体テストのため仕方なく空のインスタンスを生成する方法を用意します。
         }
         $this->uses = $uses;
 
@@ -118,6 +122,15 @@ class PhpTypeExpression {
     }
 
     /**
+     * 単体テスト用factory
+     */
+    public static function buildByPhpType(PhpType $type): self {
+        $instance = new self(new Name('dummy'), self::FOR_TEST, [], '', []);
+        $instance->types[] = $type;
+        return $instance;
+    }
+
+    /**
      * @param Property|Identifier|NullableType|Name $type 型を表すAST
      * @param string[] $currentNamespace 名前空間配列
      * @param ?string $typeString コメントの型表記
@@ -144,13 +157,13 @@ class PhpTypeExpression {
                     $parts = explode('\\', $docString);
                 } else {
                     // usesを検索して適切なnamespaceを探す必要がある。
-                    $targets = array_filter($this->uses, function(PhpType $t) use($typeString) {
+                    $targets = array_values(array_filter($this->uses, function(PhpType $t) use($typeString) {
                         $xParts = explode('\\', $typeString);
-                        $name = array_pop($xParts);
+                        $name = end($xParts);
                         return $name === $t->getName();
-                    });
+                    }));
                     if (count($targets) > 0) {
-                        $parts = array_merge($targets[0]->getNamespace());
+                        $parts = array_merge($targets[0]->getNamespace(), [$targets[0]->getName()]);
                     } else {
                         $docString = sprintf('%s\\%s', implode('\\', $currentNamespace), $typeString);
                         $parts = explode('\\', $docString);
@@ -171,12 +184,12 @@ class PhpTypeExpression {
             } else if ($type instanceOf Name) {
                 $typeParts = $type->parts;
                 // usesを検索して適切なnamespaceを探す必要がある。
-                $targets = array_filter($this->uses, function(PhpType $t) use($typeParts) {
-                    $name = array_pop($typeParts);
+                $targets = array_values(array_filter($this->uses, function(PhpType $t) use($typeParts) {
+                    $name = end($typeParts);
                     return $name === $t->getName();
-                });
+                }));
                 if (count($targets) > 0) {
-                    $parts = array_merge($targets[0]->getNamespace(), [array_pop($typeParts)]);
+                    $parts = array_merge($targets[0]->getNamespace(), [end($typeParts)]);
                 } else {
                     $parts = array_merge($currentNamespace, $type->parts);
                 }
@@ -185,11 +198,19 @@ class PhpTypeExpression {
         $typeName = array_pop($parts);
         return new PhpType($parts, empty($type) ? '' : $type->getType(), $typeName ?? '', null, $nullable);
     }
-    
+
     /**
      * @return PhpType[] types
      */
     public function getTypes(): array {
         return $this->types;
+    }
+
+    public function getName(): string {
+        $types = [];
+        foreach ($this->types as $type) {
+            $types[] = sprintf('%s%s', $type->getNullable() ? '?' : '', $type->getName());
+        }
+        return implode('|', $types);
     }
 }
