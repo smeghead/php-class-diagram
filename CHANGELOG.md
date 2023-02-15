@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.2.0 (2023-02-16)
+
+### Features
+
+ * add support Union Types.
+ * remove PHP7.4 support. 
+
 ## v0.1.1 (2202-12-12)
 
 ### Bug fix
