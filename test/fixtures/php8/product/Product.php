@@ -43,4 +43,20 @@ class Product {
     public function method4(Tag $tag): array {
         return [];
     }
+
+    public function method5(Tag $tag): int|string {
+        return 0;
+    }
+    /**
+     * @return int|string return value.
+     */
+    public function method6(Tag $tag): int|string {
+        return 0;
+    }
+    /**
+     * @return Tag[] tags
+     */
+    public function method7(Tag $tag): array {
+        return 0;
+    }
 }

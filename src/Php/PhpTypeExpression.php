@@ -131,11 +131,11 @@ class PhpTypeExpression {
     }
 
     /**
-     * @param Property|Identifier|NullableType|Name $type 型を表すAST
+     * @param Property|Identifier|NullableType|Name|UnionType|null $type 型を表すAST (UnionTypeが指定されて呼び出される時は、typeStringで判断する時なので型判定には使われない)
      * @param string[] $currentNamespace 名前空間配列
      * @param ?string $typeString コメントの型表記
      */
-    private function parseType(Property|Identifier|NullableType|Name|null $type, array $currentNamespace, ?string $typeString = '') {
+    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = '') {
         $parts = [];
         if (!empty($typeString)) {
             $primitiveTypes = [
@@ -160,10 +160,13 @@ class PhpTypeExpression {
                     $targets = array_values(array_filter($this->uses, function(PhpType $t) use($typeString) {
                         $xParts = explode('\\', $typeString);
                         $name = end($xParts);
-                        return $name === $t->getName();
+                        // docString で配列が指定されていた場合は、[] を除外して比較する。
+                        return preg_replace('/\[\]$/', '', $name) === $t->getName();
                     }));
                     if (count($targets) > 0) {
-                        $parts = array_merge($targets[0]->getNamespace(), [$targets[0]->getName()]);
+                        $parts = array_merge(
+                            $targets[0]->getNamespace(),
+                            [sprintf('%s%s', $targets[0]->getName(), preg_match('/\[\]$/', $typeString) ? '[]' : '')]);
                     } else {
                         $parts = array_merge($currentNamespace, explode('\\', $typeString));
                     }

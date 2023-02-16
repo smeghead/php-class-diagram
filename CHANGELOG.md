@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.2.1 (2023-02-16)
+
+### Bug fix
+
+ * Fixed an exception that occurred when a UnionType was specified in DocString.
+ * Fixed an issue where DocString did not correctly compare types when describing an array of classes.
+
 ## v0.2.0 (2023-02-16)
 
 ### Features
