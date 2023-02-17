@@ -6,16 +6,24 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 # Features
 
- * Generating class diagrams from source code helps improve continuous design.
- * Generates expressive class diagrams with an emphasis on namespaces and relationships.
- * A simple CLI tool that is easy to handle.
- * It is also possible to output a package relationship diagram that visualizes the dependency on the external namespace.
+ * ♻️ Generating class diagrams from source code helps improve continuous design.
+ * 🔖  Generates expressive class diagrams with an emphasis on namespaces and relationships.
+ * 🔧 A simple CLI tool that is easy to handle.
+ * 💡 It is also possible to output a package relationship diagram that visualizes the dependency on the external namespace.
 
 ### php-class-diagram class diagram
 
 ![dogfood class diagram image.](dogfood.png)
 
+### php-class-diagram class diagram without fields and methods
+
+If your analysis focuses on the relationships between classes, the simpler notation may be more suitable.
+
+![dogfood class diagram image.](dogfood-model.png)
+
 ### php-class-diagram package related diagram
+
+Visualizing package relationships may expose critical design issues.
 
 ![dogfood package related diagram image.](dogfood-package.png)
 
