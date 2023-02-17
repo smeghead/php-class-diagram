@@ -89,8 +89,10 @@ class Entry {
             if ( ! $m->getAccessModifier()->isPublic()) {
                 continue;
             }
-            if (count($m->getParams()) > 0) {
-                continue;
+            foreach ($m->getParams() as $p) {
+                foreach ($p->getType()->getTypes() as $t) {
+                    $arrows[] = new ArrowDependency($this->class, $t);
+                }
             }
             foreach ($m->getType()->getTypes() as $t) {
                 $arrows[] = new ArrowDependency($this->class, $t);

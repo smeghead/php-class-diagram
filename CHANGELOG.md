@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Method's Parameter Dependencies added to arrows.
+
 ## v0.2.1 (2023-02-16)
 
 ### Bug fix
