@@ -3,7 +3,9 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
+    ClassConst,
     ClassMethod,
+    Property,
 };
 
 class PhpAccessModifier {
@@ -14,7 +16,7 @@ class PhpAccessModifier {
     protected bool $final = false;
     protected bool $static = false;
 
-    public function __construct(Stmt $stmt) {
+    public function __construct(ClassConst|Property|ClassMethod $stmt) {
         $this->public = $stmt->isPublic();
         $this->protected = $stmt->isProtected();
         $this->private = $stmt->isPrivate();

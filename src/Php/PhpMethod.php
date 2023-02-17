@@ -4,6 +4,7 @@ namespace Smeghead\PhpClassDiagram\Php;
 use PhpParser\Node\ {
     NullableType,
     Name,
+    Param,
 };
 use PhpParser\Node\Stmt\ {
     ClassMethod,
@@ -22,7 +23,7 @@ class PhpMethod {
         if ( ! empty($doc)) {
             $docString = $doc->getText();
         }
-        $params = array_map(function($x) use ($class, $docString){
+        $params = array_map(function(Param $x) use ($class, $docString){
             $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $docString, $x->var->name, $class->getUses());
             return new PhpMethodParameter($x->var->name, $type);
         }, $method->getParams());
