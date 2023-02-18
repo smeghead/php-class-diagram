@@ -85,12 +85,26 @@ class Package {
     public function dumpPackages($level = 1): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $lines[] = sprintf(
-            '%spackage %s as %s {',
-            $indent,
-            $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
-            $this->getLogicalName()
-        );
+        // if ($level == 1) {
+        //     $lines[] = sprintf(
+        //         '%spackage %s as %s {',
+        //         $indent,
+        //         $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
+        //         $this->getLogicalName()
+        //     );
+        // } else {
+            $lines[] = sprintf(
+                '%spackage %s {',
+                $indent,
+                $this->package
+            );
+        // }
+        // $lines[] = sprintf(
+        //     '%spackage %s as %s {',
+        //     $indent,
+        //     $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
+        //     $this->getLogicalName()
+        // );
         foreach ($this->children as $n) {
             $lines = array_merge($lines, $n->dumpPackages($level + 1));
         }

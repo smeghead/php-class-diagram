@@ -471,10 +471,11 @@ EOS;
         $expected =<<<EOS
 @startuml package-related-diagram
   package ROOT as ROOT {
-    package product as product {
+    package product {
     }
   }
-  package PhpParse
+  package PhpParse as PhpParse {
+  }
   product --> PhpParse
 @enduml
 EOS;
@@ -493,8 +494,8 @@ EOS;
         $expected =<<<EOS
 @startuml package-related-diagram
   package hoge.fuga as ROOT {
-    package product as product {
-      package utility as product.utility {
+    package product {
+      package utility {
       }
     }
   }
