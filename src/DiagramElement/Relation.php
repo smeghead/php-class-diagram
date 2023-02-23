@@ -44,7 +44,7 @@ class Relation {
         }, $this->package->getArrows());
         $relation_expressions = array_filter($relation_expressions);
         sort($relation_expressions);
-        return $relation_expressions;
+        return array_unique($relation_expressions);
     }
 
     public function dumpPackages(): array {

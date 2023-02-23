@@ -7,6 +7,7 @@
 ### Bug fix
 
  * Method's Parameter Dependencies added to arrows.
+ * Removed duplicate dependency arrows in class diagrams.
 
 ## v0.2.1 (2023-02-16)
 
