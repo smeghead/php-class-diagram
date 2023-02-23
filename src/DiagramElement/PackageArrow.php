@@ -29,6 +29,8 @@ class PackageArrow {
         $format = $this->bothSideArrow
             ? '  %s <-[#red,plain,thickness=4]-> %s'
             : '  %s --> %s';
-        return sprintf($format, $this->from, $this->to);
+        $fromElements = explode('.', $this->from);
+        $toElements = explode('.', $this->to);
+        return sprintf($format, end($fromElements), end($toElements));
     }
 }

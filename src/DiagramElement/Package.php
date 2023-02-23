@@ -6,6 +6,7 @@ use Smeghead\PhpClassDiagram\Config\Options;
 class Package {
     private Options $options;
 
+    /** @var string[]  */
     public array $parents;
     public string $name;
     public string $package = '';
@@ -28,7 +29,7 @@ class Package {
     public function addEntry(array $paths, Entry $entry): string {
         if (count($paths) === 0) {
             if (empty($this->package)) {
-                $this->package = implode('.', $entry->getClass()->getClassType()->getNamespace());
+                $this->package = implode('.', $entry->getClass()->getNamespace());
             }
             $this->entries[] = $entry;
             return $this->package;
@@ -85,26 +86,22 @@ class Package {
     public function dumpPackages($level = 1): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        // if ($level == 1) {
-        //     $lines[] = sprintf(
-        //         '%spackage %s as %s {',
-        //         $indent,
-        //         $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
-        //         $this->getLogicalName()
-        //     );
-        // } else {
+        $target = empty($this->package) ? $this->getLogicalName() : $this->package;
+        $targetElements = explode('.', $target);
+        if ($level > 1) {
             $lines[] = sprintf(
                 '%spackage %s {',
                 $indent,
-                $this->package
+                end($targetElements)
             );
-        // }
-        // $lines[] = sprintf(
-        //     '%spackage %s as %s {',
-        //     $indent,
-        //     $this->name === 'ROOT' ? (empty($this->package) ? 'ROOT': $this->package) : $this->name,
-        //     $this->getLogicalName()
-        // );
+        } else {
+            $lines[] = sprintf(
+                '%spackage %s as %s {',
+                $indent,
+                $target,
+                end($targetElements)
+            );
+        }
         foreach ($this->children as $n) {
             $lines = array_merge($lines, $n->dumpPackages($level + 1));
         }
@@ -145,7 +142,8 @@ class Package {
         foreach ($this->entries as $e) {
             $uses = array_merge($uses, $e->getClass()->getUses());
         }
-        $acc[$this->package] = $uses;
+        $package = empty($this->package) ? sprintf('%s.%s', implode('.', $this->parents), $this->name) : $this->package;
+        $acc[$package] = $uses;
         foreach ($this->children as $n) {
             $acc = array_merge($acc, $n->getUses($acc));
         }
@@ -161,5 +159,32 @@ class Package {
             $acc = $n->getTargetPackages($acc);
         }
         return $acc;
+    }
+
+    public function findPackage(string $package): ?Package {
+        return $this->recFindPackage($package);
+    }
+
+    public function is(string $package): bool {
+        $segments = $this->parents;
+        $segments[] = $this->name;
+        return implode('.', $segments) === $package;
+    }
+
+    /**
+     * @param string $package パッケージの表記(例: hoge.fuga)
+     * @return ?Package
+     */
+    private function recFindPackage(string $package): ?Package {
+        if ($this->is($package)) {
+            return $this;
+        }
+        foreach ($this->children as $c) {
+            $p = $c->recFindPackage($package);
+            if ( ! empty($p)) {
+                return $p;
+            }
+        }
+        return null;
     }
 }

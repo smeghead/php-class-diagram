@@ -7,27 +7,25 @@ use Smeghead\PhpClassDiagram\Php\PhpType;
 class PackageRelations {
     /** @var array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> */
     private array $uses;
-    /** @var \Smeghead\PhpClassDiagram\Php\PhpType[] */
-    private array $targetPackages;
+    private Package $rootPackage;
 
     /**
      * @param array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> $uses
+     * @param Package $rootPackage
      */
-    public function __construct(array $uses, array $targetPackages) {
+    public function __construct(array $uses, Package $rootPackage) {
         $this->uses = $uses;
-        $this->targetPackages = $targetPackages;
+        $this->rootPackage = $rootPackage;
     }
 
-    private function displayPackage($package) {
-        if (empty($package)) {
-            return $this->targetPackages[$package];
+    private function displayPackage(string $package): string {
+        $p = $this->rootPackage->findPackage($package);
+        if ( ! empty($p)) {
+            if (empty($p->package)) {
+                return $p->getLogicalName();
+            }
         }
-        return $package;
-        // if (in_array($package, array_keys($this->targetPackages))) {
-        //     return $this->targetPackages[$package]; // 解析対象のpackageはディレクトリ名で表示
-        // } else {
-        //     return $package; //外部のpackageはpackage表示
-        // }
+        return $package; //外部のpackageはpackage表示
     }
     
     public function getArrows(): array {
@@ -35,23 +33,26 @@ class PackageRelations {
         $all = [];
         $packageRelations = [];
         foreach ($this->uses as $namespace => $us) {
-            $packages = array_unique(array_map(function(PhpType $x){
+            $packageNames = array_unique(array_map(function(PhpType $x){
                 return implode('.', $x->getNamespace());
             }, $us));
             // 対象となっているpackage以外のpackageは、即席で定義する必要がある。
-            $all = array_unique(array_merge($all, $packages));
-            $packageRelations[$namespace] = array_map(function($x) {
-                return $this->displayPackage($x, $this->targetPackages);
-            }, $packages);
+            $all = array_unique(array_merge($all, $packageNames));
+            $packageRelations[$namespace] = array_map(function(string $x) {
+                return $this->displayPackage($x);
+            }, $packageNames);
         }
-        $externals = array_diff($all, array_keys($this->targetPackages));
+        $externals = array_diff($all, array_keys($this->rootPackage->getTargetPackages()));
         if (count($externals) > 0) {
             $externalPackage = new PackageHierarchy($externals);
             $lines[] = $externalPackage->dump();
         }
         $arrows = [];
         foreach ($packageRelations as $package => $dependencies) {
-            $package = $this->displayPackage($package, $this->targetPackages);
+            $package = $this->displayPackage($package);
+            if (empty($package)) {
+                continue;
+            }
             foreach ($dependencies as $d) {
                 if (empty($d)) {
                     continue;

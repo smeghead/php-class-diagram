@@ -66,7 +66,7 @@ class PackageNode {
 
     public function dump(int $indent): string {
         $lines = [];
-        $lines[] = sprintf('%spackage %s as %s {', str_repeat('  ', $indent), $this->name, $this->name);
+        $lines[] = sprintf('%spackage %s as %s #DDDDDD {', str_repeat('  ', $indent), $this->name, $this->name);
         foreach ($this->children as $c) {
             $lines[] = $c->dump($indent + 1);
         }

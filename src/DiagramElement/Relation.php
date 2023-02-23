@@ -52,8 +52,7 @@ class Relation {
         $lines = array_merge($lines, $this->options->headers());
         $lines = array_merge($lines, $this->package->dumpPackages());
         $uses = $this->getUses();
-        $targetPackages = $this->package->getTargetPackages();
-        $packageRelations = new PackageRelations($uses, $targetPackages);
+        $packageRelations = new PackageRelations($uses, $this->package);
         $lines = array_merge($lines, $packageRelations->getArrows());
         $lines[] = '@enduml';
 

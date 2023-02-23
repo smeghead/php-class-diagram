@@ -25,8 +25,8 @@ final class PackageHierarchyTest extends TestCase {
         $sut = new PackageHierarchy($externals);
 
         $expected = <<<EOC
-  package External as External {
-    package One as One {
+  package External as External #DDDDDD {
+    package One as One #DDDDDD {
     }
   }
 EOC;

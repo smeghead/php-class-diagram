@@ -177,7 +177,6 @@ final class PhpTypeExpressionTest extends TestCase {
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
         $doc = $ast[0]->stmts[2]->stmts[10]->getDocComment();
         $docString = $doc->getText();
         $param = $ast[0]->stmts[2]->stmts[10]->getParams()[0];
