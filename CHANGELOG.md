@@ -2,7 +2,7 @@
 
 ### Features
 
- * Modified to display external packages at the lower level in the package relation diagram.
+ * Fixed so that the external package of the package relationship diagram is displayed hierarchically.
 
 ### Bug fix
 
