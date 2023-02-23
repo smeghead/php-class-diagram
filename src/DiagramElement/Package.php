@@ -65,7 +65,7 @@ class Package {
         $lines = [];
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf(
-                '%spackage %s as %s <<Rectangle>> {',
+                '%spackage %s as %s {',
                 $indent,
                 $this->name,
                 $this->getLogicalName()

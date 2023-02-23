@@ -123,7 +123,7 @@ To execute `php-class-diagram` will print PlantUML script.
 ```bash
 $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 @startuml class-diagram
-  package product as product <<Rectangle>> {
+  package product as product {
     class product.Price {
       -price : int
     }
