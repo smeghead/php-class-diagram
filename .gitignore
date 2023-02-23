@@ -2,3 +2,4 @@
 *.phar
 *.un~
 composer.lock
+.vscode

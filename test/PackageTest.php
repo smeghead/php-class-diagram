@@ -471,10 +471,11 @@ EOS;
         $expected =<<<EOS
 @startuml package-related-diagram
   package ROOT as ROOT {
-    package product as product {
+    package product {
     }
   }
-  package PhpParse
+  package PhpParse as PhpParse #DDDDDD {
+  }
   product --> PhpParse
 @enduml
 EOS;
@@ -492,13 +493,13 @@ EOS;
         $rel = new Relation($entries, $options);
         $expected =<<<EOS
 @startuml package-related-diagram
-  package hoge.fuga as ROOT {
-    package product as product {
-      package utility as product.utility {
+  package hoge.fuga as fuga {
+    package product {
+      package utility {
       }
     }
   }
-  product <-[#red,plain,thickness=4]-> product.utility
+  product <-[#red,plain,thickness=4]-> utility
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');

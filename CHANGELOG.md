@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * Fixed so that the external package of the package relationship diagram is displayed hierarchically.
+
 ### Bug fix
 
  * Method's Parameter Dependencies added to arrows.

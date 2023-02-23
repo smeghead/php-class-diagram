@@ -13,6 +13,8 @@ require_once(__DIR__ . '/PhpPropertyDummy.php');
  * Dummy Class for tests.
  */
 class PhpClassDummy extends PhpClass {
+    private stdClass $data;
+    
     public function __construct(string $directory, string $filename, string $data) {
         $dirs = preg_split('/[\\\\\/]/', $filename);
         array_pop($dirs);
@@ -51,6 +53,10 @@ class PhpClassDummy extends PhpClass {
             $props[] = new PhpPropertyDummy($p->name, PhpTypeExpression::buildByPhpType(new PhpType($p->type->namespace, '', $p->type->name)), $p->modifier);
         }
         return $props;
+    }
+
+    public function getNamespace(): array {
+        return $this->data->type->namespace;
     }
 
     /**
