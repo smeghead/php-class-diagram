@@ -1,8 +1,11 @@
 # CHANGELOG
 
+## v0.3.0 (2023-02-23)
+
 ### Features
 
  * Fixed so that the external package of the package relationship diagram is displayed hierarchically.
+ * Changed package notation in class diagram from square to default notation.
 
 ### Bug fix
 
