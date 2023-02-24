@@ -1,8 +1,12 @@
 # CHANGELOG
 
+### Features
+
+ * support enum.
+
 ### Bug fix
 
- * Fixed an error when loading traits.
+ * Fixed an error when loading traits. #37
 
 
 ## v0.3.0 (2023-02-23)

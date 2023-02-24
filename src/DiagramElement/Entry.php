@@ -34,7 +34,8 @@ class Entry {
     public function dump($level = 0): array {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
+        // $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
+        $meta = $this->class->getClassType()->getMetaName();
         if ($this->options->classProperties() || $this->options->classMethods()) {
             $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getLogicalName());
             if ($this->options->classProperties()) {

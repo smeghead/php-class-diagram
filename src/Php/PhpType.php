@@ -24,6 +24,19 @@ class PhpType {
         return $this->meta;
     }
 
+    public function getMetaName(): string {
+        switch ($this->meta) {
+            case 'Stmt_Interface':
+                return 'interface';
+            case 'Stmt_Enum':
+                return 'enum';
+            case 'Stmt_Trait':
+                return 'class';
+            default:
+                return 'class';
+        }
+    }
+
     /**
      * @return string[] namespace
      */
