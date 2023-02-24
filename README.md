@@ -227,3 +227,7 @@ composer install
 ```bash
 composer test
 ```
+
+## CONTRIBUTING
+
+Both Issues and Pull Requests are welcome!
