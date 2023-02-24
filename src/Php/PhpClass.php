@@ -10,20 +10,18 @@ use PhpParser\Node\ {
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ {
-    Class_,
     Namespace_,
     ClassLike,
     ClassMethod,
     Property,
     GroupUse,
-    Interface_,
     Use_,
 };
 
 class PhpClass {
     /** @var string[] directory parts */
     protected array $dirs;
-    protected Class_|Interface_ $syntax;
+    protected ClassLike $syntax;
     protected array $full;
 
     public function __construct(string $filename, Stmt $syntax, array $full) {

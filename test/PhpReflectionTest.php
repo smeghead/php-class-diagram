@@ -283,4 +283,19 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Price', $data->getClassType()->getName(), '3rd class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), '3rd namespace name.');
     }
+    public function testTrait(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/trait', $this->fixtureDir);
+        $filename = sprintf('%s/trait/TestTrait.php', $this->fixtureDir);
+        $parsed = PhpReader::parseFile($directory, $filename, $options);
+
+        $data = $parsed[0]->getInfo();
+        $this->assertSame('TestTrait', $data->getClassType()->getName(), '1st class type name.');
+        $this->assertSame(['Foo', 'Traits'], $data->getClassType()->getNamespace(), '1st namespace name.');
+        $this->assertSame([], $data->getMethods()[0]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
+        $this->assertSame('bool', $data->getMethods()[0]->getType()->getTypes()[0]->getName(), 'return type name.');
+        $this->assertSame('name', $data->getMethods()[0]->getParams()[0]->getName(), 'parameter name.');
+        $this->assertSame('string', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
+        $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
+    }
 }
