@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Fixed an error when loading traits.
+
+
 ## v0.3.0 (2023-02-23)
 
 ### Features
