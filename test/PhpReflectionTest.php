@@ -298,4 +298,18 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('string', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
         $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
     }
+    /**
+     * @requires PHP >= 8.1
+     * PHP8.0 dose not have `enum`. 
+     */
+    public function testEnum(): void {
+        $options = new Options([]);
+        $directory = sprintf('%s/enum', $this->fixtureDir);
+        $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
+        $parsed = PhpReader::parseFile($directory, $filename, $options);
+
+        $data = $parsed[0]->getInfo();
+        $this->assertSame('Suit', $data->getClassType()->getName(), '1st class type name.');
+        $this->assertSame(['Hoge', 'TestEnum'], $data->getClassType()->getNamespace(), '1st namespace name.');
+    }
 }
