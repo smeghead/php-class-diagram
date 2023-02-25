@@ -49,6 +49,7 @@ class PhpReader {
         }
 
         $relativePath = mb_substr($filename, mb_strlen($directory) + 1);
+        $classes = [];
         foreach (self::getClasses($relativePath, $ast) as $class) {
             $classes[] = new self($directory, $filename, $class);
         }
