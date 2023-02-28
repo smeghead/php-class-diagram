@@ -124,20 +124,21 @@ To execute `php-class-diagram` will print PlantUML script.
 $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 @startuml class-diagram
   package product as product {
-    class product.Price {
+    class "Price" as product_Price {
       -price : int
     }
-    class product.Name {
+    class "Name" as product_Name {
       -name : string
     }
-    class product.Product {
+    class "Product" as product_Product {
       -name : Name
       -price : Price
       +method1(param1)
     }
   }
-  product.Product ..> product.Name
-  product.Product ..> product.Price
+  product_Product ..> product_Name
+  product_Product ..> product_Price
+  product_Product ..> product_Product
 @enduml
 ```
 

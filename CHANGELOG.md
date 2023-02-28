@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Fixed. #40 If the namespace name and class name are the same, the class will not be displayed
+
 ## v0.3.1 (2023-02-24)
 
 ### Features
