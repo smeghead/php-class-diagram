@@ -56,6 +56,14 @@ class PhpClass {
         return implode('.', $parts);
     }
 
+    /**
+     * return className alias in class-diagram.
+     * @return string className alias
+     */
+    public function getClassNameAlias(): string {
+        return str_replace(['.', '[', ']'], '_', $this->getLogicalName());
+    }
+
     public function getClassType(): PhpType {
         $namespace = [];
         foreach ($this->full as $stmt) {

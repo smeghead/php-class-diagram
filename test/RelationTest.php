@@ -197,8 +197,8 @@ EOJ;
         $relations = $rel->getRelations();
 
         $this->assertSame(2, count($relations), 'count');
-        $this->assertSame('  product.Product ..> product.Name', $relations[0], 'relation 1');
-        $this->assertSame('  product.Product ..> product.Price', $relations[1], 'relation 2');
+        $this->assertSame('  product_Product ..> product_Name', $relations[0], 'relation 1');
+        $this->assertSame('  product_Product ..> product_Price', $relations[1], 'relation 2');
     }
 
     public function testGetRelations2(): void {
@@ -213,9 +213,9 @@ EOJ;
         $relations = $rel->getRelations();
 
         $this->assertSame(3, count($relations), 'count');
-        $this->assertSame('  product.Product "1" ..> "*" product.Tag', $relations[0], 'relation 1');
-        $this->assertSame('  product.Product ..> product.Name', $relations[1], 'relation 2');
-        $this->assertSame('  product.Product ..> product.Price', $relations[2], 'relation 3');
+        $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation 1');
+        $this->assertSame('  product_Product ..> product_Name', $relations[1], 'relation 2');
+        $this->assertSame('  product_Product ..> product_Price', $relations[2], 'relation 3');
     }
 
     public function testGetRelations_extends1(): void {
@@ -228,6 +228,6 @@ EOJ;
         $relations = $rel->getRelations();
 
         $this->assertSame(1, count($relations), 'count');
-        $this->assertSame('  product.Tag <|-- product.SubTag', $relations[0], 'relation 1');
+        $this->assertSame('  product_Tag <|-- product_SubTag', $relations[0], 'relation 1');
     }
 }

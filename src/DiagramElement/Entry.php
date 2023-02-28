@@ -37,7 +37,7 @@ class Entry {
         // $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
         $meta = $this->class->getClassType()->getMetaName();
         if ($this->options->classProperties() || $this->options->classMethods()) {
-            $lines[] = sprintf('%s%s %s {', $indent, $meta, $this->class->getLogicalName());
+            $lines[] = sprintf('%s%s "%s" as %s {', $indent, $meta, $this->class->getClassType()->getName(), $this->class->getClassNameAlias());
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
                     $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
@@ -53,7 +53,7 @@ class Entry {
             }
             $lines[] = sprintf('%s}', $indent);
         } else {
-            $lines[] = sprintf('%s%s %s', $indent, $meta, $this->class->getLogicalName());
+            $lines[] = sprintf('%s%s "%s" as %s', $indent, $meta, $this->class->getClassType()->getName(), $this->class->getClassNameAlias());
         }
         return $lines;
     }

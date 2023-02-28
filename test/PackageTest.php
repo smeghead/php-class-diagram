@@ -309,12 +309,12 @@ EOJ;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    class product.Product
-    class product.Price
-    class product.Name
+    class "Product" as product_Product
+    class "Price" as product_Price
+    class "Name" as product_Name
   }
-  product.Product ..> product.Name
-  product.Product ..> product.Price
+  product_Product ..> product_Name
+  product_Product ..> product_Price
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -334,14 +334,14 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    class product.Product
-    class product.Price
+    class "Product" as product_Product
+    class "Price" as product_Price
     package utility as product.utility {
-      class product.Name
+      class "Name" as product_Name
     }
   }
-  product.Product ..> product.Name
-  product.Product ..> product.Price
+  product_Product ..> product_Name
+  product_Product ..> product_Price
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -360,7 +360,7 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    interface product.Interface_
+    interface "Interface_" as product_Interface_
   }
 @enduml
 EOS;
@@ -379,7 +379,7 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    interface product.Interface_ {
+    interface "Interface_" as product_Interface_ {
       -name : string
     }
   }
@@ -399,7 +399,7 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    interface product.Interface_ {
+    interface "Interface_" as product_Interface_ {
       -method1(param1)
     }
   }
@@ -420,14 +420,14 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    interface product.Interface_ {
+    interface "Interface_" as product_Interface_ {
       -method1(param1)
     }
-    class product.Implement_ {
+    class "Implement_" as product_Implement_ {
       -method1(param1)
     }
   }
-  product.Interface_ <|-- product.Implement_
+  product_Interface_ <|-- product_Implement_
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
@@ -447,11 +447,11 @@ EOS;
         $expected =<<<EOS
 @startuml class-diagram
   package product as product {
-    class product.Product
-    class product.Price
-    class product.Name
+    class "Product" as product_Product
+    class "Price" as product_Price
+    class "Name" as product_Name
   }
-  product.Product ..> product.Name
+  product_Product ..> product_Name
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
