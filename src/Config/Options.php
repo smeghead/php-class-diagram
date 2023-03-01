@@ -1,7 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Config;
 
-class Options {
+class Options
+{
     private array $opt;
 
     const PHP5 = 'php5';
@@ -12,11 +16,13 @@ class Options {
     const DIAGRAM_PACKAGE = 'package';
     const DIAGRAM_JIG = 'jig';
 
-    public function __construct(array $opt) {
+    public function __construct(array $opt)
+    {
         $this->opt = $opt;
     }
 
-    public function help(): bool {
+    public function help(): bool
+    {
         if (isset($this->opt['h'])) {
             return true;
         }
@@ -26,7 +32,8 @@ class Options {
         return false;
     }
 
-    public function diagram(): string {
+    public function diagram(): string
+    {
         if (isset($this->opt['class-diagram'])) {
             return self::DIAGRAM_CLASS;
         }
@@ -40,7 +47,8 @@ class Options {
         return self::DIAGRAM_CLASS;
     }
 
-    public function classProperties(): bool {
+    public function classProperties(): bool
+    {
         if (isset($this->opt['enable-class-properties'])) {
             return true;
         }
@@ -51,7 +59,8 @@ class Options {
         return true;
     }
 
-    public function classMethods(): bool {
+    public function classMethods(): bool
+    {
         if (isset($this->opt['enable-class-methods'])) {
             return true;
         }
@@ -62,7 +71,8 @@ class Options {
         return true;
     }
 
-    public function phpVersion(): string {
+    public function phpVersion(): string
+    {
         if (isset($this->opt['php5'])) {
             return self::PHP5;
         }
@@ -79,11 +89,12 @@ class Options {
     /**
      * @return string[] specified headers
      */
-    public function headers(): array {
+    public function headers(): array
+    {
         $headers = [];
         if (isset($this->opt['header'])) {
             $headers = $this->opt['header'];
-            if ( ! is_array($headers)) {
+            if (!is_array($headers)) {
                 $headers = [$headers];
             }
         }
@@ -93,11 +104,12 @@ class Options {
     /**
      * @return string[] specified includes
      */
-    public function includes(): array {
+    public function includes(): array
+    {
         $includes = [];
         if (isset($this->opt['include'])) {
             $includes = $this->opt['include'];
-            if ( ! is_array($includes)) {
+            if (!is_array($includes)) {
                 $includes = [$includes];
             }
         } else {
@@ -109,11 +121,12 @@ class Options {
     /**
      * @return string[] specified excludes
      */
-    public function excludes(): array {
+    public function excludes(): array
+    {
         $excludes = [];
         if (isset($this->opt['exclude'])) {
             $excludes = $this->opt['exclude'];
-            if ( ! is_array($excludes)) {
+            if (!is_array($excludes)) {
                 $excludes = [$excludes];
             }
         }

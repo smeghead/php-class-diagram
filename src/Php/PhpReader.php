@@ -1,21 +1,26 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 use PhpParser\Node\Stmt;
-use PhpParser\Node\Stmt\ {
+use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
 };
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class PhpReader {
+class PhpReader
+{
     private string $directory;
     private string $filename;
     private PhpClass $class;
 
-    private function __construct(string $directory, string $filename, PhpClass $class) {
+    private function __construct(string $directory, string $filename, PhpClass $class)
+    {
         $this->directory = $directory;
         $this->filename = $filename;
         $this->class = $class;
@@ -24,7 +29,8 @@ class PhpReader {
     /**
      * @return PhpReader[]
      */
-    public static function parseFile(string $directory, string $filename, Options $options): array {
+    public static function parseFile(string $directory, string $filename, Options $options): array
+    {
         $code = file_get_contents($filename);
 
         $targetVesion = ParserFactory::PREFER_PHP7;
@@ -59,17 +65,18 @@ class PhpReader {
     /**
      * @return PhpClass[]
      */
-    private static function getClasses(string $relativePath, array $ast): array {
+    private static function getClasses(string $relativePath, array $ast): array
+    {
         if (count($ast) === 0) {
             return null;
         }
         $classes = [];
         foreach ($ast as $element) {
-            if ($element instanceOf ClassLike) {
+            if ($element instanceof ClassLike) {
                 $classes[] = new PhpClass($relativePath, $element, $ast);
-            } else if ($element instanceOf Namespace_) {
+            } else if ($element instanceof Namespace_) {
                 foreach ($element->stmts as $e) {
-                    if ($e instanceOf ClassLike) {
+                    if ($e instanceof ClassLike) {
                         $classes[] = new PhpClass($relativePath, $e, $ast);
                     }
                 }
@@ -78,7 +85,8 @@ class PhpReader {
         return $classes;
     }
 
-    public function getInfo(): PhpClass {
+    public function getInfo(): PhpClass
+    {
         return $this->class;
     }
 }

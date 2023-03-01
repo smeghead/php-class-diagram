@@ -1,18 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram;
 
 use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\ {
+use Smeghead\PhpClassDiagram\DiagramElement\{
     Entry,
     Relation,
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-class Main {
-    const VERSION = 'v0.3.1';
+class Main
+{
+    const VERSION = 'v0.4.0';
 
-    public function __construct(string $directory, Options $options) {
+    public function __construct(string $directory, Options $options)
+    {
         $finder = new Finder();
         $finder->files()->in($directory);
         $finder->files()->name($options->includes());
@@ -33,18 +38,18 @@ class Main {
         }
         $relation = new Relation($entries, $options);
         switch ($options->diagram()) {
-        case Options::DIAGRAM_CLASS:
-            echo implode("\r\n", $relation->dump()) . "\r\n";
-            break;
-        case OPTIONS::DIAGRAM_PACKAGE:
-            echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
-            break;
-        case OPTIONS::DIAGRAM_JIG:
-            echo implode("\r\n", $relation->dump()) . "\r\n";
-            echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
-            break;
-        default:
-            throw new \Exception('invalid diagram.');
+            case Options::DIAGRAM_CLASS:
+                echo implode("\r\n", $relation->dump()) . "\r\n";
+                break;
+            case OPTIONS::DIAGRAM_PACKAGE:
+                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+                break;
+            case OPTIONS::DIAGRAM_JIG:
+                echo implode("\r\n", $relation->dump()) . "\r\n";
+                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+                break;
+            default:
+                throw new \Exception('invalid diagram.');
         }
     }
 }

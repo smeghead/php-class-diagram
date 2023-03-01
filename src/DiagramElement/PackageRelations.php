@@ -1,10 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\DiagramElement\ExternalPackage\PackageHierarchy;
 use Smeghead\PhpClassDiagram\Php\PhpType;
 
-class PackageRelations {
+class PackageRelations
+{
     /** @var array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> */
     private array $uses;
     private Package $rootPackage;
@@ -13,32 +17,35 @@ class PackageRelations {
      * @param array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> $uses
      * @param Package $rootPackage
      */
-    public function __construct(array $uses, Package $rootPackage) {
+    public function __construct(array $uses, Package $rootPackage)
+    {
         $this->uses = $uses;
         $this->rootPackage = $rootPackage;
     }
 
-    private function displayPackage(string $package): string {
+    private function displayPackage(string $package): string
+    {
         $p = $this->rootPackage->findPackage($package);
-        if ( ! empty($p)) {
+        if (!empty($p)) {
             if (empty($p->package)) {
                 return $p->getLogicalName();
             }
         }
         return $package; //外部のpackageはpackage表示
     }
-    
-    public function getArrows(): array {
+
+    public function getArrows(): array
+    {
         $lines = [];
         $all = [];
         $packageRelations = [];
         foreach ($this->uses as $namespace => $us) {
-            $packageNames = array_unique(array_map(function(PhpType $x){
+            $packageNames = array_unique(array_map(function (PhpType $x) {
                 return implode('.', $x->getNamespace());
             }, $us));
             // 対象となっているpackage以外のpackageは、即席で定義する必要がある。
             $all = array_unique(array_merge($all, $packageNames));
-            $packageRelations[$namespace] = array_map(function(string $x) {
+            $packageRelations[$namespace] = array_map(function (string $x) {
                 return $this->displayPackage($x);
             }, $packageNames);
         }
@@ -67,7 +74,8 @@ class PackageRelations {
         return $lines;
     }
 
-    private function mergeBothSideArrow(array $arrows): array {
+    private function mergeBothSideArrow(array $arrows): array
+    {
         $merged = [];
         $bothSideArrows = [];
         foreach ($arrows as $a) {
@@ -79,17 +87,19 @@ class PackageRelations {
         }
         foreach ($bothSideArrows as $b) {
             foreach ($merged as &$m) {
-                if ( ! $m->isOpposite($b)) {
+                if (!$m->isOpposite($b)) {
                     continue;
                 }
                 $m->bothSideArrow();
                 break;
-            } unset($m);
+            }
+            unset($m);
         }
         return $merged;
     }
 
-    private function existsUpsidedown(array $arrows, PackageArrow $arrow): bool {
+    private function existsUpsidedown(array $arrows, PackageArrow $arrow): bool
+    {
         foreach ($arrows as $a) {
             if ($a->isOpposite($arrow)) {
                 return true;

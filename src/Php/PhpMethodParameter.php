@@ -1,20 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Php;
 
-class PhpMethodParameter {
+class PhpMethodParameter
+{
     private string $name;
     private PhpTypeExpression $type;
 
-    public function __construct(string $name, PhpTypeExpression $type) {
+    public function __construct(string $name, PhpTypeExpression $type)
+    {
         $this->name = $name;
         $this->type = $type;
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getType(): PhpTypeExpression {
+    public function getType(): PhpTypeExpression
+    {
         return $this->type;
     }
 }

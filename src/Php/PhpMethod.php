@@ -1,29 +1,34 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Node\ {
+use PhpParser\Node\{
     NullableType,
     Name,
     Param,
 };
-use PhpParser\Node\Stmt\ {
+use PhpParser\Node\Stmt\{
     ClassMethod,
 };
 
-class PhpMethod {
+class PhpMethod
+{
     protected string $name;
     protected PhpTypeExpression $type;
     /** @var PhpMethodParameter[] パラメータ一覧 */
     protected array $params;
     protected PhpAccessModifier $accessModifier;
 
-    public function __construct(ClassMethod $method, PhpClass $class) {
+    public function __construct(ClassMethod $method, PhpClass $class)
+    {
         $docString = '';
         $doc = $method->getDocComment();
-        if ( ! empty($doc)) {
+        if (!empty($doc)) {
             $docString = $doc->getText();
         }
-        $params = array_map(function(Param $x) use ($class, $docString){
+        $params = array_map(function (Param $x) use ($class, $docString) {
             $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $docString, $x->var->name, $class->getUses());
             return new PhpMethodParameter($x->var->name, $type);
         }, $method->getParams());
@@ -33,26 +38,31 @@ class PhpMethod {
         $this->accessModifier = new PhpAccessModifier($method);
     }
 
-    private function getTypeFromMethod(ClassMethod $method, PhpClass $class): PhpTypeExpression {
+    private function getTypeFromMethod(ClassMethod $method, PhpClass $class): PhpTypeExpression
+    {
         return PhpTypeExpression::buildByMethodReturn($method, $class->getNamespace(), $class->getUses());
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getType(): PhpTypeExpression {
+    public function getType(): PhpTypeExpression
+    {
         return $this->type;
     }
 
     /**
      * @return PhpMethodParameter[]
      */
-    public function getParams(): array {
+    public function getParams(): array
+    {
         return $this->params;
     }
 
-    public function getAccessModifier(): PhpAccessModifier {
+    public function getAccessModifier(): PhpAccessModifier
+    {
         return $this->accessModifier;
     }
 }

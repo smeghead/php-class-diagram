@@ -1,14 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Php;
 
-class PhpType {
+class PhpType
+{
     private string $name;
     private string $meta;
     private array $namespace;
     private string $alias;
     private bool $nullable;
 
-    public function __construct(array $namespace, string $meta, string $name, $alias = null, bool $nullable = false) {
+    public function __construct(array $namespace, string $meta, string $name, $alias = null, bool $nullable = false)
+    {
         $this->namespace = $namespace;
         $this->meta = $meta;
         $this->name = $name;
@@ -16,15 +21,18 @@ class PhpType {
         $this->nullable = $nullable;
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getMeta(): string {
+    public function getMeta(): string
+    {
         return $this->meta;
     }
 
-    public function getMetaName(): string {
+    public function getMetaName(): string
+    {
         switch ($this->meta) {
             case 'Stmt_Interface':
                 return 'interface';
@@ -40,19 +48,23 @@ class PhpType {
     /**
      * @return string[] namespace
      */
-    public function getNamespace(): array {
+    public function getNamespace(): array
+    {
         return $this->namespace;
     }
 
-    public function getAlias(): string {
+    public function getAlias(): string
+    {
         return $this->alias;
     }
 
-    public function getNullable(): bool {
+    public function getNullable(): bool
+    {
         return $this->nullable;
     }
-    
-    public function equals(PhpType $other): bool {
+
+    public function equals(PhpType $other): bool
+    {
         if (str_replace('[]', '', $this->name) !== str_replace('[]', '', $other->name)) {
             return false;
         }

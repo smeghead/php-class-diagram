@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
@@ -11,7 +13,8 @@ use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
 use PhpParser\NodeAbstract;
 
-class PhpTypeExpression {
+class PhpTypeExpression
+{
     public const VAR = 'var';
     public const PARAM = 'param';
     public const RETURN_TYPE = 'return';
@@ -31,8 +34,9 @@ class PhpTypeExpression {
      * @param string $docString
      * @param PhpType[] $uses
      */
-    private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString, array $uses) {
-        if ( ! in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE, self::FOR_TEST])) {
+    private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString, array $uses)
+    {
+        if (!in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE, self::FOR_TEST])) {
             throw new \Exception('invalid tag.');
         }
         if ($targetType === self::FOR_TEST) {
@@ -41,7 +45,7 @@ class PhpTypeExpression {
         $this->uses = $uses;
 
         $type = $stmt->{$targetType === self::RETURN_TYPE ? 'returnType' : 'type'};
-        if ( ! empty($docString)) {
+        if (!empty($docString)) {
             foreach (explode('|', $docString) as $typeString) {
                 $this->types[] = $this->parseType($type, $currentNamespace, $typeString);
             }
@@ -124,7 +128,8 @@ class PhpTypeExpression {
     /**
      * 単体テスト用factory
      */
-    public static function buildByPhpType(PhpType $type): self {
+    public static function buildByPhpType(PhpType $type): self
+    {
         $instance = new self(new Name('dummy'), self::FOR_TEST, [], '', []);
         $instance->types[] = $type;
         return $instance;
@@ -135,7 +140,8 @@ class PhpTypeExpression {
      * @param string[] $currentNamespace 名前空間配列
      * @param ?string $typeString コメントの型表記
      */
-    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = '') {
+    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = '')
+    {
         $parts = [];
         if (!empty($typeString)) {
             $primitiveTypes = [
@@ -147,7 +153,7 @@ class PhpTypeExpression {
                 'array',
                 'object',
                 'callable',
-                'resource',                
+                'resource',
             ];
             if (in_array($typeString, $primitiveTypes)) {
                 $parts = [$typeString]; // primitive typeは、namespaceを付与しない。
@@ -157,7 +163,7 @@ class PhpTypeExpression {
                     $parts = explode('\\', $docString);
                 } else {
                     // usesを検索して適切なnamespaceを探す必要がある。
-                    $targets = array_values(array_filter($this->uses, function(PhpType $t) use($typeString) {
+                    $targets = array_values(array_filter($this->uses, function (PhpType $t) use ($typeString) {
                         $xParts = explode('\\', $typeString);
                         $name = end($xParts);
                         // docString で配列が指定されていた場合は、[] を除外して比較する。
@@ -166,7 +172,8 @@ class PhpTypeExpression {
                     if (count($targets) > 0) {
                         $parts = array_merge(
                             $targets[0]->getNamespace(),
-                            [sprintf('%s%s', $targets[0]->getName(), preg_match('/\[\]$/', $typeString) ? '[]' : '')]);
+                            [sprintf('%s%s', $targets[0]->getName(), preg_match('/\[\]$/', $typeString) ? '[]' : '')]
+                        );
                     } else {
                         $parts = array_merge($currentNamespace, explode('\\', $typeString));
                     }
@@ -175,18 +182,18 @@ class PhpTypeExpression {
         }
         $nullable = false;
         if (count($parts) === 0) { // docCommentから取得できない時には、$typeを解析する。
-            if ($type instanceOf NullableType) {
+            if ($type instanceof NullableType) {
                 $type = $type->type;
                 $nullable = true;
             }
-            if ($type instanceOf Identifier) {
+            if ($type instanceof Identifier) {
                 $parts[] = $type->name;
-            } else if ($type instanceOf FullyQualified) {
+            } else if ($type instanceof FullyQualified) {
                 $parts = $type->parts;
-            } else if ($type instanceOf Name) {
+            } else if ($type instanceof Name) {
                 $typeParts = $type->parts;
                 // usesを検索して適切なnamespaceを探す必要がある。
-                $targets = array_values(array_filter($this->uses, function(PhpType $t) use($typeParts) {
+                $targets = array_values(array_filter($this->uses, function (PhpType $t) use ($typeParts) {
                     $name = end($typeParts);
                     return $name === $t->getName();
                 }));
@@ -204,11 +211,13 @@ class PhpTypeExpression {
     /**
      * @return PhpType[] types
      */
-    public function getTypes(): array {
+    public function getTypes(): array
+    {
         return $this->types;
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         $types = [];
         foreach ($this->types as $type) {
             $types[] = sprintf('%s%s', $type->getNullable() ? '?' : '', $type->getName());

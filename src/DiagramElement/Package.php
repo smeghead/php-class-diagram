@@ -1,9 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class Package {
+class Package
+{
     private Options $options;
 
     /** @var string[]  */
@@ -16,17 +20,20 @@ class Package {
     /** @var Entry[] entries */
     public array $entries = [];
 
-    public function __construct(array $parents, string $name, Options $options) {
+    public function __construct(array $parents, string $name, Options $options)
+    {
         $this->parents = $parents;
         $this->name = $name;
         $this->options = $options;
     }
 
-    public function getLogicalName(): string {
+    public function getLogicalName(): string
+    {
         return implode('.', array_merge(array_slice($this->parents, 1), [$this->name]));
     }
 
-    public function addEntry(array $paths, Entry $entry): string {
+    public function addEntry(array $paths, Entry $entry): string
+    {
         if (count($paths) === 0) {
             if (empty($this->package)) {
                 $this->package = implode('.', $entry->getClass()->getNamespace());
@@ -46,7 +53,8 @@ class Package {
         return $this->package;
     }
 
-    private function findChild(string $dir): Package {
+    private function findChild(string $dir): Package
+    {
         if (empty($dir)) {
             return $this;
         }
@@ -60,7 +68,8 @@ class Package {
         return end($this->children);
     }
 
-    public function dump($level = 0): array {
+    public function dump($level = 0): array
+    {
         $indent = str_repeat('  ', $level);
         $lines = [];
         if ($this->name !== 'ROOT') {
@@ -83,7 +92,8 @@ class Package {
         return $lines;
     }
 
-    public function dumpPackages($level = 1): array {
+    public function dumpPackages($level = 1): array
+    {
         $indent = str_repeat('  ', $level);
         $lines = [];
         $target = empty($this->package) ? $this->getLogicalName() : $this->package;
@@ -112,7 +122,8 @@ class Package {
     /**
      * @return Arrow[] 矢印一覧
      */
-    public function getArrows(): array {
+    public function getArrows(): array
+    {
         $arrows = [];
         foreach ($this->entries as $e) {
             $arrows = array_merge($arrows, $e->getArrows());
@@ -125,8 +136,9 @@ class Package {
 
     /**
      * @return Entry[] クラスなどの一覧
-     */ 
-    public function getEntries(): array {
+     */
+    public function getEntries(): array
+    {
         $entries = $this->entries;
         foreach ($this->children as $n) {
             $entries = array_merge($entries, $n->getEntries());
@@ -136,8 +148,9 @@ class Package {
 
     /**
      * @return array useの一覧
-     */ 
-    public function getUses($acc): array {
+     */
+    public function getUses($acc): array
+    {
         $uses = [];
         foreach ($this->entries as $e) {
             $uses = array_merge($uses, $e->getClass()->getUses());
@@ -153,7 +166,8 @@ class Package {
     /**
      * 解析対象になっているpackage一覧を取得する。
      */
-    public function getTargetPackages($acc = []) {
+    public function getTargetPackages($acc = [])
+    {
         $acc[$this->package] = $this->getLogicalName();
         foreach ($this->children as $n) {
             $acc = $n->getTargetPackages($acc);
@@ -161,11 +175,13 @@ class Package {
         return $acc;
     }
 
-    public function findPackage(string $package): ?Package {
+    public function findPackage(string $package): ?Package
+    {
         return $this->recFindPackage($package);
     }
 
-    public function is(string $package): bool {
+    public function is(string $package): bool
+    {
         $segments = $this->parents;
         $segments[] = $this->name;
         return implode('.', $segments) === $package;
@@ -175,13 +191,14 @@ class Package {
      * @param string $package パッケージの表記(例: hoge.fuga)
      * @return ?Package
      */
-    private function recFindPackage(string $package): ?Package {
+    private function recFindPackage(string $package): ?Package
+    {
         if ($this->is($package)) {
             return $this;
         }
         foreach ($this->children as $c) {
             $p = $c->recFindPackage($package);
-            if ( ! empty($p)) {
+            if (!empty($p)) {
                 return $p;
             }
         }

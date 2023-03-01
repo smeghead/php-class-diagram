@@ -1,16 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class Relation {
+class Relation
+{
     private Options $options;
     private Package $package;
 
     /**
      * @param Entry[] $entries
      */
-    public function __construct(array $entries, Options $options) {
+    public function __construct(array $entries, Options $options)
+    {
         $this->options = $options;
         $this->package = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
@@ -18,13 +23,17 @@ class Relation {
         }
     }
 
-    public function getPackage(): Package {
+    public function getPackage(): Package
+    {
         return $this->package;
     }
 
-    public function dump(): array {
+    public function dump(): array
+    {
         $lines = ['@startuml class-diagram'];
-        $lines = array_merge($lines, array_map(function($x){ return '  ' . $x;}, $this->options->headers()));
+        $lines = array_merge($lines, array_map(function ($x) {
+            return '  ' . $x;
+        }, $this->options->headers()));
         $lines = array_merge($lines, $this->package->dump());
         $lines = array_merge($lines, $this->getRelations());
         $lines[] = '@enduml';
@@ -32,9 +41,10 @@ class Relation {
         return $lines;
     }
 
-    public function getRelations(): array {
+    public function getRelations(): array
+    {
         $entities = $this->package->getEntries();
-        $relation_expressions = array_map(function(Arrow $x) use ($entities){
+        $relation_expressions = array_map(function (Arrow $x) use ($entities) {
             foreach ($entities as $e) {
                 if ($e->getClass()->getClassType()->equals($x->getTo())) {
                     return $x->toString($e->getClass());
@@ -47,7 +57,8 @@ class Relation {
         return array_unique($relation_expressions);
     }
 
-    public function dumpPackages(): array {
+    public function dumpPackages(): array
+    {
         $lines = ['@startuml package-related-diagram'];
         $lines = array_merge($lines, $this->options->headers());
         $lines = array_merge($lines, $this->package->dumpPackages());
@@ -59,7 +70,8 @@ class Relation {
         return $lines;
     }
 
-    public function getUses(): array {
+    public function getUses(): array
+    {
         return $this->package->getUses([]);
     }
 }

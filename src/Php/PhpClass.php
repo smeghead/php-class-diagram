@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Node\ {
+use PhpParser\Node\{
     NullableType,
     Identifier,
     Name,
@@ -9,7 +12,7 @@ use PhpParser\Node\ {
 };
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
-use PhpParser\Node\Stmt\ {
+use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
     ClassMethod,
@@ -18,13 +21,15 @@ use PhpParser\Node\Stmt\ {
     Use_,
 };
 
-class PhpClass {
+class PhpClass
+{
     /** @var string[] directory parts */
     protected array $dirs;
     protected ClassLike $syntax;
     protected array $full;
 
-    public function __construct(string $filename, Stmt $syntax, array $full) {
+    public function __construct(string $filename, Stmt $syntax, array $full)
+    {
         $relativePath = dirname($filename);
         if ($relativePath === '.') {
             $dirs = [];
@@ -36,9 +41,10 @@ class PhpClass {
         $this->full = $full;
     }
 
-    public function getNamespace(): array {
-        foreach($this->full as $stmt) {
-            if ($stmt instanceOf Namespace_) {
+    public function getNamespace(): array
+    {
+        foreach ($this->full as $stmt) {
+            if ($stmt instanceof Namespace_) {
                 return $stmt->name->parts;
             }
         }
@@ -49,9 +55,10 @@ class PhpClass {
      * return logical name.
      * @return string logical name.
      */
-    public function getLogicalName(): string {
+    public function getLogicalName(): string
+    {
         $type = $this->getClassType();
-        $parts = $this->dirs; 
+        $parts = $this->dirs;
         $parts[] = $type->getName();
         return implode('.', $parts);
     }
@@ -60,14 +67,16 @@ class PhpClass {
      * return className alias in class-diagram.
      * @return string className alias
      */
-    public function getClassNameAlias(): string {
+    public function getClassNameAlias(): string
+    {
         return str_replace(['.', '[', ']'], '_', $this->getLogicalName());
     }
 
-    public function getClassType(): PhpType {
+    public function getClassType(): PhpType
+    {
         $namespace = [];
         foreach ($this->full as $stmt) {
-            if ($stmt instanceOf Namespace_) {
+            if ($stmt instanceof Namespace_) {
                 $namespace = $stmt->name->parts;
                 if ($namespace === null) {
                     var_dump($stmt);
@@ -81,7 +90,8 @@ class PhpClass {
     /**
      * @return PhpProperty[] プロパティ一覧
      */
-    public function getProperties(): array {
+    public function getProperties(): array
+    {
         $properties = $this->getPropertiesFromSyntax();
         $props = [];
         foreach ($properties as $p) {
@@ -93,33 +103,36 @@ class PhpClass {
     /**
      * @return Property[] プロパティ一覧
      */
-    protected function getPropertiesFromSyntax(): array {
+    protected function getPropertiesFromSyntax(): array
+    {
         return $this->syntax->getProperties();
     }
 
     /**
      * @return PhpType[] use一覧
      */
-    public function getUses(): array {
+    public function getUses(): array
+    {
         return $this->getUsesRec($this->full);
     }
 
-    private function getUsesRec($stmts, $uses = []) {
+    private function getUsesRec($stmts, $uses = [])
+    {
         foreach ($stmts as $stmt) {
-            if ($stmt instanceOf GroupUse) {
+            if ($stmt instanceof GroupUse) {
                 $prefix = $stmt->prefix->parts;
                 foreach ($stmt->uses as $u) {
                     $parts = $u->name->parts;
                     $name = array_pop($parts);
-                    $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias); 
+                    $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias);
                 }
-            } else if ($stmt instanceOf Use_) {
+            } else if ($stmt instanceof Use_) {
                 foreach ($stmt->uses as $u) {
                     $parts = $u->name->parts;
                     $name = array_pop($parts);
-                    $uses[] = new PhpType($parts, '', $name, $u->alias); 
+                    $uses[] = new PhpType($parts, '', $name, $u->alias);
                 }
-            } else if ($stmt instanceOf Namespace_) {
+            } else if ($stmt instanceof Namespace_) {
                 $uses = array_merge($uses, $this->getUsesRec($stmt->stmts, $uses));
             }
         }
@@ -133,7 +146,8 @@ class PhpClass {
      * * 自身のクラス名が目的のクラスかどうか   ... (不要かもしれない。暗黙の参照と統合可能
      * * 暗黙の参照として、自身のnamespaceを返却する
      */
-    protected function findNamespaceByTypeParts(array $type_parts): array {
+    protected function findNamespaceByTypeParts(array $type_parts): array
+    {
         $type = str_replace('[]', '', array_pop($type_parts));
         $primitives = ['string', 'bool', 'boolean', 'int', 'integer', 'float', 'double', 'array', 'object', 'resource'];
         if (in_array($type, $primitives)) {
@@ -155,35 +169,39 @@ class PhpClass {
     }
 
     /** @return PhpMethod[] メソッド一覧 */
-    public function getMethods(): array {
+    public function getMethods(): array
+    {
         $methods = [];
         foreach ($this->syntax->stmts as $stmt) {
-            if ($stmt instanceOf ClassMethod) {
+            if ($stmt instanceof ClassMethod) {
                 $methods[] = $this->getMethodInfo($stmt);
             }
         }
         return $methods;
     }
 
-    protected function getMethodInfo(ClassMethod $method): PhpMethod {
+    protected function getMethodInfo(ClassMethod $method): PhpMethod
+    {
         return new PhpMethod($method, $this);
     }
 
     /**
      * @return PhpType[] 継承元と実装元型一覧
      */
-    public function getExtends(): array {
+    public function getExtends(): array
+    {
         $extends = [];
-        if ( ! empty($this->syntax->extends)) {
+        if (!empty($this->syntax->extends)) {
             $Name = $this->syntax->extends;
             if (is_array($this->syntax->extends)) {
                 $Name = $this->syntax->extends[0];
-            } 
-            if ($Name instanceOf FullyQualified) {
+            }
+            if ($Name instanceof FullyQualified) {
                 $extends[] = new PhpType(
                     array_slice($Name->parts, 0, count($Name->parts) - 1),
                     '',
-                    end($Name->parts));
+                    end($Name->parts)
+                );
             } else {
                 $parts = $Name->parts;
                 $namespace = [];
@@ -194,7 +212,7 @@ class PhpClass {
                 $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $typeName);
             }
         }
-        if ( ! empty($this->syntax->implements)) {
+        if (!empty($this->syntax->implements)) {
             foreach ($this->syntax->implements as $i) {
                 $parts = $i->parts;
                 $namespace = [];

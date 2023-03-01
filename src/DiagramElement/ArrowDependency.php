@@ -1,12 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Php\PhpClass;
 
-class ArrowDependency extends Arrow {
+class ArrowDependency extends Arrow
+{
     protected string $figure = '..>';
 
-    public function toString(PhpClass $toClass): string {
+    public function toString(PhpClass $toClass): string
+    {
         if (strpos($this->getTo()->getName(), '[]') === false) {
             return sprintf('  %s %s %s', $this->getFrom()->getClassNameAlias(), $this->figure, $toClass->getClassNameAlias());
         }
