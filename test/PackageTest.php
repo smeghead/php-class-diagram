@@ -474,7 +474,7 @@ EOS;
     package product {
     }
   }
-  package PhpParse as PhpParse #DDDDDD {
+  package PhpParse #DDDDDD {
   }
   product --> PhpParse
 @enduml

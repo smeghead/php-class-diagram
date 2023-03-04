@@ -76,8 +76,11 @@ class PackageNode
 
     public function dump(int $indent): string
     {
+        if (empty($this->name)) {
+            return ''; // Do not display packages with empty package names
+        }
         $lines = [];
-        $lines[] = sprintf('%spackage %s as %s #DDDDDD {', str_repeat('  ', $indent), $this->name, $this->name);
+        $lines[] = sprintf('%spackage %s #DDDDDD {', str_repeat('  ', $indent), $this->name);
         foreach ($this->children as $c) {
             $lines[] = $c->dump($indent + 1);
         }

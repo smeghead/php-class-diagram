@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Fixed so that unnamed external packages are not displayed in the package association diagram.
+
 ## v0.4.0 (2023-03-01)
 
 ### Bug fix
