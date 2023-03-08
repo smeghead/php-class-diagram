@@ -67,6 +67,24 @@ class Entry
         return $lines;
     }
 
+    public function dumpDivisions($level = 0): array
+    {
+        $indent = str_repeat('  ', $level);
+        $lines = [];
+        $meta = $this->class->getClassType()->getMetaName();
+        if ($meta === 'enum') {
+            $lines[] = sprintf('%scard %s [', $indent, $this->class->getClassType()->getName());
+            $lines[] = sprintf('%s  %s', $indent, $this->class->getClassType()->getName());
+            $lines[] = sprintf('%s  ====', $indent);
+            $cases = $this->class->getEnumCases();
+            $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (string $x) use($indent) {
+                return sprintf('%s  %s', $indent, $x);
+            }, $cases));
+            $lines[] = sprintf('%s]', $indent);
+        }
+        return $lines;
+    }
+
     private function modifier(PhpAccessModifier $modifier): string
     {
         $expressions = [];

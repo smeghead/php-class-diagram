@@ -204,4 +204,28 @@ class Package
         }
         return null;
     }
+
+    public function dumpDivisions($level = 0): array
+    {
+        $indent = str_repeat('  ', $level);
+        $lines = [];
+        if ($this->name !== 'ROOT') {
+            $lines[] = sprintf(
+                '%spackage %s as %s {',
+                $indent,
+                $this->name,
+                $this->getLogicalName()
+            );
+        }
+        foreach ($this->entries as $e) {
+            $lines = array_merge($lines, $e->dumpDivisions($level + 1));
+        }
+        foreach ($this->children as $n) {
+            $lines = array_merge($lines, $n->dumpDivisions($level + 1));
+        }
+        if ($this->name !== 'ROOT') {
+            $lines[] = sprintf('%s}', $indent);
+        }
+        return $lines;
+    }
 }

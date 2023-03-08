@@ -311,5 +311,6 @@ final class PhpReflectionTest extends TestCase {
         $data = $parsed[0]->getInfo();
         $this->assertSame('Suit', $data->getClassType()->getName(), '1st class type name.');
         $this->assertSame(['Hoge', 'TestEnum'], $data->getClassType()->getNamespace(), '1st namespace name.');
+        $this->assertSame(['Hearts', 'Diamonds', 'Clubs', 'Spades'], $data->getEnumCases(), 'enum cases.');
     }
 }

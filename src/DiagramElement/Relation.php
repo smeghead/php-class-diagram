@@ -74,4 +74,17 @@ class Relation
     {
         return $this->package->getUses([]);
     }
+
+    public function dumpDivisions(): array
+    {
+        $lines = ['@startuml division-diagram'];
+        $lines = array_merge($lines, array_map(function ($x) {
+            return '  ' . $x;
+        }, $this->options->headers()));
+        $lines = array_merge($lines, $this->package->dumpDivisions());
+        $lines[] = '@enduml';
+
+        return $lines;
+    }
+
 }

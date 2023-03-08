@@ -16,6 +16,8 @@ use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
     ClassMethod,
+    Enum_,
+    EnumCase,
     Property,
     GroupUse,
     Use_,
@@ -224,5 +226,19 @@ class PhpClass
             }
         }
         return $extends;
+    }
+
+    public function getEnumCases(): array
+    {
+        if ( ! $this->syntax instanceof Enum_) {
+            return [];
+        }
+        $cases = [];
+        foreach ($this->syntax->stmts as $stmt) {
+            if ($stmt instanceof EnumCase) {
+                $cases[] = $stmt->name->name;
+            }
+        }
+        return $cases;
     }
 }

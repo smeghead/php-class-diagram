@@ -124,6 +124,15 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_PACKAGE, $options->diagram(), 'diagram is package.');
     }
+    public function testDiagram_division(): void {
+        $opt = [
+            'division-diagram' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::DIAGRAM_DIVSION, $options->diagram(), 'diagram is division.');
+    }
     public function testDiagram3(): void {
         $opt = [
         ];

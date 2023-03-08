@@ -15,6 +15,7 @@ class Options
     const DIAGRAM_CLASS = 'class';
     const DIAGRAM_PACKAGE = 'package';
     const DIAGRAM_JIG = 'jig';
+    const DIAGRAM_DIVSION = 'division';
 
     public function __construct(array $opt)
     {
@@ -42,6 +43,9 @@ class Options
         }
         if (isset($this->opt['jig-diagram'])) {
             return self::DIAGRAM_JIG;
+        }
+        if (isset($this->opt['division-diagram'])) {
+            return self::DIAGRAM_DIVSION;
         }
         // default
         return self::DIAGRAM_CLASS;

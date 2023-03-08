@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * add division diagram option.
+
 ### Bug fix
 
  * Fixed so that unnamed external packages are not displayed in the package association diagram.
