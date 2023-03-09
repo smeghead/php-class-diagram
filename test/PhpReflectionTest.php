@@ -2,6 +2,7 @@
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
+use Smeghead\PhpClassDiagram\Php\PhpEnumCase;
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 final class PhpReflectionTest extends TestCase {
@@ -311,6 +312,8 @@ final class PhpReflectionTest extends TestCase {
         $data = $parsed[0]->getInfo();
         $this->assertSame('Suit', $data->getClassType()->getName(), '1st class type name.');
         $this->assertSame(['Hoge', 'TestEnum'], $data->getClassType()->getNamespace(), '1st namespace name.');
-        $this->assertSame(['Hearts', 'Diamonds', 'Clubs', 'Spades'], $data->getEnumCases(), 'enum cases.');
+        $enums = $data->getEnumCases();
+        $this->assertSame(['Hearts', 'Diamonds', 'Clubs', 'Spades'], array_map(function(PhpEnumCase $e){return $e->getName();}, $enums), 'enum cases.');
+        $this->assertSame(['ハート', 'ダイヤ', 'クローバー', 'スペード'], array_map(function(PhpEnumCase $e){return $e->getDocString();}, $enums), 'enum cases.');
     }
 }

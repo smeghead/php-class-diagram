@@ -8,6 +8,7 @@ use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\Php\{
     PhpClass,
     PhpAccessModifier,
+    PhpEnumCase,
     PhpMethodParameter,
 };
 
@@ -73,12 +74,16 @@ class Entry
         $lines = [];
         $meta = $this->class->getClassType()->getMetaName();
         if ($meta === 'enum') {
-            $lines[] = sprintf('%scard %s [', $indent, $this->class->getClassType()->getName());
+            $lines[] = sprintf('%scard %s #ccffcc [', $indent, $this->class->getClassType()->getName());
             $lines[] = sprintf('%s  %s', $indent, $this->class->getClassType()->getName());
             $lines[] = sprintf('%s  ====', $indent);
             $cases = $this->class->getEnumCases();
-            $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (string $x) use($indent) {
-                return sprintf('%s  %s', $indent, $x);
+            $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (PhpEnumCase $x) use($indent) {
+                $doc = $x->getDocString();
+                if (empty($doc)) {
+                    return sprintf('%s  %s', $indent, $x->getName());
+                }
+                return sprintf("%s  %s\n%s  <b>%s</b>", $indent, $x->getName(), $indent, $doc);
             }, $cases));
             $lines[] = sprintf('%s]', $indent);
         }

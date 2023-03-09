@@ -228,6 +228,9 @@ class PhpClass
         return $extends;
     }
 
+    /**
+     * @return PhpEnumCase[] list of enum options.
+     */
     public function getEnumCases(): array
     {
         if ( ! $this->syntax instanceof Enum_) {
@@ -236,7 +239,7 @@ class PhpClass
         $cases = [];
         foreach ($this->syntax->stmts as $stmt) {
             if ($stmt instanceof EnumCase) {
-                $cases[] = $stmt->name->name;
+                $cases[] = new PhpEnumCase($stmt);
             }
         }
         return $cases;
