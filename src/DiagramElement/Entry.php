@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
+use Generator;
 use Smeghead\PhpClassDiagram\Config\Options;
+use Smeghead\PhpClassDiagram\DiagramElement\Division\DivisionColor;
 use Smeghead\PhpClassDiagram\Php\{
     PhpClass,
     PhpAccessModifier,
@@ -74,7 +76,7 @@ class Entry
         $lines = [];
         $meta = $this->class->getClassType()->getMetaName();
         if ($meta === 'enum') {
-            $lines[] = sprintf('%scard %s #ccffcc [', $indent, $this->class->getClassType()->getName());
+            $lines[] = sprintf('%scard %s %s [', $indent, $this->class->getClassType()->getName(), DivisionColor::nextColor());
             $lines[] = sprintf('%s  %s', $indent, $this->class->getClassType()->getName());
             $lines[] = sprintf('%s  ====', $indent);
             $cases = $this->class->getEnumCases();
