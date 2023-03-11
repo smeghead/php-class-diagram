@@ -58,6 +58,7 @@ OPTIONS
   -v, --version                  show version.
       --class-diagram            output class diagram script. (default)
       --package-diagram          output package diagram script.
+      --division-diagram         output division diagram script.
       --jig-diagram              output class diagram and package diagram script.
       --enable-class-properties  describe properties in class diagram. (default)
       --disable-class-properties not describe properties in class diagram.
