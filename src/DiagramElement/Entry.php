@@ -85,7 +85,7 @@ class Entry
                 if (empty($doc)) {
                     return sprintf('%s  %s', $indent, $x->getName());
                 }
-                return sprintf("%s  %s\n%s  <b>%s</b>", $indent, $x->getName(), $indent, $doc);
+                return sprintf("%s  %s\r\n%s  <b>%s</b>", $indent, $x->getName(), $indent, $doc);
             }, $cases));
             $lines[] = sprintf('%s]', $indent);
         }
