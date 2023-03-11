@@ -48,6 +48,9 @@ class Main
                 echo implode("\r\n", $relation->dump()) . "\r\n";
                 echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
                 break;
+            case OPTIONS::DIAGRAM_DIVSION:
+                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+                break;
             default:
                 throw new \Exception('invalid diagram.');
         }
