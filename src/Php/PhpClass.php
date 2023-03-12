@@ -22,6 +22,7 @@ use PhpParser\Node\Stmt\{
     GroupUse,
     Use_,
 };
+use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
 class PhpClass
 {
@@ -243,5 +244,10 @@ class PhpClass
             }
         }
         return $cases;
+    }
+
+    public function getDescription(): string {
+        $doc = new PhpDocComment($this->syntax);
+        return $doc->getDescription();
     }
 }

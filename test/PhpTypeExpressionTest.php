@@ -177,10 +177,9 @@ final class PhpTypeExpressionTest extends TestCase {
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $doc = $ast[0]->stmts[2]->stmts[10]->getDocComment();
-        $docString = $doc->getText();
+        $method = $ast[0]->stmts[2]->stmts[10];
         $param = $ast[0]->stmts[2]->stmts[10]->getParams()[0];
-        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'paramint', []);
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -197,10 +196,9 @@ final class PhpTypeExpressionTest extends TestCase {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
         // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $doc = $ast[0]->stmts[2]->stmts[10]->getDocComment();
-        $docString = $doc->getText();
+        $method = $ast[0]->stmts[2]->stmts[10];
         $param = $ast[0]->stmts[2]->stmts[10]->getParams()[1];
-        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'paramint', []);
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', []);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
@@ -217,10 +215,9 @@ final class PhpTypeExpressionTest extends TestCase {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
         // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $doc = $ast[0]->stmts[2]->stmts[10]->getDocComment();
-        $docString = $doc->getText();
+        $method = $ast[0]->stmts[2]->stmts[10];
         $param = $ast[0]->stmts[2]->stmts[10]->getParams()[2];
-        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'param1', []);
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'param1', []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -294,10 +291,11 @@ final class PhpTypeExpressionTest extends TestCase {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
         // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $docString = '';
+        $method = $ast[0]->stmts[2]->stmts[13];
+        // $docString = '';
         $param = $ast[0]->stmts[2]->stmts[13]->getParams()[0];
         $uses = [new PhpType(['hoge', 'fuga', 'product', 'tag'], '', 'Tag')];
-        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $docString, 'paramint', $uses);
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', $uses);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product', 'tag'], $types[0]->getNamespace(), 'namespace');

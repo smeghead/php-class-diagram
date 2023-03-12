@@ -23,7 +23,8 @@ class Product {
     private $docStringUnion2;
 
     /**
-     * @param string|int $param1  
+     * @param string|int $param1
+     * @return int|null return val.
      */
     public function method1(int $paramInt, ?Price $price, string $param1): int {
         return 0;

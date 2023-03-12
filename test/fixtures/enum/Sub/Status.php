@@ -1,6 +1,7 @@
 <?php
 namespace Hoge\TestEnum\Sub;
 
+/** ゲームのステータス */
 enum Status {
     /** プレイヤーのターン */
     case Player;

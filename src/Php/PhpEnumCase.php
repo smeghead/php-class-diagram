@@ -8,16 +8,17 @@ use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\{
     EnumCase,
 };
+use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
 class PhpEnumCase
 {
     protected string $name;
-    protected ?Doc $doc;
+    protected PhpDocComment $doc;
 
     public function __construct(EnumCase $e)
     {
         $this->name = $e->name->name;
-        $this->doc = $e->getDocComment();
+        $this->doc = new PhpDocComment($e);
     }
 
     public function getName(): string
@@ -27,15 +28,7 @@ class PhpEnumCase
 
     public function getDocString(): string
     {
-        if (empty($this->doc)) {
-            return '';
-        }
-        $str = $this->doc->getText();
-        $str = preg_replace('/\/\*\*?\s*(.*)\s*\*\//s', '$1', $str);
-        $str = preg_replace('/^\s*\**\s*/', '', $str);
-        $str = str_replace(["\r\n", "\r", "\n"], "\n", $str);
-        $lines = explode("\n", $str);
-        return trim(array_shift($lines));
+        return $this->doc->getDescription();
     }
 
 }

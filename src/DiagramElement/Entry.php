@@ -78,6 +78,10 @@ class Entry
         if ($meta === 'enum') {
             $lines[] = sprintf('%scard %s %s [', $indent, $this->class->getClassType()->getName(), DivisionColor::nextColor());
             $lines[] = sprintf('%s  %s', $indent, $this->class->getClassType()->getName());
+            $description = $this->class->getDescription();
+            if (!empty($description)) {
+                $lines[] = sprintf('%s  <b>%s</b>', $indent, $description);
+            }
             $lines[] = sprintf('%s  ====', $indent);
             $cases = $this->class->getEnumCases();
             $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (PhpEnumCase $x) use($indent) {

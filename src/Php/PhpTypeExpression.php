@@ -9,9 +9,11 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\NullableType;
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
 use PhpParser\NodeAbstract;
+use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
 class PhpTypeExpression
 {
@@ -69,37 +71,32 @@ class PhpTypeExpression
         array $currentNamespace,
         array $uses
     ): self {
-        $doc = $stmt->getDocComment();
-        $typeString = '';
-        if ($doc instanceof Doc) {
-            $docString = $doc->getText();
-            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s).*/', 'var'), $docString, $matches)) {
-                $typeString = $matches[1];
-            }
-        }
+        $doc = new PhpDocComment($stmt);
+        $typeString = $doc->getVarTypeName();
         return new self($stmt, self::VAR, $currentNamespace, $typeString, $uses);
     }
 
     /**
      * @param NodeAbstract $stmt
      * @param string[] $currentNamespace
-     * @param string $docString
+     * @param ClassMethod $method
      * @param PhpType[] $uses
      * @return self
      */
     public static function buildByMethodParam(
         NodeAbstract $stmt,
         array $currentNamespace,
-        string $docString,
+        ClassMethod $method,
         string $paramName,
         array $uses
     ): self {
-        $typeString = '';
-        if (!empty($docString)) {
-            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s)\s*\$%s.*/', 'param', $paramName), $docString, $matches)) {
-                $typeString = $matches[1];
-            }
-        }
+        $doc = new PhpDocComment($method);
+        $typeString = $doc->getParamTypeName($paramName);
+        // if (!empty($docString)) {
+        //     if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s)\s*\$%s.*/', 'param', $paramName), $docString, $matches)) {
+        //         $typeString = $matches[1];
+        //     }
+        // }
         return new self($stmt, self::PARAM, $currentNamespace, $typeString, $uses);
     }
 
