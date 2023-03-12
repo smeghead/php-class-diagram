@@ -211,7 +211,7 @@ If it finds packages that depend on each other, it will warn you with a thick re
 
 ### Division Diagram
 
-If you are using the Enum added in PHP8.1, you can output the division chart.
+If you are using the Enum added in PHP8.1, you can output the division diagram.
 Visualizing the divisions used in the program can be useful for research and design.
 
 ![PlantUML output image.](output-division.png)

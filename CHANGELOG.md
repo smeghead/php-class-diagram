@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.5.0 (2023-03-12)
+
 ### Features
 
  * add division diagram option.
