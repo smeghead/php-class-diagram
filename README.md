@@ -214,6 +214,62 @@ If it finds packages that depend on each other, it will warn you with a thick re
 If you are using the Enum added in PHP8.1, you can output the division diagram.
 Visualizing the divisions used in the program can be useful for research and design.
 
+```bash
+$ bin/php-class-diagram --division-diagram test/fixtures/enum/ 
+@startuml division-diagram
+  card Suit #ccffcc [
+    Suit
+    <b>スート</b>
+    ====
+    Hearts
+    <b>ハート</b>
+    ----
+    Diamonds
+    <b>ダイヤ</b>
+    ----
+    Clubs
+    <b>クローバー</b>
+    ----
+    Spades
+    <b>スペード</b>
+  ]
+  package Sub as Sub {
+    card Status #ffcccc [
+      Status
+      <b>ゲームのステータス</b>
+      ====
+      Player
+      <b>プレイヤーのターン</b>
+      ----
+      Computer
+      <b>コンピュータのターン</b>
+      ----
+      GameSet
+      <b>ゲーム終了</b>
+    ]
+    card MyExceptionCase #ccccff [
+      MyExceptionCase
+      ====
+      InvalidMethod
+      ----
+      InvalidProperty
+      ----
+      Timeout
+    ]
+    card Size #ccffff [
+      Size
+      ====
+      Small
+      ----
+      Medium
+      ----
+      Large
+    ]
+  }
+@enduml
+```
+
+
 ![PlantUML output image.](output-division.png)
 
 ## Development
