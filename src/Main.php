@@ -47,6 +47,7 @@ class Main
             case OPTIONS::DIAGRAM_JIG:
                 echo implode("\r\n", $relation->dump()) . "\r\n";
                 echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
                 break;
             case OPTIONS::DIAGRAM_DIVSION:
                 echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
