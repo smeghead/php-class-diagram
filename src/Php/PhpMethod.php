@@ -23,11 +23,6 @@ class PhpMethod
 
     public function __construct(ClassMethod $method, PhpClass $class)
     {
-        // $docString = '';
-        // $doc = $method->getDocComment();
-        // if (!empty($doc)) {
-        //     $docString = $doc->getText();
-        // }
         $params = array_map(function (Param $x) use ($class, $method) {
             $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $method, $x->var->name, $class->getUses());
             return new PhpMethodParameter($x->var->name, $type);

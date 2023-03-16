@@ -92,11 +92,6 @@ class PhpTypeExpression
     ): self {
         $doc = new PhpDocComment($method);
         $typeString = $doc->getParamTypeName($paramName);
-        // if (!empty($docString)) {
-        //     if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s)\s*\$%s.*/', 'param', $paramName), $docString, $matches)) {
-        //         $typeString = $matches[1];
-        //     }
-        // }
         return new self($stmt, self::PARAM, $currentNamespace, $typeString, $uses);
     }
 
@@ -111,14 +106,8 @@ class PhpTypeExpression
         array $currentNamespace,
         array $uses
     ): self {
-        $doc = $stmt->getDocComment();
-        $typeString = '';
-        if ($doc instanceof Doc) {
-            $docString = $doc->getText();
-            if (preg_match(sprintf('/@%s\s+(\S+)(\b|\s).*/', 'return'), $docString, $matches)) {
-                $typeString = $matches[1];
-            }
-        }
+        $doc = new PhpDocComment($stmt);
+        $typeString = $doc->getReturnTypeName();
         return new self($stmt, self::RETURN_TYPE, $currentNamespace, $typeString, $uses);
     }
 
