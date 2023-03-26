@@ -88,6 +88,35 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(true, $options->classMethods(), 'classMethods is default on.');
     }
+
+    public function testClassNameSummary1(): void {
+        $opt = [
+            'enable-class-name-summary' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(true, $options->classNameSummary(), 'classNameSummary is on.');
+    }
+    public function testClassNameSummary2(): void {
+        $opt = [
+            'disable-class-name-summary' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(false, $options->classNameSummary(), 'classNameSummary is off.');
+    }
+    public function testClassNameSummary3(): void {
+        $opt = [
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(true, $options->classNameSummary(), 'classNameSummary is default on.');
+    }
+
+
     public function testPhp1(): void {
         $opt = [
             'php7' => true,

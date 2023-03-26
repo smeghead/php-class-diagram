@@ -3,8 +3,6 @@
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
-use Smeghead\PhpClassDiagram\Php\PhpType;
-use Smeghead\PhpClassDiagram\Php\PhpTypeExpression;
 
 final class PhpDocCommentTest extends TestCase {
     private $fixtureDir;

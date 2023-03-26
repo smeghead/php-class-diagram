@@ -64,6 +64,8 @@ OPTIONS
       --disable-class-properties not describe properties in class diagram.
       --enable-class-methods     describe methods in class diagram. (default)
       --disable-class-methods    not describe methods in class diagram.
+      --enable-class-name-summary  describe classname with Class summary of document comment. (default)
+      --disable-class-name-summary describe classname without Class summary of document comment.
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
       --php8                     parse php source file as php8. (not suppoted)

@@ -3,6 +3,7 @@
 ### Features
 
  * Added a division diagram to the output when the --dig-diagram option is specified.
+ * Display a summary of the class Document Comment under the class name in the class diagram.
 
 ## v0.5.0 (2023-03-12)
 

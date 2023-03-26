@@ -46,10 +46,18 @@ class Entry
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        // $meta = $this->class->getClassType()->getMeta() === 'Stmt_Interface' ? 'interface' : 'class';
         $meta = $this->class->getClassType()->getMetaName();
+        $classSummary = ($this->options->classNameSummary()
+            ? $this->class->getDescription()
+            : '');
+        $classIdentifier = sprintf(
+            '%s "%s" as %s',
+            $meta,
+            $this->class->getClassType()->getName() . (empty($classSummary) ? '' : sprintf("\\n<b>%s</b>", $classSummary)),
+            $this->class->getClassNameAlias()
+        );
         if ($this->options->classProperties() || $this->options->classMethods()) {
-            $lines[] = sprintf('%s%s "%s" as %s {', $indent, $meta, $this->class->getClassType()->getName(), $this->class->getClassNameAlias());
+            $lines[] = sprintf('%s%s {', $indent, $classIdentifier);
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
                     $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
@@ -65,7 +73,7 @@ class Entry
             }
             $lines[] = sprintf('%s}', $indent);
         } else {
-            $lines[] = sprintf('%s%s "%s" as %s', $indent, $meta, $this->class->getClassType()->getName(), $this->class->getClassNameAlias());
+            $lines[] = sprintf('%s%s', $indent, $classIdentifier);
         }
         return $lines;
     }
@@ -84,7 +92,7 @@ class Entry
             }
             $lines[] = sprintf('%s  ====', $indent);
             $cases = $this->class->getEnumCases();
-            $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (PhpEnumCase $x) use($indent) {
+            $lines[] = implode(sprintf("\r\n%s  ----\r\n", $indent), array_map(function (PhpEnumCase $x) use ($indent) {
                 $doc = $x->getDocString();
                 if (empty($doc)) {
                     return sprintf('%s  %s', $indent, $x->getName());

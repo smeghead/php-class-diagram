@@ -75,6 +75,18 @@ class Options
         return true;
     }
 
+    public function classNameSummary(): bool
+    {
+        if (isset($this->opt['enable-class-name-summary'])) {
+            return true;
+        }
+        if (isset($this->opt['disable-class-name-summary'])) {
+            return false;
+        }
+        // default
+        return true;
+    }
+
     public function phpVersion(): string
     {
         if (isset($this->opt['php5'])) {
