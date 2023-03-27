@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.6.0 (2023-03-27)
+
 ### Features
 
  * Added a division diagram to the output when the --dig-diagram option is specified.
