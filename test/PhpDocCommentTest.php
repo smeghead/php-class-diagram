@@ -118,4 +118,18 @@ final class PhpDocCommentTest extends TestCase {
 
         $this->assertSame("int|null", $doc->getReturnTypeName(), 'return type name.');
     }
+    public function test_getClassComment(): void {
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+
+        $class = $ast[0]->stmts[2];
+        $doc = new PhpDocComment($class);
+
+        $this->assertSame('', $doc->getDescription(), 'class type name.');
+    }
 }
