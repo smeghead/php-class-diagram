@@ -7,6 +7,9 @@ use hoge\fuga\product\ {
 };
 use hoge\fuga\product\tag\Tag;
 
+/**
+ * @hoge hogehoge
+ */
 class Product {
     private ?string $nullableString;
     private int|string $intOrString;

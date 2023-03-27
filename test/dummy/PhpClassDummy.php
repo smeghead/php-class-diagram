@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use PhpParser\Node\Stmt\Class_;
 use Smeghead\PhpClassDiagram\Php\ {
     PhpClass,
     PhpType,
@@ -24,6 +25,7 @@ class PhpClassDummy extends PhpClass {
             throw new \Exception('failed to decode josn.' . $this->getJsonError());
         }
         $this->data = $d;
+        $this->syntax = new Class_('dummy');
     }
 
     public function getClassType(): PhpType {

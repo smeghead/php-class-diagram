@@ -30,7 +30,8 @@ class PhpDocComment
         $str = $this->text;
         $str = str_replace(["\r\n", "\r", "\n"], "\n", $str);
         $lines = explode("\n", $str);
-        return array_shift($lines);
+        $firstLine = array_shift($lines);
+        return preg_replace('/\@\S+.*/', '', $firstLine);
     }
 
     public function getVarTypeName(): string {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Comment\Doc;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
