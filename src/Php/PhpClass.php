@@ -27,9 +27,9 @@ use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 class PhpClass
 {
     /** @var string[] directory parts */
-    protected array $dirs;
-    protected ClassLike $syntax;
-    protected array $full;
+    private array $dirs;
+    private ClassLike $syntax;
+    private array $full;
 
     public function __construct(string $filename, Stmt $syntax, array $full)
     {
@@ -106,7 +106,7 @@ class PhpClass
     /**
      * @return Property[] プロパティ一覧
      */
-    protected function getPropertiesFromSyntax(): array
+    private function getPropertiesFromSyntax(): array
     {
         return $this->syntax->getProperties();
     }
@@ -149,7 +149,7 @@ class PhpClass
      * * 自身のクラス名が目的のクラスかどうか   ... (不要かもしれない。暗黙の参照と統合可能
      * * 暗黙の参照として、自身のnamespaceを返却する
      */
-    protected function findNamespaceByTypeParts(array $type_parts): array
+    private function findNamespaceByTypeParts(array $type_parts): array
     {
         $type = str_replace('[]', '', array_pop($type_parts));
         $primitives = ['string', 'bool', 'boolean', 'int', 'integer', 'float', 'double', 'array', 'object', 'resource'];
@@ -183,7 +183,7 @@ class PhpClass
         return $methods;
     }
 
-    protected function getMethodInfo(ClassMethod $method): PhpMethod
+    private function getMethodInfo(ClassMethod $method): PhpMethod
     {
         return new PhpMethod($method, $this);
     }

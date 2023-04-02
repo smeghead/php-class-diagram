@@ -13,12 +13,12 @@ use PhpParser\Node\Stmt\{
 
 class PhpAccessModifier
 {
-    protected bool $public = false;
-    protected bool $protected = false;
-    protected bool $private = false;
-    protected bool $abstract = false;
-    protected bool $final = false;
-    protected bool $static = false;
+    private bool $public = false;
+    private bool $protected = false;
+    private bool $private = false;
+    private bool $abstract = false;
+    private bool $final = false;
+    private bool $static = false;
 
     public function __construct(ClassConst|Property|ClassMethod $stmt)
     {

@@ -15,11 +15,11 @@ use PhpParser\Node\Stmt\{
 
 class PhpMethod
 {
-    protected string $name;
-    protected PhpTypeExpression $type;
+    private string $name;
+    private PhpTypeExpression $type;
     /** @var PhpMethodParameter[] パラメータ一覧 */
-    protected array $params;
-    protected PhpAccessModifier $accessModifier;
+    private array $params;
+    private PhpAccessModifier $accessModifier;
 
     public function __construct(ClassMethod $method, PhpClass $class)
     {
