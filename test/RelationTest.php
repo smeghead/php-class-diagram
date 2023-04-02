@@ -6,209 +6,77 @@ use Smeghead\PhpClassDiagram\DiagramElement\ {
     Entry,
     Relation,
 };
-
-require_once(__DIR__ . '/dummy/PhpClassDummy.php');
+use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 final class RelationTest extends TestCase {
     private $fixtureDir;
     public function setUp(): void {
+        $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    private string $product_expression = <<<EOJ
-{
-    "type": {
-        "name": "Product",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [
-        {
-            "name": "name",
-            "type": {
-                "name": "Name",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        },
-        {
-            "name": "price",
-            "type": {
-                "name": "Price",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        }
-    ],
-    "methods":[]
-}
-EOJ;
-    private string $price_expression = <<<EOJ
-{
-    "type": {
-        "name": "Price",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [
-        {
-            "name": "price",
-            "type": {
-                "name": "int",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        }
-    ],
-    "methods":[]
-}
-EOJ;
-    private string $name_expression = <<<EOJ
-{
-    "type": {
-        "name": "Name",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [
-        {
-            "name": "name",
-            "type": {
-                "name": "string",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        }
-    ],
-    "methods":[]
-}
-EOJ;
-
-    private string $product_with_tags_expression = <<<EOJ
-{
-    "type": {
-        "name": "Product",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [
-        {
-            "name": "name",
-            "type": {
-                "name": "Name",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        },
-        {
-            "name": "price",
-            "type": {
-                "name": "Price",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        },
-        {
-            "name": "tags",
-            "type": {
-                "name": "Tag[]",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        }
-    ],
-    "methods":[]
-}
-EOJ;
-    private string $tag_expression = <<<EOJ
-{
-    "type": {
-        "name": "Tag",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [
-        {
-            "name": "name",
-            "type": {
-                "name": "string",
-                "namespace": []
-            },
-            "modifier": {
-                "private": true
-            }
-        }
-    ],
-    "methods":[]
-}
-EOJ;
-    private string $subtag_expression = <<<EOJ
-{
-    "type": {
-        "name": "SubTag",
-        "meta": "Stmt_Class",
-        "namespace": []
-    },
-    "properties": [],
-    "methods":[],
-    "extends": [
-        {
-            "name": "Tag",
-            "meta": "Stmt_Class",
-            "namespace": []
-        }
-    ]
-}
-EOJ;
-
     public function testInitialize(): void {
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([]);
-        $entries = [
-            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
+        $files = [
+            'product/Product.php',
+            'product/Price.php',
+            'product/Name.php',
         ];
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            foreach ($classes as $c) {
+                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
+            }
+        }
         $rel = new Relation($entries, $options);
 
         $this->assertNotNull($rel, 'initialize Relation');
     }
 
     public function testGetRelations1(): void {
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([]);
-        $entries = [
-            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
+        $files = [
+            'product/Product.php',
+            'product/Price.php',
+            'product/Name.php',
         ];
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            foreach ($classes as $c) {
+                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
+            }
+        }
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(2, count($relations), 'count');
+        $this->assertSame(3, count($relations), 'count');
         $this->assertSame('  product_Product ..> product_Name', $relations[0], 'relation 1');
         $this->assertSame('  product_Product ..> product_Price', $relations[1], 'relation 2');
+        $this->assertSame('  product_Product ..> product_Product', $relations[2], 'relation 3');
     }
 
     public function testGetRelations2(): void {
+        $directory = sprintf('%s/namespace-tag', $this->fixtureDir);
         $options = new Options([]);
-        $entries = [
-            new Entry('product', new PhpClassDummy('product', 'product/Product.php', $this->product_with_tags_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Price.php', $this->price_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Name.php', $this->name_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/Tag.php', $this->tag_expression), $options),
+        $files = [
+            'product/Product.php',
+            'product/Price.php',
+            'product/Name.php',
+            'product/Tag.php',
         ];
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            foreach ($classes as $c) {
+                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
+            }
+        }
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
@@ -219,11 +87,20 @@ EOJ;
     }
 
     public function testGetRelations_extends1(): void {
+        $directory = sprintf('%s/namespace-tag', $this->fixtureDir);
         $options = new Options([]);
-        $entries = [
-            new Entry('product', new PhpClassDummy('product', 'product/Tag.php', $this->tag_expression), $options),
-            new Entry('product', new PhpClassDummy('product', 'product/SubTag.php', $this->subtag_expression), $options),
+        $files = [
+            'product/Tag.php',
+            'product/SubTag.php',
         ];
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            foreach ($classes as $c) {
+                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
+            }
+        }
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 

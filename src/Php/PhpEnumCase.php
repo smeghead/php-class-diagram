@@ -12,8 +12,8 @@ use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
 class PhpEnumCase
 {
-    protected string $name;
-    protected PhpDocComment $doc;
+    private string $name;
+    private PhpDocComment $doc;
 
     public function __construct(EnumCase $e)
     {

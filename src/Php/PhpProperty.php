@@ -10,9 +10,9 @@ use PhpParser\Node\Stmt\{
 
 class PhpProperty
 {
-    protected string $name;
-    protected PhpTypeExpression $type;
-    protected PhpAccessModifier $accessModifier;
+    private string $name;
+    private PhpTypeExpression $type;
+    private PhpAccessModifier $accessModifier;
 
     public function __construct(Property $p, PhpClass $class)
     {
