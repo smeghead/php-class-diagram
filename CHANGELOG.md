@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.6.1 (2023-04-03)
+
+### Features
+
+ * Implove unit tests.
+
 ## v0.6.0 (2023-03-27)
 
 ### Features
