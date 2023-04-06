@@ -1,17 +1,22 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Smeghead\PhpClassDiagram\Php\PhpType;
 use Smeghead\PhpClassDiagram\Php\PhpTypeExpression;
 
-final class PhpTypeExpressionTest extends TestCase {
+final class PhpTypeExpressionTest extends TestCase
+{
     private $fixtureDir;
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    public function testNullableString(): void {
+    public function testNullableString(): void
+    {
         //     private ?string $nullableString;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -28,7 +33,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('string', $types[0]->getName(), 'name');
         $this->assertSame(true, $types[0]->getNullable(), 'nullable');
     }
-    public function testIntOrString(): void {
+    public function testIntOrString(): void
+    {
         //     private int|string $intOrString;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -47,7 +53,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('string', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testPrice(): void {
+    public function testPrice(): void
+    {
         // private Price $price;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -63,7 +70,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Name', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testException(): void {
+    public function testException(): void
+    {
         // private \Exception $error;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -79,7 +87,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Exception', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testRelated(): void {
+    public function testRelated(): void
+    {
         // private bar\Boo $boo;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -95,7 +104,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Boo', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testAbsolute(): void {
+    public function testAbsolute(): void
+    {
         // private \hoge\fuga\product\bar\Boo $boo2;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -111,7 +121,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Boo', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testDocString(): void {
+    public function testDocString(): void
+    {
         // /** @var bur\Bon $docString */
         // private bar\Boo $docString;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -128,7 +139,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Bon', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testDocStringUnion(): void {
+    public function testDocStringUnion(): void
+    {
         // /** @var string|int $docStringUnion */
         // private $docStringUnion;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -148,7 +160,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('int', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testDocStringUnion2(): void {
+    public function testDocStringUnion2(): void
+    {
         // /** @var string|bar\Bon $docStringUnion2 */
         // private $docStringUnion2;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -168,7 +181,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Bon', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testMethodParameterInt(): void {
+    public function testMethodParameterInt(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -186,7 +200,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('int', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodParameterPrice(): void {
+    public function testMethodParameterPrice(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -205,7 +220,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Price', $types[0]->getName(), 'name');
         $this->assertSame(true, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodParameterDocString(): void {
+    public function testMethodParameterDocString(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -227,7 +243,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('int', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testMethodReturnInt(): void {
+    public function testMethodReturnInt(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -245,7 +262,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('int', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodReturnProduct(): void {
+    public function testMethodReturnProduct(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -263,7 +281,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Product', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodReturnArray(): void {
+    public function testMethodReturnArray(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -281,7 +300,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('array', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodParameterTag(): void {
+    public function testMethodParameterTag(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -302,7 +322,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Tag', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-    public function testMethodReturnUnion(): void {
+    public function testMethodReturnUnion(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -323,7 +344,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('string', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testMethodReturnUnionDoc(): void {
+    public function testMethodReturnUnionDoc(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -344,7 +366,8 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('string', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testMethodReturnObjectArray(): void {
+    public function testMethodReturnObjectArray(): void
+    {
         // /** @params string|int $param1 */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
@@ -364,5 +387,4 @@ final class PhpTypeExpressionTest extends TestCase {
         $this->assertSame('Tag[]', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
-
 }

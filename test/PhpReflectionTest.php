@@ -1,17 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\Php\PhpEnumCase;
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-final class PhpReflectionTest extends TestCase {
+final class PhpReflectionTest extends TestCase
+{
     private $fixtureDir;
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    public function testInitialize(): void {
+    public function testInitialize(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
@@ -20,7 +26,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertNotNull($classes[0], 'initialize PhppReflection');
     }
 
-    public function testDump(): void {
+    public function testDump(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
@@ -39,7 +46,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(true, $data->getProperties()[1]->getAccessModifier()->isPrivate(), 'property price Modifiers.');
     }
 
-    public function testDump_Price(): void {
+    public function testDump_Price(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Price.php', $this->fixtureDir);
@@ -68,7 +76,8 @@ final class PhpReflectionTest extends TestCase {
     //     $this->assertSame(true, $data->getProperties()[0]->accessModifier->private, 'property price Modifiers.');
     // }
 
-    public function testDump_with_namespace(): void {
+    public function testDump_with_namespace(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
@@ -85,7 +94,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[1]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
     }
 
-    public function testDump_with_phpdoc(): void {
+    public function testDump_with_phpdoc(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/phpdoc', $this->fixtureDir);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
@@ -107,7 +117,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['ban', 'ban', 'ban'], $data->getProperties()[3]->getType()->getTypes()[0]->getNamespace(), 'full package name, ban.ban.ban.Ban[] namespace.');
     }
 
-    public function testDump_with_interface(): void {
+    public function testDump_with_interface(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $filename = sprintf('%s/interface/product/Interface_.php', $this->fixtureDir);
@@ -120,7 +131,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('name', $data->getProperties()[0]->getName(), 'property type.');
         $this->assertSame('string', $data->getProperties()[0]->getType()->getName(), 'property type.');
     }
-    public function testDump_with_methods(): void {
+    public function testDump_with_methods(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $filename = sprintf('%s/no-namespace/product/Product.php', $this->fixtureDir);
@@ -138,7 +150,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isStatic(), 'static.');
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isProtected(), 'protected.');
     }
-    public function testDump_with_methods2(): void {
+    public function testDump_with_methods2(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Product.php', $this->fixtureDir);
@@ -156,7 +169,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isStatic(), 'static.');
         $this->assertSame(false, $data->getMethods()[0]->getAccessModifier()->isProtected(), 'protected.');
     }
-    public function testDump_with_extend(): void {
+    public function testDump_with_extend(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Sub.php', $this->fixtureDir);
@@ -168,7 +182,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Super', $data->getExtends()[0]->getName(), 'super class name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getExtends()[0]->getNamespace(), 'super class namespace.');
     }
-    public function testDump_with_implements(): void {
+    public function testDump_with_implements(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/extends', $this->fixtureDir);
         $filename = sprintf('%s/extends/product/Implements_.php', $this->fixtureDir);
@@ -180,7 +195,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Interface_', $data->getExtends()[0]->getName(), 'super class name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getExtends()[0]->getNamespace(), 'super class namespace.');
     }
-    public function testGetUses(): void {
+    public function testGetUses(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/Product.php', $this->fixtureDir);
@@ -196,7 +212,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getUses()[2]->getNamespace(), 'use namespace.');
         $this->assertSame('Tag', $data->getUses()[2]->getName(), 'use name.');
     }
-    public function testGetUsesWithoutNamespace(): void {
+    public function testGetUsesWithoutNamespace(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/uses', $this->fixtureDir);
         $filename = sprintf('%s/uses/product/ProductWithoutNamespace.php', $this->fixtureDir);
@@ -212,7 +229,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getUses()[2]->getNamespace(), 'use namespace.');
         $this->assertSame('Tag', $data->getUses()[2]->getName(), 'use name.');
     }
-    public function testNullable(): void {
+    public function testNullable(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/Product.php', $this->fixtureDir);
@@ -231,7 +249,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Tag', $data->getMethods()[0]->getParams()[1]->getType()->getName(), 'parameter type. tag');
         $this->assertSame(['hoge', 'fuga', 'product', 'tags'], $data->getMethods()[0]->getParams()[1]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace. tag');
     }
-    public function testNullableWithoutNamespace(): void {
+    public function testNullableWithoutNamespace(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/nullable', $this->fixtureDir);
         $filename = sprintf('%s/nullable/product/ProductWithoutNamespace.php', $this->fixtureDir);
@@ -247,7 +266,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('?Name', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
     }
-    public function testFullyQualified(): void {
+    public function testFullyQualified(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $filename = sprintf('%s/namespace/product/Exception.php', $this->fixtureDir);
@@ -268,7 +288,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Exception', $data->getMethods()[1]->getType()->getName(), 'return type.');
         $this->assertSame(['external'], $data->getMethods()[1]->getType()->getTypes()[0]->getNamespace(), 'return type namespace.');
     }
-    public function testClassesInAFile(): void {
+    public function testClassesInAFile(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/classes', $this->fixtureDir);
         $filename = sprintf('%s/classes/product/Product.php', $this->fixtureDir);
@@ -284,7 +305,8 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Price', $data->getClassType()->getName(), '3rd class type name.');
         $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), '3rd namespace name.');
     }
-    public function testTrait(): void {
+    public function testTrait(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/trait', $this->fixtureDir);
         $filename = sprintf('%s/trait/TestTrait.php', $this->fixtureDir);
@@ -303,7 +325,8 @@ final class PhpReflectionTest extends TestCase {
      * @requires PHP >= 8.1
      * PHP8.0 dose not have `enum`. 
      */
-    public function testEnum(): void {
+    public function testEnum(): void
+    {
         $options = new Options([]);
         $directory = sprintf('%s/enum', $this->fixtureDir);
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
@@ -313,7 +336,11 @@ final class PhpReflectionTest extends TestCase {
         $this->assertSame('Suit', $data->getClassType()->getName(), '1st class type name.');
         $this->assertSame(['Hoge', 'TestEnum'], $data->getClassType()->getNamespace(), '1st namespace name.');
         $enums = $data->getEnumCases();
-        $this->assertSame(['Hearts', 'Diamonds', 'Clubs', 'Spades'], array_map(function(PhpEnumCase $e){return $e->getName();}, $enums), 'enum cases.');
-        $this->assertSame(['ハート', 'ダイヤ', 'クローバー', 'スペード'], array_map(function(PhpEnumCase $e){return $e->getDocString();}, $enums), 'enum cases.');
+        $this->assertSame(['Hearts', 'Diamonds', 'Clubs', 'Spades'], array_map(function (PhpEnumCase $e) {
+            return $e->getName();
+        }, $enums), 'enum cases.');
+        $this->assertSame(['ハート', 'ダイヤ', 'クローバー', 'スペード'], array_map(function (PhpEnumCase $e) {
+            return $e->getDocString();
+        }, $enums), 'enum cases.');
     }
 }

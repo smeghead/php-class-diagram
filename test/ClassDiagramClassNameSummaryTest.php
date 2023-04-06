@@ -31,7 +31,7 @@ final class ClassDiagramClassNameSummaryTest extends TestCase
         $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
 
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     class "Product\\n<b>製品</b>" as product_Product {
@@ -67,7 +67,7 @@ EOS;
         $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
 
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     class "Product" as product_Product {
@@ -89,5 +89,4 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
-
 }

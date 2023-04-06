@@ -1,22 +1,28 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\ {
+use Smeghead\PhpClassDiagram\DiagramElement\{
     Relation,
     Entry,
     Package,
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-final class PackageTest extends TestCase {
+final class PackageTest extends TestCase
+{
     private $fixtureDir;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    public function testInitialize(): void {
+    public function testInitialize(): void
+    {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -48,10 +54,10 @@ final class PackageTest extends TestCase {
         $this->assertSame('Product', $product->entries[0]->getClass()->getClassType()->getName(), 'product class name');
         $this->assertSame('Price', $product->entries[1]->getClass()->getClassType()->getName(), 'price class name');
         $this->assertSame('Name', $product->entries[2]->getClass()->getClassType()->getName(), 'name class name');
-
     }
 
-    public function testDump(): void {
+    public function testDump(): void
+    {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -72,7 +78,7 @@ final class PackageTest extends TestCase {
         }
         $rel = new Relation($entries, $options);
 
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     class "Product" as product_Product
@@ -87,7 +93,8 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 
-    public function testDump2(): void {
+    public function testDump2(): void
+    {
         $directory = sprintf('%s/sub-namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -107,7 +114,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     class "Product" as product_Product
@@ -123,7 +130,8 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 
-    public function testDump3(): void {
+    public function testDump3(): void
+    {
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -141,7 +149,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     interface "Interface_" as product_Interface_
@@ -151,7 +159,8 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 
-    public function testDump4(): void {
+    public function testDump4(): void
+    {
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $options = new Options([
             'enable-class-properties' => true,
@@ -169,7 +178,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     interface "Interface_" as product_Interface_ {
@@ -180,7 +189,8 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
-    public function testDump5(): void {
+    public function testDump5(): void
+    {
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -198,7 +208,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     interface "Interface_" as product_Interface_ {
@@ -209,7 +219,8 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
-    public function testDump6(): void {
+    public function testDump6(): void
+    {
         $directory = sprintf('%s/interface', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -228,7 +239,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     interface "Interface_" as product_Interface_ {
@@ -243,7 +254,8 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
-    public function testDump7(): void {
+    public function testDump7(): void
+    {
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -264,7 +276,7 @@ EOS;
         }
         $rel = new Relation($entries, $options);
 
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml class-diagram
   package product as product {
     class "Product" as product_Product
@@ -278,7 +290,8 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
-    public function testDumpPackage1(): void {
+    public function testDumpPackage1(): void
+    {
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -299,7 +312,7 @@ EOS;
         }
         $rel = new Relation($entries, $options);
 
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml package-related-diagram
   package ROOT as ROOT {
     package product {
@@ -312,7 +325,8 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');
     }
-    public function testDumpPackage_bothSideArrows(): void {
+    public function testDumpPackage_bothSideArrows(): void
+    {
         $directory = sprintf('%s/sub-namespace', $this->fixtureDir);
         $options = new Options([
             'disable-class-properties' => true,
@@ -331,7 +345,7 @@ EOS;
             }
         }
         $rel = new Relation($entries, $options);
-        $expected =<<<EOS
+        $expected = <<<EOS
 @startuml package-related-diagram
   package hoge.fuga as fuga {
     package product {

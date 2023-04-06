@@ -6,11 +6,6 @@ namespace Smeghead\PhpClassDiagram\DiagramElement\ExternalPackage;
 
 class PackageHierarchy
 {
-    /**
-     * @var string[] external packages.
-     */
-    private array $externalPackages;
-
     private PackageNode $root;
 
     /**
@@ -18,7 +13,6 @@ class PackageHierarchy
      */
     public function __construct(array $externalPackages)
     {
-        $this->externalPackages = $externalPackages;
         $this->root = new PackageNode('root');
         foreach ($externalPackages as $p) {
             $this->root->register(explode('.', $p));

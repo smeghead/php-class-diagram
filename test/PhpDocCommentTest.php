@@ -1,16 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
-final class PhpDocCommentTest extends TestCase {
+final class PhpDocCommentTest extends TestCase
+{
     private $fixtureDir;
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    public function testDocString(): void {
+    public function testDocString(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
@@ -25,7 +30,8 @@ final class PhpDocCommentTest extends TestCase {
 
         $this->assertSame('スート', $doc->getText(), 'comment string');
     }
-    public function test_enum_getDescription(): void {
+    public function test_enum_getDescription(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
@@ -41,7 +47,8 @@ final class PhpDocCommentTest extends TestCase {
         $this->assertSame('スート', $doc->getDescription(), 'description');
     }
 
-    public function testDocStringMultiLines(): void {
+    public function testDocStringMultiLines(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
@@ -57,7 +64,8 @@ final class PhpDocCommentTest extends TestCase {
         $this->assertSame("スペード\n説明コメント", $doc->getText(), 'multiline comment string');
     }
 
-    public function test_getDescription(): void {
+    public function test_getDescription(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
@@ -73,7 +81,8 @@ final class PhpDocCommentTest extends TestCase {
         $this->assertSame("スペード", $doc->getDescription(), 'description string');
     }
 
-    public function test_getVarType(): void {
+    public function test_getVarType(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
         try {
@@ -88,7 +97,8 @@ final class PhpDocCommentTest extends TestCase {
 
         $this->assertSame("Name", $doc->getVarTypeName(), 'var type name.');
     }
-    public function test_getParamType(): void {
+    public function test_getParamType(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -103,7 +113,8 @@ final class PhpDocCommentTest extends TestCase {
 
         $this->assertSame("string|int", $doc->getParamTypeName('param1'), 'param type name.');
     }
-    public function test_getReturnType(): void {
+    public function test_getReturnType(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -118,7 +129,8 @@ final class PhpDocCommentTest extends TestCase {
 
         $this->assertSame("int|null", $doc->getReturnTypeName(), 'return type name.');
     }
-    public function test_getClassComment(): void {
+    public function test_getClassComment(): void
+    {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {

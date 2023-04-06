@@ -1,22 +1,28 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 
-final class OptionsTest extends TestCase {
-    public function setUp(): void {
+final class OptionsTest extends TestCase
+{
+    public function setUp(): void
+    {
     }
 
-    public function testNothing(): void {
-        $opt = [
-        ];
+    public function testNothing(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertNotNull($options, 'initialize Options');
         $this->assertSame(false, $options->help(), 'help is off.');
     }
-    public function testH(): void {
+    public function testH(): void
+    {
         $opt = [
             'h' => true,
         ];
@@ -26,7 +32,8 @@ final class OptionsTest extends TestCase {
         $this->assertNotNull($options, 'initialize Options');
         $this->assertSame(true, $options->help(), 'help is on.');
     }
-    public function testHelp(): void {
+    public function testHelp(): void
+    {
         $opt = [
             'help' => true,
         ];
@@ -36,7 +43,8 @@ final class OptionsTest extends TestCase {
         $this->assertNotNull($options, 'initialize Options');
         $this->assertSame(true, $options->help(), 'help is on.');
     }
-    public function testClassProperties1(): void {
+    public function testClassProperties1(): void
+    {
         $opt = [
             'enable-class-properties' => true,
         ];
@@ -45,7 +53,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(true, $options->classProperties(), 'classProperties is on.');
     }
-    public function testClassProperties2(): void {
+    public function testClassProperties2(): void
+    {
         $opt = [
             'disable-class-properties' => true,
         ];
@@ -54,15 +63,16 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(false, $options->classProperties(), 'classProperties is off.');
     }
-    public function testClassProperties3(): void {
-        $opt = [
-        ];
+    public function testClassProperties3(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertSame(true, $options->classProperties(), 'classProperties is default on.');
     }
-    public function testClassMethods1(): void {
+    public function testClassMethods1(): void
+    {
         $opt = [
             'enable-class-methods' => true,
         ];
@@ -71,7 +81,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(true, $options->classMethods(), 'classMethods is on.');
     }
-    public function testClassMethods2(): void {
+    public function testClassMethods2(): void
+    {
         $opt = [
             'disable-class-methods' => true,
         ];
@@ -80,16 +91,17 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(false, $options->classMethods(), 'classMethods is off.');
     }
-    public function testClassMethods3(): void {
-        $opt = [
-        ];
+    public function testClassMethods3(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertSame(true, $options->classMethods(), 'classMethods is default on.');
     }
 
-    public function testClassNameSummary1(): void {
+    public function testClassNameSummary1(): void
+    {
         $opt = [
             'enable-class-name-summary' => true,
         ];
@@ -98,7 +110,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(true, $options->classNameSummary(), 'classNameSummary is on.');
     }
-    public function testClassNameSummary2(): void {
+    public function testClassNameSummary2(): void
+    {
         $opt = [
             'disable-class-name-summary' => true,
         ];
@@ -107,9 +120,9 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(false, $options->classNameSummary(), 'classNameSummary is off.');
     }
-    public function testClassNameSummary3(): void {
-        $opt = [
-        ];
+    public function testClassNameSummary3(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
@@ -117,7 +130,8 @@ final class OptionsTest extends TestCase {
     }
 
 
-    public function testPhp1(): void {
+    public function testPhp1(): void
+    {
         $opt = [
             'php7' => true,
         ];
@@ -126,7 +140,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::PHP7, $options->phpVersion(), 'php version is 7.');
     }
-    public function testPhp2(): void {
+    public function testPhp2(): void
+    {
         $opt = [
             'php8' => true,
         ];
@@ -135,7 +150,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::PHP8, $options->phpVersion(), 'php version is 8.');
     }
-    public function testDiagram1(): void {
+    public function testDiagram1(): void
+    {
         $opt = [
             'class-diagram' => true,
         ];
@@ -144,7 +160,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'diagram is class.');
     }
-    public function testDiagram2(): void {
+    public function testDiagram2(): void
+    {
         $opt = [
             'package-diagram' => true,
         ];
@@ -153,7 +170,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_PACKAGE, $options->diagram(), 'diagram is package.');
     }
-    public function testDiagram_division(): void {
+    public function testDiagram_division(): void
+    {
         $opt = [
             'division-diagram' => true,
         ];
@@ -162,15 +180,16 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_DIVSION, $options->diagram(), 'diagram is division.');
     }
-    public function testDiagram3(): void {
-        $opt = [
-        ];
+    public function testDiagram3(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'default diagram is class.');
     }
-    public function testDiagram4(): void {
+    public function testDiagram4(): void
+    {
         $opt = [
             'jig-diagram' => true,
         ];
@@ -179,7 +198,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame(Options::DIAGRAM_JIG, $options->diagram(), 'diagram is jig.');
     }
-    public function testHeader(): void {
+    public function testHeader(): void
+    {
         $opt = [
             'header' => 'title PHP Class Diagram',
         ];
@@ -188,7 +208,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame('title PHP Class Diagram', $options->headers()[0], 'specified header.');
     }
-    public function testMultipleHeaders(): void {
+    public function testMultipleHeaders(): void
+    {
         $opt = [
             'header' => [
                 'title PHP Class Diagram',
@@ -201,7 +222,8 @@ final class OptionsTest extends TestCase {
         $this->assertSame('title PHP Class Diagram', $options->headers()[0], 'specified header. title');
         $this->assertSame('skinparam pageMargin 10', $options->headers()[1], 'specified header. pageMargin');
     }
-    public function testInclude(): void {
+    public function testInclude(): void
+    {
         $opt = [
             'include' => '*.php8',
         ];
@@ -210,7 +232,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame('*.php8', $options->includes()[0], 'specified include.');
     }
-    public function testMultipleInclude(): void {
+    public function testMultipleInclude(): void
+    {
         $opt = [
             'include' => [
                 '*.php7',
@@ -223,15 +246,16 @@ final class OptionsTest extends TestCase {
         $this->assertSame('*.php7', $options->includes()[0], 'specified include. php7');
         $this->assertSame('*.php8', $options->includes()[1], 'specified include. php8');
     }
-    public function testIncludeDefault(): void {
-        $opt = [
-        ];
+    public function testIncludeDefault(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertSame('*.php', $options->includes()[0], 'default include.');
     }
-    public function testexclude(): void {
+    public function testexclude(): void
+    {
         $opt = [
             'exclude' => '*Exception.php',
         ];
@@ -240,7 +264,8 @@ final class OptionsTest extends TestCase {
 
         $this->assertSame('*Exception.php', $options->excludes()[0], 'specified exclude.');
     }
-    public function testMultipleExclude(): void {
+    public function testMultipleExclude(): void
+    {
         $opt = [
             'exclude' => [
                 '*Exception.php',
@@ -253,13 +278,12 @@ final class OptionsTest extends TestCase {
         $this->assertSame('*Exception.php', $options->excludes()[0], 'specified exclude. *Exception.php');
         $this->assertSame('config.php', $options->excludes()[1], 'specified exclude. config.php');
     }
-    public function testExcludeDefault(): void {
-        $opt = [
-        ];
+    public function testExcludeDefault(): void
+    {
+        $opt = [];
 
         $options = new Options($opt);
 
         $this->assertSame(0, count($options->excludes()), 'default exclude is empty.');
     }
-
 }

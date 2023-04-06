@@ -1,20 +1,26 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\ {
+use Smeghead\PhpClassDiagram\DiagramElement\{
     Entry,
     Relation,
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-final class RelationTest extends TestCase {
+final class RelationTest extends TestCase
+{
     private $fixtureDir;
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
-    public function testInitialize(): void {
+    public function testInitialize(): void
+    {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([]);
         $files = [
@@ -35,7 +41,8 @@ final class RelationTest extends TestCase {
         $this->assertNotNull($rel, 'initialize Relation');
     }
 
-    public function testGetRelations1(): void {
+    public function testGetRelations1(): void
+    {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
         $options = new Options([]);
         $files = [
@@ -60,7 +67,8 @@ final class RelationTest extends TestCase {
         $this->assertSame('  product_Product ..> product_Product', $relations[2], 'relation 3');
     }
 
-    public function testGetRelations2(): void {
+    public function testGetRelations2(): void
+    {
         $directory = sprintf('%s/namespace-tag', $this->fixtureDir);
         $options = new Options([]);
         $files = [
@@ -86,7 +94,8 @@ final class RelationTest extends TestCase {
         $this->assertSame('  product_Product ..> product_Price', $relations[2], 'relation 3');
     }
 
-    public function testGetRelations_extends1(): void {
+    public function testGetRelations_extends1(): void
+    {
         $directory = sprintf('%s/namespace-tag', $this->fixtureDir);
         $options = new Options([]);
         $files = [
