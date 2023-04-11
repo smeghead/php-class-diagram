@@ -11,6 +11,11 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
  * 🔧 A simple CLI tool that is easy to handle.
  * 💡 It is also possible to output a package relationship diagram that visualizes the dependency on the external namespace.
 
+## What is PlantUML
+
+> [PlantUML - Wikipedia](https://en.wikipedia.org/wiki/PlantUML)
+> PlantUML is an open-source tool allowing users to create diagrams from a plain text language. Besides various UML diagrams, PlantUML has support for various other software development related formats (such as Archimate, Block diagram, BPMN, C4, Computer network diagram, ERD, Gantt chart, Mind map, and WBD), as well as visualisation of JSON and YAML files.
+
 ## Dogfooding
 
 ### php-class-diagram class diagram
