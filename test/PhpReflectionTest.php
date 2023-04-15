@@ -61,20 +61,36 @@ final class PhpReflectionTest extends TestCase
         $this->assertSame([], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
         $this->assertSame(true, $data->getProperties()[0]->getAccessModifier()->isPrivate(), 'property price Modifiers.');
     }
-    // public function testDump_php8_Price(): void {
-    //     $options = new Options([]);
-    //     $directory = sprintf('%s/php8', $this->fixtureDir);
-    //     $filename = sprintf('%s/php8/product/Price.php', $this->fixtureDir);
-    //     $classes = PhpReader::parseFile($directory, $filename, $options);
+    public function testDump_php8_Price(): void
+    {
+        $options = new Options([]);
+        $directory = sprintf('%s/php8', $this->fixtureDir);
+        $filename = sprintf('%s/php8/product/Price.php', $this->fixtureDir);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
 
-    //     $data = $classes[0]->getInfo();
-    //     $this->assertSame('Price', $data->getClassType()->name, 'class type name.');
-    //     $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
-    //     $this->assertSame('price', $data->getProperties()[0]->name, 'property price.');
-    //     $this->assertSame('int|float', $data->getProperties()[0]->type->getName(), 'property price type. php8 union type.');
-    //     $this->assertSame(['hoge', 'fuga', 'product'], $data->getProperties()[0]->type->getNamespace(), 'namespace.');
-    //     $this->assertSame(true, $data->getProperties()[0]->accessModifier->private, 'property price Modifiers.');
-    // }
+        $data = $classes[0]->getInfo();
+        $this->assertSame('Price', $data->getClassType()->getName(), 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
+        $this->assertSame('price8', $data->getProperties()[0]->getName(), 'property price.');
+        $this->assertSame('int|float', $data->getProperties()[0]->getType()->getName(), 'property price type. php8 union type.');
+        $this->assertSame([], $data->getProperties()[0]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
+        $this->assertSame(true, $data->getProperties()[0]->getAccessModifier()->isPrivate(), 'property price Modifiers.');
+    }
+    public function testDump_php8_constructer_properties(): void
+    {
+        $options = new Options([]);
+        $directory = sprintf('%s/php8', $this->fixtureDir);
+        $filename = sprintf('%s/php8/product/Price.php', $this->fixtureDir);
+        $classes = PhpReader::parseFile($directory, $filename, $options);
+
+        $data = $classes[0]->getInfo();
+        $this->assertSame('Price', $data->getClassType()->getName(), 'class type name.');
+        $this->assertSame(['hoge', 'fuga', 'product'], $data->getClassType()->getNamespace(), 'namespace name.');
+        $this->assertSame('field1', $data->getProperties()[1]->getName(), 'property field1.');
+        $this->assertSame('int', $data->getProperties()[1]->getType()->getName(), 'property field1 type. php8 union type.');
+        $this->assertSame([], $data->getProperties()[1]->getType()->getTypes()[0]->getNamespace(), 'namespace.');
+        $this->assertSame(true, $data->getProperties()[1]->getAccessModifier()->isPrivate(), 'property field1 Modifiers.');
+    }
 
     public function testDump_with_namespace(): void
     {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\NodeFinder;
+use PhpParser\Node;
 use PhpParser\Node\{
     NullableType,
     Identifier,
@@ -23,6 +25,7 @@ use PhpParser\Node\Stmt\{
     Use_,
 };
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
+use Smeghead\PhpClassDiagram\Php\Finder\FindConstructerProperties;
 
 class PhpClass
 {
@@ -98,7 +101,12 @@ class PhpClass
         $properties = $this->getPropertiesFromSyntax();
         $props = [];
         foreach ($properties as $p) {
-            $props[] = new PhpProperty($p, $this);
+            $props[] = PhpProperty::buildByProperty($p, $this);
+        }
+
+        $finder = new FindConstructerProperties($this->syntax);
+        foreach ($finder->getProperties() as $param) {
+            $props[] = PhpProperty::buildByParam($param, $finder->getConstructer(), $this);
         }
         return $props;
     }
@@ -234,7 +242,7 @@ class PhpClass
      */
     public function getEnumCases(): array
     {
-        if ( ! $this->syntax instanceof Enum_) {
+        if (!$this->syntax instanceof Enum_) {
             return [];
         }
         $cases = [];
@@ -246,7 +254,8 @@ class PhpClass
         return $cases;
     }
 
-    public function getDescription(): string {
+    public function getDescription(): string
+    {
         $doc = new PhpDocComment($this->syntax);
         return $doc->getDescription();
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\{
+    Class_,
     ClassConst,
     ClassMethod,
     Property,
@@ -19,14 +21,20 @@ class PhpAccessModifier
     private bool $final = false;
     private bool $static = false;
 
-    public function __construct(ClassConst|Property|ClassMethod $stmt)
+    public function __construct(ClassConst|Property|ClassMethod|Param $stmt)
     {
-        $this->public = $stmt->isPublic();
-        $this->protected = $stmt->isProtected();
-        $this->private = $stmt->isPrivate();
-        $this->static = $stmt->isStatic();
-        if ($stmt instanceof ClassMethod) {
-            $this->abstract = $stmt->isAbstract();
+        if ($stmt instanceof Param) {
+            $this->public = boolval($stmt->flags & Class_::MODIFIER_PUBLIC);
+            $this->protected = boolval($stmt->flags & Class_::MODIFIER_PROTECTED);
+            $this->private = boolval($stmt->flags & Class_::MODIFIER_PRIVATE);
+        } else {
+            $this->public = $stmt->isPublic();
+            $this->protected = $stmt->isProtected();
+            $this->private = $stmt->isPrivate();
+            $this->static = $stmt->isStatic();
+            if ($stmt instanceof ClassMethod) {
+                $this->abstract = $stmt->isAbstract();
+            }
         }
     }
 
