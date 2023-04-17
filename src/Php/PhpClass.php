@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\NodeFinder;
-use PhpParser\Node;
-use PhpParser\Node\{
-    NullableType,
-    Identifier,
-    Name,
-    UnionType,
-};
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\{
@@ -25,7 +17,7 @@ use PhpParser\Node\Stmt\{
     Use_,
 };
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
-use Smeghead\PhpClassDiagram\Php\Finder\FindConstructerProperties;
+use Smeghead\PhpClassDiagram\Php\Finders\FindConstructerProperties;
 
 class PhpClass
 {
@@ -156,27 +148,13 @@ class PhpClass
      * * useしているクラスに目的のクラスがあるかを探す
      * * 自身のクラス名が目的のクラスかどうか   ... (不要かもしれない。暗黙の参照と統合可能
      * * 暗黙の参照として、自身のnamespaceを返却する
+     * 
+     * Since name resolution is done with NameResolver, unnecessary processing has been deleted.
      */
     private function findNamespaceByTypeParts(array $type_parts): array
     {
-        $type = str_replace('[]', '', array_pop($type_parts));
-        $primitives = ['string', 'bool', 'boolean', 'int', 'integer', 'float', 'double', 'array', 'object', 'resource'];
-        if (in_array($type, $primitives)) {
-            return [];
-        }
-        foreach ($this->getUses() as $u) {
-            if ($u->getName() === $type) {
-                return $u->getNamespace();
-            }
-        }
-        // 探したいクラスが、自身の型だった場合
-        $t = $this->getClassType();
-        if ($t->getName() === $type) {
-            return $t->getNamespace();
-        }
-
-        // 暗黙的な参照と見做す
-        return $this->getNamespace();
+        array_pop($type_parts);
+        return $type_parts;
     }
 
     /** @return PhpMethod[] メソッド一覧 */
@@ -213,25 +191,19 @@ class PhpClass
                     '',
                     end($Name->parts)
                 );
-            } else {
-                $parts = $Name->parts;
-                $namespace = [];
-                if (count($parts) > 0) {
-                    $namespace = $this->findNamespaceByTypeParts($parts);
-                    $typeName = array_pop($parts);
-                }
-                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Class', $typeName);
             }
         }
+        
         if (!empty($this->syntax->implements)) {
-            foreach ($this->syntax->implements as $i) {
-                $parts = $i->parts;
-                $namespace = [];
-                if (count($parts) > 0) {
-                    $namespace = $this->findNamespaceByTypeParts($parts);
-                    $typeName = array_pop($parts);
+            foreach ($this->syntax->implements as $Name) {
+                // $parts = $i->parts;
+                if ($Name instanceof FullyQualified) {
+                    $extends[] = new PhpType(
+                        array_slice($Name->parts, 0, count($Name->parts) - 1),
+                        '',
+                        end($Name->parts)
+                    );
                 }
-                $extends[] = new PhpType(array_merge($namespace, $parts), 'Stmt_Interface', $typeName);
             }
         }
         return $extends;

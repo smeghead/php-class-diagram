@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Smeghead\PhpClassDiagram\Php\Finder;
+namespace Smeghead\PhpClassDiagram\Php\Finders;
 
 use PhpParser\Node;
 use PhpParser\Node\Param;
