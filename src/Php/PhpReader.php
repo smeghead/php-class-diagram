@@ -11,6 +11,8 @@ use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
 };
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 use Smeghead\PhpClassDiagram\Config\Options;
 
 class PhpReader
@@ -50,6 +52,11 @@ class PhpReader
         $parser = (new ParserFactory)->create($targetVesion);
         try {
             $ast = $parser->parse($code);
+            $nameResolver = new NameResolver();
+            $nodeTraverser = new NodeTraverser();
+            $nodeTraverser->addVisitor($nameResolver);
+            // Resolve names
+            $ast = $nodeTraverser->traverse($ast);
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }

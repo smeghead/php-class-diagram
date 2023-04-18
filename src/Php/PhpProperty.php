@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\{
+    ClassMethod,
     Property,
 };
 
@@ -14,11 +16,26 @@ class PhpProperty
     private PhpTypeExpression $type;
     private PhpAccessModifier $accessModifier;
 
-    public function __construct(Property $p, PhpClass $class)
+    private function __construct()
     {
-        $this->name = $p->props[0]->name->toString();
-        $this->type = PhpTypeExpression::buildByVar($p, $class->getNamespace(), $class->getUses());
-        $this->accessModifier = new PhpAccessModifier($p);
+    }
+
+    public static function buildByProperty(Property $p, PhpClass $class): self
+    {
+        $instance = new self();
+        $instance->name = $p->props[0]->name->toString();
+        $instance->type = PhpTypeExpression::buildByVar($p, $class->getNamespace(), $class->getUses());
+        $instance->accessModifier = new PhpAccessModifier($p);
+        return $instance;
+    }
+
+    public static function buildByParam(Param $param, ClassMethod $method, PhpClass $class): self
+    {
+        $instance = new self();
+        $instance->name = $param->var->name;
+        $instance->type = PhpTypeExpression::buildByMethodParam($param, $class->getNamespace(), $method, $param->var->name, $class->getUses());
+        $instance->accessModifier = new PhpAccessModifier($param);
+        return $instance;
     }
 
     public function getName(): string
