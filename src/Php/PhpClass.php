@@ -142,21 +142,6 @@ class PhpClass
         return $uses;
     }
 
-    /**
-     * クラス名が、どのnamespaceに属しているかを判定する。
-     *
-     * * useしているクラスに目的のクラスがあるかを探す
-     * * 自身のクラス名が目的のクラスかどうか   ... (不要かもしれない。暗黙の参照と統合可能
-     * * 暗黙の参照として、自身のnamespaceを返却する
-     * 
-     * Since name resolution is done with NameResolver, unnecessary processing has been deleted.
-     */
-    private function findNamespaceByTypeParts(array $type_parts): array
-    {
-        array_pop($type_parts);
-        return $type_parts;
-    }
-
     /** @return PhpMethod[] メソッド一覧 */
     public function getMethods(): array
     {

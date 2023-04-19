@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use PhpParser\Node;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Smeghead\PhpClassDiagram\Php\PhpType;
@@ -25,8 +30,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[0], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'nullableString';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -43,7 +51,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[1], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'intOrString';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -53,7 +65,7 @@ final class PhpTypeExpressionTest extends TestCase
         $this->assertSame('string', $types[1]->getName(), 'name');
         $this->assertSame(false, $types[1]->getNullable(), 'nullable');
     }
-    public function testPrice(): void
+    public function testName(): void
     {
         // private Price $price;
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
@@ -63,7 +75,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[2], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'name';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
@@ -80,7 +96,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[4], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'error';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -97,7 +117,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[5], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'boo';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product', 'bar'], $types[0]->getNamespace(), 'namespace');
@@ -114,7 +138,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[6], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'boo2';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product', 'bar'], $types[0]->getNamespace(), 'namespace');
@@ -132,7 +160,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[7], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'docString';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame(['hoge', 'fuga', 'product', 'bur'], $types[0]->getNamespace(), 'namespace');
@@ -150,7 +182,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[8], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'docStringUnion';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -171,7 +207,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $expression = PhpTypeExpression::buildByVar($ast[0]->stmts[2]->stmts[9], ['hoge', 'fuga', 'product'], []);
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'docStringUnion2';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
         $this->assertSame([], $types[0]->getNamespace(), 'namespace');
@@ -183,7 +223,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodParameterInt(): void
     {
-        // /** @params string|int $param1 */
+        // int $paramInt
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -191,8 +231,14 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[10];
-        $param = $ast[0]->stmts[2]->stmts[10]->getParams()[0];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'paramInt';
+        });
+
         $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', []);
         $types = $expression->getTypes();
 
@@ -202,7 +248,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodParameterPrice(): void
     {
-        // /** @params string|int $param1 */
+        // ?Price $price
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -210,9 +256,13 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $method = $ast[0]->stmts[2]->stmts[10];
-        $param = $ast[0]->stmts[2]->stmts[10]->getParams()[1];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'price';
+        });
         $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', []);
         $types = $expression->getTypes();
 
@@ -230,9 +280,13 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $method = $ast[0]->stmts[2]->stmts[10];
-        $param = $ast[0]->stmts[2]->stmts[10]->getParams()[2];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'param1';
+        });
         $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'param1', []);
         $types = $expression->getTypes();
 
@@ -245,7 +299,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnInt(): void
     {
-        // /** @params string|int $param1 */
+        // /** @return int|null return val. */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -253,8 +307,10 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[10];
-        // var_dump($method);die();
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
@@ -264,7 +320,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnProduct(): void
     {
-        // /** @params string|int $param1 */
+        // /** @return Product product (優先される情報) */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -272,8 +328,10 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[11];
-        // var_dump($method);die();
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method2';
+        });
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
@@ -283,7 +341,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnArray(): void
     {
-        // /** @params string|int $param1 */
+        // public function method3(): array
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -291,8 +349,10 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[12];
-        // var_dump($method);die();
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method3';
+        });
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
@@ -302,7 +362,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodParameterTag(): void
     {
-        // /** @params string|int $param1 */
+        // public function method4(Tag $tag): array
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -310,10 +370,13 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        // var_dump($ast[0]->stmts[1]->stmts[8]);die();
-        $method = $ast[0]->stmts[2]->stmts[13];
-        // $docString = '';
-        $param = $ast[0]->stmts[2]->stmts[13]->getParams()[0];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method4';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'tag';
+        });
         $uses = [new PhpType(['hoge', 'fuga', 'product', 'tag'], '', 'Tag')];
         $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'paramint', $uses);
         $types = $expression->getTypes();
@@ -324,7 +387,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnUnion(): void
     {
-        // /** @params string|int $param1 */
+        // public function method5(Tag $tag): int|string
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -332,8 +395,10 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[14];
-        //  var_dump($method);die();
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method5';
+        });
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
@@ -346,7 +411,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnUnionDoc(): void
     {
-        // /** @params string|int $param1 */
+        // /** @return int|string return value. */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -354,8 +419,10 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[15];
-        //  var_dump($method);die();
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method6';
+        });
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], []);
         $types = $expression->getTypes();
 
@@ -368,7 +435,7 @@ final class PhpTypeExpressionTest extends TestCase
     }
     public function testMethodReturnObjectArray(): void
     {
-        // /** @params string|int $param1 */
+        // /** @return Tag[] tags */
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
@@ -376,9 +443,11 @@ final class PhpTypeExpressionTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-        $method = $ast[0]->stmts[2]->stmts[16];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method7';
+        });
         $uses = [new PhpType(['hoge', 'fuga', 'product', 'tag'], '', 'Tag')];
-        //  var_dump($method);die();
         $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], $uses);
         $types = $expression->getTypes();
 

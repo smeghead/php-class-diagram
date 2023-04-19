@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Enum_;
+use PhpParser\Node\Stmt\EnumCase;
+use PhpParser\Node\Stmt\Property;
+use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
@@ -23,9 +30,11 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
+        $finder = new NodeFinder();
+        $enum = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Enum_ && $node->name->toString() === 'Suit';
+        });
 
-        // var_dump($ast[0]->stmts[0]);
-        $enum = $ast[0]->stmts[0];
         $doc = new PhpDocComment($enum);
 
         $this->assertSame('スート', $doc->getText(), 'comment string');
@@ -39,9 +48,10 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-
-        // var_dump($ast[0]->stmts[0]);
-        $enum = $ast[0]->stmts[0];
+        $finder = new NodeFinder();
+        $enum = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Enum_ && $node->name->toString() === 'Suit';
+        });
         $doc = new PhpDocComment($enum);
 
         $this->assertSame('スート', $doc->getDescription(), 'description');
@@ -56,9 +66,13 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-
-        // var_dump($ast[0]->stmts[0]);
-        $enumCase = $ast[0]->stmts[0]->stmts[3];
+        $finder = new NodeFinder();
+        $enum = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Enum_ && $node->name->toString() === 'Suit';
+        });
+        $enumCase = $finder->findFirst($enum, function(Node $node){
+            return $node instanceof EnumCase && $node->name->toString() === 'Spades';
+        });
         $doc = new PhpDocComment($enumCase);
 
         $this->assertSame("スペード\n説明コメント", $doc->getText(), 'multiline comment string');
@@ -73,9 +87,14 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
+        $finder = new NodeFinder();
+        $enum = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Enum_ && $node->name->toString() === 'Suit';
+        });
+        $enumCase = $finder->findFirst($enum, function(Node $node){
+            return $node instanceof EnumCase && $node->name->toString() === 'Spades';
+        });
 
-        // var_dump($ast[0]->stmts[0]);
-        $enumCase = $ast[0]->stmts[0]->stmts[3];
         $doc = new PhpDocComment($enumCase);
 
         $this->assertSame("スペード", $doc->getDescription(), 'description string');
@@ -90,9 +109,11 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
+        $finder = new NodeFinder();
+        $var = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'name';
+        });
 
-        // var_dump($ast[0]->stmts[1]->stmts[0]);
-        $var = $ast[0]->stmts[1]->stmts[0];
         $doc = new PhpDocComment($var);
 
         $this->assertSame("Name", $doc->getVarTypeName(), 'var type name.');
@@ -106,9 +127,10 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
-
-        // var_dump($ast[0]->stmts[2]->stmts[10]);
-        $method = $ast[0]->stmts[2]->stmts[10];
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
         $doc = new PhpDocComment($method);
 
         $this->assertSame("string|int", $doc->getParamTypeName('param1'), 'param type name.');
@@ -122,9 +144,11 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'method1';
+        });
 
-        // var_dump($ast[0]->stmts[2]->stmts[10]);
-        $method = $ast[0]->stmts[2]->stmts[10];
         $doc = new PhpDocComment($method);
 
         $this->assertSame("int|null", $doc->getReturnTypeName(), 'return type name.');
@@ -138,8 +162,11 @@ final class PhpDocCommentTest extends TestCase
         } catch (Error $error) {
             throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
         }
+        $finder = new NodeFinder();
+        $class = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Class_ && $node->name->toString() === 'Product';
+        });
 
-        $class = $ast[0]->stmts[2];
         $doc = new PhpDocComment($class);
 
         $this->assertSame('', $doc->getDescription(), 'class type name.');
