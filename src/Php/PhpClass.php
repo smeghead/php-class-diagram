@@ -165,28 +165,24 @@ class PhpClass
     public function getExtends(): array
     {
         $extends = [];
-        if (!empty($this->syntax->extends)) {
-            $Name = $this->syntax->extends;
-            if (is_array($this->syntax->extends)) {
-                $Name = $this->syntax->extends[0];
-            }
-            if ($Name instanceof FullyQualified) {
+        if (property_exists($this->syntax, 'extends')) {
+            $extend = $this->syntax->{'extends'};
+            if ($extend instanceof FullyQualified) {
                 $extends[] = new PhpType(
-                    array_slice($Name->parts, 0, count($Name->parts) - 1),
+                    array_slice($extend->parts, 0, count($extend->parts) - 1),
                     '',
-                    end($Name->parts)
+                    end($extend->parts)
                 );
             }
         }
         
-        if (!empty($this->syntax->implements)) {
-            foreach ($this->syntax->implements as $Name) {
-                // $parts = $i->parts;
-                if ($Name instanceof FullyQualified) {
+        if (property_exists($this->syntax, 'implements')) {
+            foreach ($this->syntax->{'implements'} as $implement) {
+                if ($implement instanceof FullyQualified) {
                     $extends[] = new PhpType(
-                        array_slice($Name->parts, 0, count($Name->parts) - 1),
+                        array_slice($implement->parts, 0, count($implement->parts) - 1),
                         '',
-                        end($Name->parts)
+                        end($implement->parts)
                     );
                 }
             }
