@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.0 (2023-04-24)
+
+
 ### Features
 
  * Corresponds to the method of defining field variables with constructor arguments introduced in php8.
