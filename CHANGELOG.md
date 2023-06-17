@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * Cut out PlantUML's formatter to interface. This is preparation for Mermaid support.
+
 ## v1.1.0 (2023-04-24)
 
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
+use Smeghead\PhpClassDiagram\DiagramElement\Formatter\FormatterResolver;
 
 class Package
 {
@@ -70,14 +71,15 @@ class Package
 
     public function dump($level = 0): array
     {
-        $indent = str_repeat('  ', $level);
+        $formatterResolver = new FormatterResolver($this->options);
+        $packageFormatter = $formatterResolver->getPackageFormatter();
+         $indent = str_repeat('  ', $level);
         $lines = [];
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf(
-                '%spackage %s as %s {',
+                '%s%s',
                 $indent,
-                $this->name,
-                $this->getLogicalName()
+                $packageFormatter->head($this)
             );
         }
         foreach ($this->entries as $e) {
@@ -87,7 +89,7 @@ class Package
             $lines = array_merge($lines, $n->dump($level + 1));
         }
         if ($this->name !== 'ROOT') {
-            $lines[] = sprintf('%s}', $indent);
+            $lines[] = sprintf('%s%s', $indent, $packageFormatter->tail());
         }
         return $lines;
     }

@@ -7,6 +7,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 use Generator;
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\Division\DivisionColor;
+use Smeghead\PhpClassDiagram\DiagramElement\Formatter\FormatterResolver;
 use Smeghead\PhpClassDiagram\Php\{
     PhpClass,
     PhpAccessModifier,
@@ -46,34 +47,26 @@ class Entry
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->class->getClassType()->getMetaName();
-        $classSummary = ($this->options->classNameSummary()
-            ? $this->class->getDescription()
-            : '');
-        $classIdentifier = sprintf(
-            '%s "%s" as %s',
-            $meta,
-            $this->class->getClassType()->getName() . (empty($classSummary) ? '' : sprintf("\\n<b>%s</b>", $classSummary)),
-            $this->class->getClassNameAlias()
-        );
+
+        $formatterResolver = new FormatterResolver($this->options);
+        $entryFormatter = $formatterResolver->getEntryFormatter();
+        $propertyFormatter = $formatterResolver->getPropertyFormatter();
+        $methodFormatter = $formatterResolver->getMethodFormatter();
         if ($this->options->classProperties() || $this->options->classMethods()) {
-            $lines[] = sprintf('%s%s {', $indent, $classIdentifier);
+            $lines[] = sprintf('%s%s', $indent, $entryFormatter->head($this->options, $this, true));
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
-                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
+                    $lines[] = sprintf('  %s%s', $indent, $propertyFormatter->body($p));
                 }
             }
             if ($this->options->classMethods()) {
                 foreach ($this->class->getMethods() as $m) {
-                    $params = array_map(function (PhpMethodParameter $x) {
-                        return $x->getName();
-                    }, $m->getParams());
-                    $lines[] = sprintf('  %s%s%s(%s)', $indent, $this->modifier($m->getAccessModifier()), $m->getName(), implode(', ', $params));
+                    $lines[] = sprintf('  %s%s', $indent, $methodFormatter->body($m));
                 }
             }
-            $lines[] = sprintf('%s}', $indent);
+            $lines[] = sprintf('%s%s', $indent, $entryFormatter->tail());
         } else {
-            $lines[] = sprintf('%s%s', $indent, $classIdentifier);
+            $lines[] = sprintf('%s%s', $indent, $entryFormatter->head($this->options, $this, false));
         }
         return $lines;
     }
@@ -102,27 +95,6 @@ class Entry
             $lines[] = sprintf('%s]', $indent);
         }
         return $lines;
-    }
-
-    private function modifier(PhpAccessModifier $modifier): string
-    {
-        $expressions = [];
-        if ($modifier->isStatic()) {
-            $expressions[] = '{static}';
-        }
-        if ($modifier->isAbstract()) {
-            $expressions[] = '{abstract}';
-        }
-        if ($modifier->isPublic()) {
-            $expressions[] = '+';
-        }
-        if ($modifier->isProtected()) {
-            $expressions[] = '#';
-        }
-        if ($modifier->isPrivate()) {
-            $expressions[] = '-';
-        }
-        return implode(' ', $expressions);
     }
 
     public function getArrows(): array

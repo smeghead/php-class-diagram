@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
+use Smeghead\PhpClassDiagram\DiagramElement\Formatter\FormatterResolver;
 
 class Relation
 {
@@ -30,13 +31,15 @@ class Relation
 
     public function dump(): array
     {
-        $lines = ['@startuml class-diagram'];
+        $formatterResolver = new FormatterResolver($this->options);
+        $diagramFormatter = $formatterResolver->getDiagramFormatter();
+        $lines = [$diagramFormatter->head()];
         $lines = array_merge($lines, array_map(function ($x) {
             return '  ' . $x;
         }, $this->options->headers()));
         $lines = array_merge($lines, $this->package->dump());
         $lines = array_merge($lines, $this->getRelations());
-        $lines[] = '@enduml';
+        $lines[] = $diagramFormatter->tail();
 
         return $lines;
     }
