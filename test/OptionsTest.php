@@ -286,4 +286,32 @@ final class OptionsTest extends TestCase
 
         $this->assertSame(0, count($options->excludes()), 'default exclude is empty.');
     }
+    public function testOutputTargetDefault(): void
+    {
+        $opt = [];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::TARGET_PLANTUML, $options->target(), 'default target is PlantUML.');
+    }
+    public function testOutputTargetPlantUML(): void
+    {
+        $opt = [
+            'plantuml' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::TARGET_PLANTUML, $options->target(), 'default target is PlantUML.');
+    }
+    public function testOutputTargetMermaid(): void
+    {
+        $opt = [
+            'mermaid' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::TARGET_MERMAID, $options->target(), 'default target is Mermaid.');
+    }
 }

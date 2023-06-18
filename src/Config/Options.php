@@ -17,6 +17,9 @@ class Options
     const DIAGRAM_JIG = 'jig';
     const DIAGRAM_DIVSION = 'division';
 
+    const TARGET_PLANTUML = 'plantuml';
+    const TARGET_MERMAID = 'mermaid';
+
     public function __construct(array $opt)
     {
         $this->opt = $opt;
@@ -147,5 +150,12 @@ class Options
             }
         }
         return $excludes;
+    }
+
+    public function target(): string {
+        if (isset($this->opt['mermaid'])) {
+            return self::TARGET_MERMAID;
+        }
+        return self::TARGET_PLANTUML;
     }
 }

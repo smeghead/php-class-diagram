@@ -27,6 +27,8 @@ $options = getopt('hv',[
     'header::',
     'include::',
     'exclude::',
+    'plantuml',
+    'mermaid',
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
@@ -54,7 +56,8 @@ OPTIONS
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
-
+      --plantuml                   output diagram script for PlantUML. (default)
+      --mermaid                    output diagram script for Mermaid. only class diagram.
 EOS;
 
 if (isset($options['v']) || isset($options['version'])) {
