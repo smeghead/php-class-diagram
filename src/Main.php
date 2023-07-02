@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram;
 
+use Smeghead\PhpClassDiagram\Config\Arguments;
 use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\{
@@ -16,10 +17,10 @@ class Main
 {
     const VERSION = 'v1.1.0';
 
-    public function __construct(string $directory, Options $options)
+    public function __construct(Arguments $args, Options $options)
     {
         $finder = new Finder();
-        $finder->files()->in($directory);
+        $finder->files()->in($args->getDirectory());
         $finder->files()->name($options->includes());
         $excludes = $options->excludes();
         if (count($excludes) > 0) {
@@ -28,7 +29,7 @@ class Main
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflections = PhpReader::parseFile(realpath($directory), $file->getRealPath(), $options);
+                $reflections = PhpReader::parseFile(realpath($args->getDirectory()), $file->getRealPath(), $options);
                 foreach ($reflections as $reflection) {
                     $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
                 }

@@ -23,6 +23,11 @@ class Options
     public function __construct(array $opt)
     {
         $this->opt = $opt;
+        if ($this->target() === self::TARGET_MERMAID) {
+            if ($this->diagram() !== self::DIAGRAM_CLASS) {
+                throw new ConfigException('not supported.');
+            }
+        }
     }
 
     public function help(): bool

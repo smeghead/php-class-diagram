@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-
+use Smeghead\PhpClassDiagram\Config\ConfigException;
 use Smeghead\PhpClassDiagram\Config\Options;
 
 final class OptionsTest extends TestCase
@@ -313,5 +313,18 @@ final class OptionsTest extends TestCase
         $options = new Options($opt);
 
         $this->assertSame(Options::TARGET_MERMAID, $options->target(), 'default target is Mermaid.');
+        $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'default diagram is class.');
+    }
+    public function testOutputTargetMermaidSuportOnlyClassDiagram(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('not supported.');
+
+        $opt = [
+            'mermaid' => true,
+            'package-diagram' => true,
+        ];
+
+        $options = new Options($opt);
     }
 }

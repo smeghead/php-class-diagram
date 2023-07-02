@@ -1,5 +1,8 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
@@ -9,7 +12,7 @@ foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php
     }
 }
 
-$options = getopt('hv',[
+$options = getopt('hv', [
     'help',
     'version',
     'class-diagram',
@@ -32,7 +35,7 @@ $options = getopt('hv',[
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
-$usage =<<<EOS
+$usage = <<<EOS
 usage: php-class-diagram [OPTIONS] <target php source directory>
 
 A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
@@ -57,7 +60,8 @@ OPTIONS
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
       --plantuml                   output diagram script for PlantUML. (default)
-      --mermaid                    output diagram script for Mermaid. only class diagram.
+      --mermaid                    output diagram script for Mermaid. support only class diagram.
+
 EOS;
 
 if (isset($options['v']) || isset($options['version'])) {
@@ -69,19 +73,15 @@ if (isset($options['h']) || isset($options['help'])) {
     exit(-1);
 }
 
-$directory = array_shift($arguments);
-if (empty($directory)) {
-    fputs(STDERR, "ERROR: not specified php source file.\n");
-    fputs(STDERR, $usage);
-    exit(-1);
-}
-if ( ! is_dir($directory)) {
-    fputs(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
-    fputs(STDERR, $usage);
-    exit(-1);
-}
-
+use Smeghead\PhpClassDiagram\Config\Arguments;
+use Smeghead\PhpClassDiagram\Config\ConfigException;
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\Main;
 
-new Main($directory, new Options($options));
+try {
+    new Main(new Arguments($arguments), new Options($options));
+} catch (ConfigException $e) {
+    fputs(STDERR, sprintf("ERROR: %s\n", $e->getMessage()));
+    fputs(STDERR, $usage);
+    exit(-1);
+}
