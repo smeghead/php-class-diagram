@@ -42,7 +42,10 @@ class Entry
         return $this->class;
     }
 
-    public function dump($level = 0): array
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dump(int $level = 0): array
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
@@ -78,7 +81,10 @@ class Entry
         return $lines;
     }
 
-    public function dumpDivisions($level = 0): array
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dumpDivisions(int $level = 0): array
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
@@ -125,6 +131,9 @@ class Entry
         return implode(' ', $expressions);
     }
 
+    /**
+     * @return Arrow[] arrows
+     */
     public function getArrows(): array
     {
         $arrows = [];

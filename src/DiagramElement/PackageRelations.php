@@ -34,6 +34,9 @@ class PackageRelations
         return $package; //外部のpackageはpackage表示
     }
 
+    /**
+     * @return string[] arrows.
+     */
     public function getArrows(): array
     {
         $lines = [];
@@ -74,6 +77,10 @@ class PackageRelations
         return $lines;
     }
 
+    /**
+     * @param PackageArrow[] $arrows arrows.
+     * @return PackageArrow[] merged arrows.
+     */
     private function mergeBothSideArrow(array $arrows): array
     {
         $merged = [];
@@ -98,6 +105,9 @@ class PackageRelations
         return $merged;
     }
 
+    /**
+     * @param PackageArrow[] $arrows arrows
+     */
     private function existsUpsidedown(array $arrows, PackageArrow $arrow): bool
     {
         foreach ($arrows as $a) {

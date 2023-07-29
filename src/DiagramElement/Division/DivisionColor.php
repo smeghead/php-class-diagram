@@ -6,7 +6,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement\Division;
 
 class DivisionColor
 {
-    private static $gen;
+    private static \Generator $gen;
     public static function nextColor(): string
     {
         if (empty(self::$gen)) {
@@ -27,6 +27,7 @@ function generateDivisionColorGenerator(): \Generator
         '#ccffff',
         '#ffccff',
     ];
+    // @phpstan-ignore-next-line
     while (true) {
         foreach ($COLORS as $c) {
             yield $c;

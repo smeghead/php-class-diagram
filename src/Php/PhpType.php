@@ -8,10 +8,15 @@ class PhpType
 {
     private string $name;
     private string $meta;
+    /** @var string[] */
     private array $namespace;
     private string $alias;
     private bool $nullable;
 
+    /**
+     * @param string[] $namespace Namespace
+     * @param \PhpParser\Node\Identifier|null $alias Alias
+     */
     public function __construct(array $namespace, string $meta, string $name, $alias = null, bool $nullable = false)
     {
         $this->namespace = $namespace;

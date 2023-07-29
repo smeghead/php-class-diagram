@@ -24,9 +24,13 @@ class PhpClass
     /** @var string[] directory parts */
     private array $dirs;
     private ClassLike $syntax;
+    /** @var \PhpParser\Node[] */
     private array $full;
 
-    public function __construct(string $filename, Stmt $syntax, array $full)
+    /**
+     * @param \PhpParser\Node[] $full
+     */
+    public function __construct(string $filename, ClassLike $syntax, array $full)
     {
         $relativePath = dirname($filename);
         if ($relativePath === '.') {
@@ -39,6 +43,9 @@ class PhpClass
         $this->full = $full;
     }
 
+    /**
+     * @return string[] parts of the name.
+     */
     public function getNamespace(): array
     {
         foreach ($this->full as $stmt) {
@@ -76,9 +83,6 @@ class PhpClass
         foreach ($this->full as $stmt) {
             if ($stmt instanceof Namespace_) {
                 $namespace = $stmt->name->parts;
-                if ($namespace === null) {
-                    var_dump($stmt);
-                }
                 break;
             }
         }
@@ -119,7 +123,12 @@ class PhpClass
         return $this->getUsesRec($this->full);
     }
 
-    private function getUsesRec($stmts, $uses = [])
+    /**
+     * @param \PhpParser\Node[] $stmts Stmts
+     * @param PhpType[] $uses
+     * @return PhpType[]
+     */
+    private function getUsesRec($stmts, array $uses = []): array
     {
         foreach ($stmts as $stmt) {
             if ($stmt instanceof GroupUse) {
