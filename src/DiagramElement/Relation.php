@@ -28,6 +28,9 @@ class Relation
         return $this->package;
     }
 
+    /**
+     * @return string[] diagram lines.
+     */
     public function dump(): array
     {
         $lines = ['@startuml class-diagram'];
@@ -41,6 +44,9 @@ class Relation
         return $lines;
     }
 
+    /**
+     * @return string[] diagram lines.
+     */
     public function getRelations(): array
     {
         $entities = $this->package->getEntries();
@@ -57,6 +63,9 @@ class Relation
         return array_unique($relation_expressions);
     }
 
+    /**
+     * @return string[] diagram lines.
+     */
     public function dumpPackages(): array
     {
         $lines = ['@startuml package-related-diagram'];
@@ -70,11 +79,17 @@ class Relation
         return $lines;
     }
 
+    /**
+     * @return array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> uses.
+     */
     public function getUses(): array
     {
         return $this->package->getUses([]);
     }
 
+    /**
+     * @return string[] diagram lines.
+     */
     public function dumpDivisions(): array
     {
         $lines = ['@startuml division-diagram'];

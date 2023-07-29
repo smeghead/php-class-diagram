@@ -16,12 +16,12 @@ class PackageArrow
         $this->to = $to;
     }
 
-    public function bothSideArrow()
+    public function bothSideArrow(): void
     {
         $this->bothSideArrow = true;
     }
 
-    public function isOpposite(self $other)
+    public function isOpposite(self $other): bool
     {
         if ($this->from !== $other->to) {
             return false;

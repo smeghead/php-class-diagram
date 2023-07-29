@@ -8,6 +8,7 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\NullableType;
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
@@ -21,15 +22,13 @@ class PhpTypeExpression
     public const RETURN_TYPE = 'return';
     public const FOR_TEST = 'for_test';
 
-    /** @var string  */
-    private string $docString = '';
     /** @var PhpType[] */
     private array $types;
     /** @var PhpType[] */
     private array $uses;
 
     /**
-     * @param NodeAbstract $stmt 対象のツリー
+     * @param Param|Property|ClassMethod|Name $stmt 対象のツリー
      * @param string $targetType 
      * @param string[] $currentNamespace
      * @param string $docString
@@ -60,7 +59,7 @@ class PhpTypeExpression
     }
 
     /**
-     * @param NodeAbstract $stmt
+     * @param Param|Property|ClassMethod $stmt 対象のツリー
      * @param string[] $currentNamespace
      * @param PhpType[] $uses
      * @return self
@@ -76,7 +75,7 @@ class PhpTypeExpression
     }
 
     /**
-     * @param NodeAbstract $stmt
+     * @param Param|Property|ClassMethod $stmt 対象のツリー
      * @param string[] $currentNamespace
      * @param ClassMethod $method
      * @param PhpType[] $uses
@@ -95,7 +94,7 @@ class PhpTypeExpression
     }
 
     /**
-     * @param NodeAbstract $stmt
+     * @param Param|Property|ClassMethod $stmt 対象のツリー
      * @param string[] $currentNamespace
      * @param PhpType[] $uses
      * @return self
@@ -125,7 +124,7 @@ class PhpTypeExpression
      * @param string[] $currentNamespace 名前空間配列
      * @param ?string $typeString コメントの型表記
      */
-    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = '')
+    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = ''): PhpType
     {
         $parts = [];
         if (!empty($typeString)) {

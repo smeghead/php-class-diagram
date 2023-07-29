@@ -6,17 +6,21 @@ namespace Smeghead\PhpClassDiagram\Config;
 
 class Options
 {
+    /** @var array<string, mixed> */
     private array $opt;
 
-    const PHP5 = 'php5';
-    const PHP7 = 'php7';
-    const PHP8 = 'php8';
+    public const PHP5 = 'php5';
+    public const PHP7 = 'php7';
+    public const PHP8 = 'php8';
 
-    const DIAGRAM_CLASS = 'class';
-    const DIAGRAM_PACKAGE = 'package';
-    const DIAGRAM_JIG = 'jig';
-    const DIAGRAM_DIVSION = 'division';
+    public const DIAGRAM_CLASS = 'class';
+    public const DIAGRAM_PACKAGE = 'package';
+    public const DIAGRAM_JIG = 'jig';
+    public const DIAGRAM_DIVSION = 'division';
 
+    /**
+     * @param array<string, mixed> $opt Option array
+     */
     public function __construct(array $opt)
     {
         $this->opt = $opt;

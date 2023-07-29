@@ -9,6 +9,7 @@ use PhpParser\Node\Stmt;
 class PhpDocComment
 {
     private string $text = '';
+
     public function __construct(Stmt $stmt)
     {
         $doc = $stmt->getDocComment();

@@ -6,7 +6,6 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Error;
 use PhpParser\ParserFactory;
-use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
@@ -17,14 +16,10 @@ use Smeghead\PhpClassDiagram\Config\Options;
 
 class PhpReader
 {
-    private string $directory;
-    private string $filename;
     private PhpClass $class;
 
-    private function __construct(string $directory, string $filename, PhpClass $class)
+    private function __construct(PhpClass $class)
     {
-        $this->directory = $directory;
-        $this->filename = $filename;
         $this->class = $class;
     }
 
@@ -64,15 +59,16 @@ class PhpReader
         $relativePath = mb_substr($filename, mb_strlen($directory) + 1);
         $classes = [];
         foreach (self::getClasses($relativePath, $ast) as $class) {
-            $classes[] = new self($directory, $filename, $class);
+            $classes[] = new self($class);
         }
         return $classes;
     }
 
     /**
-     * @return PhpClass[]
+     * @param \PhpParser\Node[] $ast
+     * @return PhpClass[]|null
      */
-    private static function getClasses(string $relativePath, array $ast): array
+    private static function getClasses(string $relativePath, array $ast): ?array
     {
         if (count($ast) === 0) {
             return null;

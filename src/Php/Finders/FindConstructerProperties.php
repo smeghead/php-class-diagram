@@ -13,13 +13,14 @@ use PhpParser\NodeFinder;
 
 class FindConstructerProperties
 {
+    /** @var \PhpParser\Node\Param[] */
     private array $properties = [];
     private ?ClassMethod $constructer;
 
     public function __construct(ClassLike $class)
     {
         $finder = new NodeFinder();
-        /** @var ClassMethod $constructer */
+        /** @var ClassMethod|null $constructer */
         $constructer = $finder->findFirst($class, function (Node $node) {
             return $node instanceof ClassMethod && $node->name->toString() === '__construct';
         });

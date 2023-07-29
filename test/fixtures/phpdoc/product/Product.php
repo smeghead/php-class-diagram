@@ -19,4 +19,7 @@ class Product {
 
     /** @var \ban\ban\ban\Ban[] */
     private array $bans;
+
+    /** @var array<int, Tag> 付与されたタグ一覧 */
+    private array $alternativeTags;
 }

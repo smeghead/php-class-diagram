@@ -20,6 +20,9 @@ class Package
     /** @var Entry[] entries */
     public array $entries = [];
 
+    /**
+     * @param string[] $parents
+     */
     public function __construct(array $parents, string $name, Options $options)
     {
         $this->parents = $parents;
@@ -32,6 +35,9 @@ class Package
         return implode('.', array_merge(array_slice($this->parents, 1), [$this->name]));
     }
 
+    /**
+     * @param string[] $paths Paths
+     */
     public function addEntry(array $paths, Entry $entry): string
     {
         if (count($paths) === 0) {
@@ -68,7 +74,10 @@ class Package
         return end($this->children);
     }
 
-    public function dump($level = 0): array
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dump(int $level = 0): array
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
@@ -92,7 +101,10 @@ class Package
         return $lines;
     }
 
-    public function dumpPackages($level = 1): array
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dumpPackages(int $level = 1): array
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
@@ -147,9 +159,10 @@ class Package
     }
 
     /**
-     * @return array useの一覧
+     * @param array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> $acc list of uses.
+     * @return array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> list of uses.
      */
-    public function getUses($acc): array
+    public function getUses(array $acc): array
     {
         $uses = [];
         foreach ($this->entries as $e) {
@@ -165,8 +178,10 @@ class Package
 
     /**
      * 解析対象になっているpackage一覧を取得する。
+     * @param array<string, string> $acc
+     * @return array<string, string>
      */
-    public function getTargetPackages($acc = [])
+    public function getTargetPackages(array $acc = []): array
     {
         $acc[$this->package] = $this->getLogicalName();
         foreach ($this->children as $n) {
@@ -205,7 +220,10 @@ class Package
         return null;
     }
 
-    public function dumpDivisions($level = 0): array
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dumpDivisions(int $level = 0): array
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
