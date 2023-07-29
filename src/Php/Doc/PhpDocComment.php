@@ -47,7 +47,7 @@ class PhpDocComment
         $vars = $phpDocNode->getVarTagValues();
         if (count($vars) > 0) {
             if ( ! empty($vars[0]->type)) {
-                return $vars[0]->type->__toString();
+                return $this->convertUnionExpression($vars[0]->type->__toString());
             }
         }
         return '';
@@ -60,7 +60,7 @@ class PhpDocComment
         }); // ParamTagValueNode[]
         if (count($paramTags) > 0) {
             if ( ! empty($paramTags[0]->type)) {
-                return $paramTags[0]->type->__toString();
+                return $this->convertUnionExpression($paramTags[0]->type->__toString());
             }
         }
         return '';
@@ -71,7 +71,7 @@ class PhpDocComment
         $returns = $phpDocNode->getReturnTagValues();
         if (count($returns) > 0) {
             if ( ! empty($returns[0]->type)) {
-                return $returns[0]->type->__toString();
+                return $this->convertUnionExpression($returns[0]->type->__toString());
             }
         }
         return '';
@@ -85,5 +85,14 @@ class PhpDocComment
         $phpDocParser = new PhpDocParser($typeParser, $constExprParser);
         $tokens = new TokenIterator($lexer->tokenize('/** ' . $this->text . ' */'));
         return $phpDocParser->parse($tokens); // PhpDocNode
+    }
+
+    private function convertUnionExpression(string $difinition): string
+    {
+        $difinition = preg_replace('/^\((.*)\)$/', '$1', $difinition);
+        $typeStrings = array_map(function(string $x){
+            return trim($x);
+        }, explode('|', $difinition));
+        return implode('|', $typeStrings);
     }
 }
