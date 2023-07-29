@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.1.1 (2023-07-30)
+
 ### Features
 
  * introduced PHPStan in Develop environment.
