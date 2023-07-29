@@ -22,4 +22,13 @@ class Product {
 
     /** @var array<int, Tag> 付与されたタグ一覧 */
     private array $alternativeTags;
+
+    /**
+     * @param array<int, Tag> $tags tags
+     * @return array<int, Tag> tags
+     */
+    public function arrayTags(array $tags): array
+    {
+        return $tags;
+    }
 }

@@ -46,7 +46,11 @@ class PhpTypeExpression
 
         $type = $stmt->{$targetType === self::RETURN_TYPE ? 'returnType' : 'type'};
         if (!empty($docString)) {
-            foreach (explode('|', $docString) as $typeString) {
+            $docString = preg_replace('/^\((.*)\)$/', '$1', $docString);
+            $typeStrings = array_map(function(string $x){
+                return trim($x);
+            }, explode('|', $docString));
+            foreach ($typeStrings as $typeString) {
                 $this->types[] = $this->parseType($type, $currentNamespace, $typeString);
             }
         } else if ($type instanceof UnionType) {

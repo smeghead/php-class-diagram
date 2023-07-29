@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php\Doc;
 
 use PhpParser\Node\Stmt;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\ConstExprParser;
+use PHPStan\PhpDocParser\Parser\PhpDocParser;
+use PHPStan\PhpDocParser\Parser\TokenIterator;
+use PHPStan\PhpDocParser\Parser\TypeParser;
 
 class PhpDocComment
 {
@@ -36,23 +43,47 @@ class PhpDocComment
     }
 
     public function getVarTypeName(): string {
-        if (preg_match('/\@var\s+(\S+)\s.*/', $this->text . ' ', $matches)) {
-            return $matches[1];
+        $phpDocNode = $this->getParseResult();
+        $vars = $phpDocNode->getVarTagValues();
+        if (count($vars) > 0) {
+            if ( ! empty($vars[0]->type)) {
+                return $vars[0]->type->__toString();
+            }
         }
         return '';
     }
 
     public function getParamTypeName(string $paramName): string {
-        if (preg_match(sprintf('/\@param\s+(\S+)\s+\$%s.*/', $paramName), $this->text . ' ', $matches)) {
-            return $matches[1];
+        $phpDocNode = $this->getParseResult();
+        $paramTags = array_filter($phpDocNode->getParamTagValues(), function(ParamTagValueNode $node) use ($paramName) {
+            return $node->parameterName === sprintf('$%s', $paramName);
+        }); // ParamTagValueNode[]
+        if (count($paramTags) > 0) {
+            if ( ! empty($paramTags[0]->type)) {
+                return $paramTags[0]->type->__toString();
+            }
         }
         return '';
     }
 
     public function getReturnTypeName(): string {
-        if (preg_match('/\@return\s+(\S+)\s+/', $this->text . ' ', $matches)) {
-            return $matches[1];
+        $phpDocNode = $this->getParseResult();
+        $returns = $phpDocNode->getReturnTagValues();
+        if (count($returns) > 0) {
+            if ( ! empty($returns[0]->type)) {
+                return $returns[0]->type->__toString();
+            }
         }
         return '';
+    }
+
+    private function getParseResult(): PhpDocNode
+    {
+        $lexer = new Lexer();
+        $constExprParser = new ConstExprParser();
+        $typeParser = new TypeParser($constExprParser);
+        $phpDocParser = new PhpDocParser($typeParser, $constExprParser);
+        $tokens = new TokenIterator($lexer->tokenize('/** ' . $this->text . ' */'));
+        return $phpDocParser->parse($tokens); // PhpDocNode
     }
 }

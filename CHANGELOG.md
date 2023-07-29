@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### Features
+
+ * introduced PHPStan in Develop environment.
+
+### Bug fix
+
+ * fix Type Description like `array<int, string>` don't berecoganized.
+
 ## v1.1.0 (2023-04-24)
 
 
