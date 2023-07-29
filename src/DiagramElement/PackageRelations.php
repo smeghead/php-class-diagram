@@ -9,12 +9,12 @@ use Smeghead\PhpClassDiagram\Php\PhpType;
 
 class PackageRelations
 {
-    /** @var array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> */
+    /** @var array<string, array<int, PhpType>> */
     private array $uses;
     private Package $rootPackage;
 
     /**
-     * @param array<string, \Smeghead\PhpClassDiagram\Php\PhpType[]> $uses
+     * @param array<string, array<int, PhpType>> $uses
      * @param Package $rootPackage
      */
     public function __construct(array $uses, Package $rootPackage)

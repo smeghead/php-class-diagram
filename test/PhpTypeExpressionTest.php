@@ -456,4 +456,84 @@ final class PhpTypeExpressionTest extends TestCase
         $this->assertSame('Tag[]', $types[0]->getName(), 'name');
         $this->assertSame(false, $types[0]->getNullable(), 'nullable');
     }
+    public function testVarArrayAlternative(): void
+    {
+        // /** @var array<int, Tag> 付与されたタグ一覧 */
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $finder = new NodeFinder();
+        $target = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'alternativeTags';
+        });
+        $expression = PhpTypeExpression::buildByVar($target, ['hoge', 'fuga', 'product'], []);
+        $types = $expression->getTypes();
+
+        $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('array<int, Tag>', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+
+    }
+    public function testMethodParameterAltaernativeTag(): void
+    {
+        // /**
+        //  * @param array<int, Tag> $tags tags
+        //  * @return array<int, Tag> tags
+        //  */
+        // public function arrayTags(array $tags): array
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'arrayTags';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'tags';
+        });
+        $uses = [new PhpType(['hoge', 'fuga', 'product'], '', 'Tag')];
+        $expression = PhpTypeExpression::buildByMethodParam($param, ['hoge', 'fuga', 'product'], $method, 'tags', $uses);
+        $types = $expression->getTypes();
+
+        $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('array<int, Tag>', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+    }
+    public function testMethodReturnAltaernativeTag(): void
+    {
+        // /**
+        //  * @param array<int, Tag> $tags tags
+        //  * @return array<int, Tag> tags
+        //  */
+        // public function arrayTags(array $tags): array
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'arrayTags';
+        });
+        $param = $finder->findFirst($method, function (Node $node) {
+            return $node instanceof Param && $node->var->name === 'tags';
+        });
+        $uses = [new PhpType(['hoge', 'fuga', 'product'], '', 'Tag')];
+        $expression = PhpTypeExpression::buildByMethodReturn($method, ['hoge', 'fuga', 'product'], $uses);
+        $types = $expression->getTypes();
+
+        $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace(), 'namespace');
+        $this->assertSame('array<int, Tag>', $types[0]->getName(), 'name');
+        $this->assertSame(false, $types[0]->getNullable(), 'nullable');
+    }
 }
