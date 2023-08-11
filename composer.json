@@ -35,6 +35,9 @@
         ],
         "build": [
             "php -d phar.readonly=off ./vendor/bin/phar-composer build ./"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
         ]
     },
     "bin": [

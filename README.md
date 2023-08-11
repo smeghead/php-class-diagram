@@ -286,8 +286,8 @@ $ bin/php-class-diagram --division-diagram test/fixtures/enum/
 ### Open shell
 
 ```bash
-docker-compose build
-docker-compose run --rm php_cli bash
+docker compose build
+docker compose run --rm php_cli bash
 ```
 
 ### install dependencies
