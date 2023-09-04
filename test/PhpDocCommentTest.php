@@ -15,7 +15,7 @@ use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
 final class PhpDocCommentTest extends TestCase
 {
-    private $fixtureDir;
+    private string $fixtureDir;
     public function setUp(): void
     {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);

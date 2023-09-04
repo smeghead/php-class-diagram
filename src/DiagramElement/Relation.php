@@ -49,9 +49,9 @@ class Relation
      */
     public function getRelations(): array
     {
-        $entities = $this->package->getEntries();
-        $relation_expressions = array_map(function (Arrow $x) use ($entities) {
-            foreach ($entities as $e) {
+        $entries = $this->package->getEntries();
+        $relation_expressions = array_map(function (Arrow $x) use ($entries) {
+            foreach ($entries as $e) {
                 if ($e->getClass()->getClassType()->equals($x->getTo())) {
                     return $x->toString($e->getClass());
                 }
@@ -60,7 +60,7 @@ class Relation
         }, $this->package->getArrows());
         $relation_expressions = array_filter($relation_expressions);
         sort($relation_expressions);
-        return array_unique($relation_expressions);
+        return array_values(array_unique($relation_expressions));
     }
 
     /**

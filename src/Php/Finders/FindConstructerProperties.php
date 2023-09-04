@@ -11,7 +11,7 @@ use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
 
-class FindConstructerProperties
+final class FindConstructerProperties
 {
     /** @var \PhpParser\Node\Param[] */
     private array $properties = [];

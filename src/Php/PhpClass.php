@@ -18,6 +18,7 @@ use PhpParser\Node\Stmt\{
 };
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 use Smeghead\PhpClassDiagram\Php\Finders\FindConstructerProperties;
+use Smeghead\PhpClassDiagram\Php\Finders\FindUsePhpTypes;
 
 class PhpClass
 {
@@ -220,5 +221,14 @@ class PhpClass
     {
         $doc = new PhpDocComment($this->syntax);
         return $doc->getDescription();
+    }
+
+    /**
+     * @return PhpType[] using types.
+     */
+    public function getUsingTypes(): array
+    {
+        $finder = new FindUsePhpTypes($this->syntax);
+        return $finder->collectTypes();
     }
 }

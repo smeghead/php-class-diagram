@@ -143,6 +143,10 @@ class Package
         foreach ($this->children as $n) {
             $arrows = array_merge($arrows, $n->getArrows());
         }
+        foreach ($this->entries as $n) {
+            $arrows = array_merge($arrows, $n->getUsingArrows());
+        }
+
         return $arrows;
     }
 

@@ -166,4 +166,16 @@ class Entry
 
         return $arrows;
     }
+
+    /**
+     * @return Arrow[] using arrows.
+     */
+    public function getUsingArrows(): array
+    {
+        $arrows = [];
+        foreach ($this->getClass()->getUsingTypes() as $t) {
+            $arrows[] = new ArrowDependency($this->class, $t);
+        }
+        return $arrows;
+    }
 }

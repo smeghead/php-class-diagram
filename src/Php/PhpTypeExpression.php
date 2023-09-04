@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
@@ -28,13 +29,13 @@ class PhpTypeExpression
     private array $uses;
 
     /**
-     * @param Param|Property|ClassMethod|Name $stmt 対象のツリー
+     * @param Node|Param|Property|ClassMethod|Name $stmt 対象のツリー
      * @param string $targetType 
      * @param string[] $currentNamespace
      * @param string $docString
      * @param PhpType[] $uses
      */
-    private function __construct(NodeAbstract $stmt, string $targetType, array $currentNamespace, string $docString, array $uses)
+    private function __construct(Node $stmt, string $targetType, array $currentNamespace, string $docString, array $uses)
     {
         if (!in_array($targetType, [self::VAR, self::PARAM, self::RETURN_TYPE, self::FOR_TEST])) {
             throw new \Exception('invalid tag.');
@@ -44,6 +45,7 @@ class PhpTypeExpression
         }
         $this->uses = $uses;
 
+        // @phpstan-ignore-next-line
         $type = $stmt->{$targetType === self::RETURN_TYPE ? 'returnType' : 'type'};
         if (!empty($docString)) {
             $docString = preg_replace('/^\((.*)\)$/', '$1', $docString);
@@ -63,13 +65,13 @@ class PhpTypeExpression
     }
 
     /**
-     * @param Param|Property|ClassMethod $stmt 対象のツリー
+     * @param Node|Param|Property|ClassMethod $stmt 対象のツリー
      * @param string[] $currentNamespace
      * @param PhpType[] $uses
      * @return self
      */
     public static function buildByVar(
-        NodeAbstract $stmt,
+        Node $stmt,
         array $currentNamespace,
         array $uses
     ): self {
@@ -79,16 +81,16 @@ class PhpTypeExpression
     }
 
     /**
-     * @param Param|Property|ClassMethod $stmt 対象のツリー
+     * @param Node|Param|Property|ClassMethod $stmt 対象のツリー
      * @param string[] $currentNamespace
      * @param ClassMethod $method
      * @param PhpType[] $uses
      * @return self
      */
     public static function buildByMethodParam(
-        NodeAbstract $stmt,
+        Node $stmt,
         array $currentNamespace,
-        ClassMethod $method,
+        Node $method,
         string $paramName,
         array $uses
     ): self {
@@ -104,7 +106,7 @@ class PhpTypeExpression
      * @return self
      */
     public static function buildByMethodReturn(
-        NodeAbstract $stmt,
+        Node $stmt,
         array $currentNamespace,
         array $uses
     ): self {
