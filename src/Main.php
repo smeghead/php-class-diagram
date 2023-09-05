@@ -14,7 +14,7 @@ use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 class Main
 {
-    const VERSION = 'v1.1.1';
+    const VERSION = 'v1.2.0';
 
     public function __construct(string $directory, Options $options)
     {

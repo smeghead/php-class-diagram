@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.2.0 (2023-09-05)
+
 ### Features
 
  * added to run PHPStan in GitHub Action flow.
