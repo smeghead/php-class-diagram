@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php\Doc;
 
-use PhpParser\Node\Stmt;
+use PhpParser\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
@@ -17,7 +17,7 @@ class PhpDocComment
 {
     private string $text = '';
 
-    public function __construct(Stmt $stmt)
+    public function __construct(Node $stmt)
     {
         $doc = $stmt->getDocComment();
         if (!empty($doc)) {

@@ -3,6 +3,7 @@
 ### Features
 
  * added to run PHPStan in GitHub Action flow.
+ * Until now, dependency information was obtained from class fields and method signatures, but now the dependency information is also obtained from within the method code.
 
 ## v1.1.1 (2023-07-30)
 

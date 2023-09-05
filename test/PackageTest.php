@@ -14,7 +14,7 @@ use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 final class PackageTest extends TestCase
 {
-    private $fixtureDir;
+    private string $fixtureDir;
 
     public function setUp(): void
     {
