@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.1 (2023-09-07)
+
+### Bug fix
+
+ * fix to Avoid interdependencies Smeghead\PhpClassDiagram\Php and Smeghead\PhpClassDiagram\Php\Finders.
+
 ## v1.2.0 (2023-09-05)
 
 ### Features

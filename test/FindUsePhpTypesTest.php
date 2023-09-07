@@ -26,5 +26,4 @@ final class FindUsePhpTypesTest extends TestCase
         $this->assertSame(['hoge', 'fuga', 'product'], $types[0]->getNamespace());
         $this->assertSame('Product', $types[0]->getName());
     }
-
 }

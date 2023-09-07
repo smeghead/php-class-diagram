@@ -229,6 +229,6 @@ class PhpClass
     public function getUsingTypes(): array
     {
         $finder = new FindUsePhpTypes($this->syntax);
-        return $finder->collectTypes();
+        return array_map(fn(FullyQualified $x) => new PhpType(array_slice($x->parts, 0, count($x->parts) - 1), '', end($x->parts)), $finder->collectTypes());
     }
 }

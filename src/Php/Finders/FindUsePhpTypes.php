@@ -6,12 +6,9 @@ namespace Smeghead\PhpClassDiagram\Php\Finders;
 
 use PhpParser\Node;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
-use Smeghead\PhpClassDiagram\Php\PhpType;
 
 final class FindUsePhpTypes
 {
@@ -23,7 +20,7 @@ final class FindUsePhpTypes
     }
 
     /**
-     * @return PhpType[] use class types.
+     * @return FullyQualified[] use class types.
      */
     public function collectTypes(): array
     {
@@ -39,10 +36,6 @@ final class FindUsePhpTypes
             }));
         }
         // @phpstan-ignore-next-line
-        return array_map(function(FullyQualified $x): PhpType {
-            $parts = $x->parts;
-            $name = array_pop($parts);
-            return new PhpType($parts, '', $name);
-        }, $useClasses);
+        return $useClasses;
     }
 }
