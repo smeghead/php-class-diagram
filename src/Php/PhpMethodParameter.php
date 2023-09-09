@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
-class PhpMethodParameter
+final class PhpMethodParameter
 {
     private string $name;
     private PhpTypeExpression $type;

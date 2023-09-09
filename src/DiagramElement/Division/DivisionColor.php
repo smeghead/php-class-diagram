@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\DiagramElement\Division;
 
-class DivisionColor
+final class DivisionColor
 {
     private static \Generator $gen;
     public static function nextColor(): string

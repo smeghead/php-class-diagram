@@ -13,7 +13,7 @@ use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 
-class PhpDocComment
+final class PhpDocComment
 {
     private string $text = '';
 

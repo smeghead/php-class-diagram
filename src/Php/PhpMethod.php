@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\{
-    NullableType,
-    Name,
     Param,
 };
 use PhpParser\Node\Stmt\{
     ClassMethod,
 };
 
-class PhpMethod
+final class PhpMethod
 {
     private string $name;
     private PhpTypeExpression $type;

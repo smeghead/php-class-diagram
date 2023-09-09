@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
-class PhpType
+final class PhpType
 {
     private string $name;
     private string $meta;

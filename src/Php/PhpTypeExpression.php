@@ -6,6 +6,7 @@ namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\IntersectionType;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\NullableType;
@@ -13,10 +14,9 @@ use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\UnionType;
-use PhpParser\NodeAbstract;
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
-class PhpTypeExpression
+final class PhpTypeExpression
 {
     public const VAR = 'var';
     public const PARAM = 'param';
@@ -126,11 +126,11 @@ class PhpTypeExpression
     }
 
     /**
-     * @param Property|Identifier|NullableType|Name|UnionType|null $type 型を表すAST (UnionTypeが指定されて呼び出される時は、typeStringで判断する時なので型判定には使われない)
+     * @param Property|Identifier|NullableType|Name|UnionType|IntersectionType|null $type 型を表すAST (UnionTypeが指定されて呼び出される時は、typeStringで判断する時なので型判定には使われない)
      * @param string[] $currentNamespace 名前空間配列
      * @param ?string $typeString コメントの型表記
      */
-    private function parseType(Property|Identifier|NullableType|Name|UnionType|null $type, array $currentNamespace, ?string $typeString = ''): PhpType
+    private function parseType(Property|Identifier|NullableType|Name|UnionType|IntersectionType|null $type, array $currentNamespace, ?string $typeString = ''): PhpType
     {
         $parts = [];
         if (!empty($typeString)) {

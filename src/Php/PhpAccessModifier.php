@@ -12,7 +12,7 @@ use PhpParser\Node\Stmt\{
     Property,
 };
 
-class PhpAccessModifier
+final class PhpAccessModifier
 {
     private bool $public = false;
     private bool $protected = false;

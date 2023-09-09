@@ -7,7 +7,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 use Smeghead\PhpClassDiagram\DiagramElement\ExternalPackage\PackageHierarchy;
 use Smeghead\PhpClassDiagram\Php\PhpType;
 
-class PackageRelations
+final class PackageRelations
 {
     /** @var array<string, array<int, PhpType>> */
     private array $uses;

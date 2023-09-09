@@ -6,7 +6,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class Package
+final class Package
 {
     private Options $options;
 

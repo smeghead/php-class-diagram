@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Config;
 
-class Options
+final class Options
 {
     /** @var array<string, mixed> */
     private array $opt;

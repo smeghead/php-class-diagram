@@ -12,7 +12,7 @@ use Smeghead\PhpClassDiagram\DiagramElement\{
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-class Main
+final class Main
 {
     const VERSION = 'v1.2.1';
 

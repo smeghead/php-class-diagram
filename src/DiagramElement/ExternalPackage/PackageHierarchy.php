@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\DiagramElement\ExternalPackage;
 
-class PackageHierarchy
+final class PackageHierarchy
 {
     private PackageNode $root;
 

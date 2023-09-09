@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\{
     Namespace_,
     ClassLike,
@@ -20,7 +19,7 @@ use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 use Smeghead\PhpClassDiagram\Php\Finders\FindConstructerProperties;
 use Smeghead\PhpClassDiagram\Php\Finders\FindUsePhpTypes;
 
-class PhpClass
+final class PhpClass
 {
     /** @var string[] directory parts */
     private array $dirs;

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### Bug fix
+
+ * fix to PhpTypeExpression#parseType argument type error. add IntersectionType.
+ * add `final` to classes.
+
 ## v1.2.1 (2023-09-07)
 
 ### Bug fix

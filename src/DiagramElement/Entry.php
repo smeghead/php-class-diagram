@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
-use Generator;
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\Division\DivisionColor;
 use Smeghead\PhpClassDiagram\Php\{
@@ -14,7 +13,7 @@ use Smeghead\PhpClassDiagram\Php\{
     PhpMethodParameter,
 };
 
-class Entry
+final class Entry
 {
     private Options $options;
     private string $directory;

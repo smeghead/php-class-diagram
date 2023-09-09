@@ -14,7 +14,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class PhpReader
+final class PhpReader
 {
     private PhpClass $class;
 

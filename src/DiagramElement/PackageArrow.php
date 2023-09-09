@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\DiagramElement;
 
-class PackageArrow
+final class PackageArrow
 {
     private string $from;
     private string $to;

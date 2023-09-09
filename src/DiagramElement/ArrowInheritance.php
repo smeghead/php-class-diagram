@@ -6,7 +6,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Php\PhpClass;
 
-class ArrowInheritance extends Arrow
+final class ArrowInheritance extends Arrow
 {
     protected string $figure = '<|--';
 

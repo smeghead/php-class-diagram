@@ -6,7 +6,7 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use Smeghead\PhpClassDiagram\Config\Options;
 
-class Relation
+final class Relation
 {
     private Options $options;
     private Package $package;

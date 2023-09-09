@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
-use PhpParser\Comment\Doc;
 use PhpParser\Node\Stmt\{
     EnumCase,
 };
 use Smeghead\PhpClassDiagram\Php\Doc\PhpDocComment;
 
-class PhpEnumCase
+final class PhpEnumCase
 {
     private string $name;
     private PhpDocComment $doc;
