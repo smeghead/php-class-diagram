@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.2.2 (2023-09-10)
+
 ### Bug fix
 
  * fix to PhpTypeExpression#parseType argument type error. add IntersectionType.
