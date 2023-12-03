@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.2.3 (2023-12-03)
+
+### Features
+
+ * update libraries.
+ * add PHP8.3
+
 ## v1.2.2 (2023-09-10)
 
 ### Bug fix
