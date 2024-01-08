@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * fix array expression `array<SomeType>` must was recognized correctly. #52
+
 ## v1.2.3 (2023-12-03)
 
 ### Features
