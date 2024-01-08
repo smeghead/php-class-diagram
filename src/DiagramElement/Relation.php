@@ -58,6 +58,7 @@ final class Relation
             }
             return null;
         }, $this->package->getArrows());
+
         $relation_expressions = array_filter($relation_expressions);
         sort($relation_expressions);
         return array_values(array_unique($relation_expressions));

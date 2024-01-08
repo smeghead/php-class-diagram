@@ -68,14 +68,33 @@ final class PhpType
         return $this->nullable;
     }
 
+    /**
+     * Determine whether they are the same class.
+     * 
+     * Since it is used to determine dependency arrows,
+     * array representations of the same class are also determined to be the same class.
+     */
     public function equals(PhpType $other): bool
     {
-        if (str_replace('[]', '', $this->name) !== str_replace('[]', '', $other->name)) {
-            return false;
-        }
         if ($this->namespace !== $other->namespace) {
             return false;
         }
-        return true;
+        // ex. Product or Product[]
+        if (str_replace('[]', '', $this->name) === str_replace('[]', '', $other->name)) {
+            return true;
+        }
+        // ex. array<Product>
+        if (preg_match('/array<([^,>]+)>/', $other->name, $matches)) {
+            if ($this->name === $matches[1]) {
+                return true;
+            }
+        }
+        // ex. array<int, Product>
+        if (preg_match('/array<[^>]+,\s*([^>]+)>/', $other->name, $matches)) {
+            if ($this->name === $matches[1]) {
+                return true;
+            }
+        }
+        return false;
     }
 }

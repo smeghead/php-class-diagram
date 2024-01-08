@@ -116,6 +116,29 @@ final class RelationTest extends TestCase
         $this->assertSame('  product_Product ..> product_Price', $relations[2], 'relation 3');
     }
 
+    public function testGetRelations_array_expression_in_doc(): void
+    {
+        $directory = sprintf('%s/array-expression-in-doc', $this->fixtureDir);
+        $options = new Options([]);
+        $files = [
+            'product/Product.php',
+            'product/Tag.php',
+        ];
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            foreach ($classes as $c) {
+                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
+            }
+        }
+        $rel = new Relation($entries, $options);
+        $relations = $rel->getRelations();
+
+        $this->assertSame(1, count($relations), 'count');
+        $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation 1');
+    }
+
     public function testGetRelations_extends1(): void
     {
         $directory = sprintf('%s/namespace-tag', $this->fixtureDir);

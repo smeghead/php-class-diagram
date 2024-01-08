@@ -153,6 +153,42 @@ final class PhpDocCommentTest extends TestCase
 
         $this->assertSame("int|null", $doc->getReturnTypeName(), 'return type name.');
     }
+    public function test_getVarType_array_expression(): void
+    {
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/array-expression-in-doc/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $finder = new NodeFinder();
+        $var = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof Property && $node->props[0]->name->toString() === 'tags';
+        });
+
+        $doc = new PhpDocComment($var);
+
+        $this->assertSame("array<Tag>", $doc->getVarTypeName(), 'var type name.');
+    }
+    public function test_getReturnType_array_expression(): void
+    {
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $filename = sprintf('%s/array-expression-in-doc/product/Product.php', $this->fixtureDir);
+        try {
+            $ast = $parser->parse(file_get_contents($filename));
+        } catch (Error $error) {
+            throw new \Exception("Parse error: {$error->getMessage()} file: {$filename}\n");
+        }
+        $finder = new NodeFinder();
+        $method = $finder->findFirst($ast, function(Node $node){
+            return $node instanceof ClassMethod && $node->name->toString() === 'getTags';
+        });
+
+        $doc = new PhpDocComment($method);
+
+        $this->assertSame("array<Tag>", $doc->getReturnTypeName(), 'return type name.');
+    }
     public function test_getClassComment(): void
     {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
