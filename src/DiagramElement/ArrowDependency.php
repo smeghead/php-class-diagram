@@ -14,17 +14,27 @@ final class ArrowDependency extends Arrow
     {
         if (strpos($this->getTo()->getName(), '[]') !== false) {
             // ex. Product[]
-            return $this->getExpression($toClass);
+            return $this->getExpression($toClass, false);
         }
         if (strpos($this->getTo()->getName(), 'array<') === 0) {
             // ex. array<Product> or array<int, Product>
-            return $this->getExpression($toClass);
+            return $this->getExpression($toClass, false);
+        }
+        if (strpos($this->getTo()->getName(), 'non-empty-array<') === 0) {
+            // ex. non-empty-array<Product> or non-empty-array<int, Product>
+            return $this->getExpression($toClass, true);
         }
         return sprintf('  %s %s %s', $this->getFrom()->getClassNameAlias(), $this->figure, $toClass->getClassNameAlias());
     }
 
-    private function getExpression(PhpClass $toClass): string
+    private function getExpression(PhpClass $toClass, bool $nonEmpty): string
     {
-        return sprintf('  %s "1" %s "*" %s', $this->getFrom()->getClassNameAlias(), $this->figure, str_replace('[]', '', $toClass->getClassNameAlias()));
+        return sprintf(
+            '  %s "1" %s "%s" %s',
+            $this->getFrom()->getClassNameAlias(),
+            $this->figure,
+            $nonEmpty ? '1..*' : '*',
+            str_replace('[]', '', $toClass->getClassNameAlias())
+        );
     }
 }
