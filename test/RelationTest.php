@@ -135,8 +135,9 @@ final class RelationTest extends TestCase
         $rel = new Relation($entries, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(1, count($relations), 'count');
-        $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation 1');
+        $this->assertSame(2, count($relations), 'count');
+        $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation *');
+        $this->assertSame('  product_Product "1" ..> "1..*" product_Tag', $relations[1], 'relation 1..*');
     }
 
     public function testGetRelations_extends1(): void

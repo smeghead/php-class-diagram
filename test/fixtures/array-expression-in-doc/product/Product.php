@@ -5,6 +5,9 @@ class Product {
     /** @var array<Tag> */
     private array $tags = [];
 
+    /** @var non-empty-array<Tag> */
+    private array $nonEmptytags;
+
     /**
      * @return array<Tag>
      */
