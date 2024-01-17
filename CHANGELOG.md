@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.2.5 (2024-01-17)
+
 ### Features
 
  * support non-empty-array<Product>. If `non-empty-array` is specified, change the dependency arrow caption from `*` to `1..*` #55
