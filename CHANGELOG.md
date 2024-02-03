@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Documentation
+
+ * cleanup directory. moved image files.
+
 ## v1.2.5 (2024-01-17)
 
 ### Features

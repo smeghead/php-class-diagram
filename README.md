@@ -20,19 +20,19 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 ### php-class-diagram class diagram
 
-![dogfood class diagram image.](dogfood.png)
+![dogfood class diagram image.](doc/images/dogfood.png)
 
 ### php-class-diagram class diagram without fields and methods
 
 If your analysis focuses on the relationships between classes, the simpler notation may be more suitable.
 
-![dogfood class diagram image.](dogfood-model.png)
+![dogfood class diagram image.](doc/images/dogfood-model.png)
 
 ### php-class-diagram package related diagram
 
 Visualizing package relationships may expose critical design issues.
 
-![dogfood package related diagram image.](dogfood-package.png)
+![dogfood package related diagram image.](doc/images/dogfood-package.png)
 
 ## Install
 
@@ -154,7 +154,7 @@ $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 
 Use PlnatUML to convert the PlantUML script to an image.
 
-![PlantUML output image.](output.png)
+![PlantUML output image.](doc/images/output.png)
 
 
 #### option `header`
@@ -212,10 +212,10 @@ $ vendor/bin/php-class-diagram --package-diagram test/fixtures/dependency-loops
 Packages that depend on each other are not desirable.
 If it finds packages that depend on each other, it will warn you with a thick red line.
 
-![PlantUML output image.](output-package-dep-loop.png)
+![PlantUML output image.](doc/images/output-package-dep-loop.png)
 
 
-![PlantUML output image.](output-package.png)
+![PlantUML output image.](doc/images/output-package.png)
 
 
 ### Division Diagram
@@ -279,7 +279,7 @@ $ bin/php-class-diagram --division-diagram test/fixtures/enum/
 ```
 
 
-![PlantUML output image.](output-division.png)
+![PlantUML output image.](doc/images/output-division.png)
 
 ## Development
 
