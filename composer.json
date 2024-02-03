@@ -15,7 +15,8 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "clue/phar-composer": "^1.2",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "smeghead/php-vendor-credits": "^0.0.4"
     },
     "license": "Apache-2.0",
     "autoload": {
