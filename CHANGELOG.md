@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * fix php-vendor-credits version in require.(composer.json)
+
 ### Documentation
 
  * cleanup directory. moved image files.
