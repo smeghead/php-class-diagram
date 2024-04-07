@@ -1,15 +1,15 @@
 # php-class-diagram
 
-A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
+A CLI tool that parses the PHP source directory and generates PlantUML class diagram scripts as output.
 
 ![Testing](https://github.com/smeghead/php-class-diagram/actions/workflows/php.yml/badge.svg?event=push) [![Latest Stable Version](http://poser.pugx.org/smeghead/php-class-diagram/v)](https://packagist.org/packages/smeghead/php-class-diagram) [![Total Downloads](http://poser.pugx.org/smeghead/php-class-diagram/downloads)](https://packagist.org/packages/smeghead/php-class-diagram) [![Latest Unstable Version](http://poser.pugx.org/smeghead/php-class-diagram/v/unstable)](https://packagist.org/packages/smeghead/php-class-diagram) [![License](http://poser.pugx.org/smeghead/php-class-diagram/license)](https://packagist.org/packages/smeghead/php-class-diagram) [![PHP Version Require](http://poser.pugx.org/smeghead/php-class-diagram/require/php)](https://packagist.org/packages/smeghead/php-class-diagram)
 
 ## Features
 
- * ♻️ Generating class diagrams from source code helps improve continuous design.
- * 🔖  Generates expressive class diagrams with an emphasis on namespaces and relationships.
- * 🔧 A simple CLI tool that is easy to handle.
- * 💡 It is also possible to output a package relationship diagram that visualizes the dependency on the external namespace.
+ * ♻️ Generating class diagrams from source code contributes to continuous design improvement.
+ * 🔖  It produces expressive class diagrams with a focus on namespaces and relationships.
+ * 🔧 This simple CLI tool is easy to use.
+ * 💡 Additionally, it can generate a package relationship diagram to visualize dependencies on external namespaces.
 
 ## What is PlantUML
 
@@ -24,13 +24,13 @@ A CLI tool that parses the PHP source directory and outputs PlantUML class diagr
 
 ### php-class-diagram class diagram without fields and methods
 
-If your analysis focuses on the relationships between classes, the simpler notation may be more suitable.
+If your analysis primarily focuses on the relationships between classes, a simpler notation may be more appropriate.
 
 ![dogfood class diagram image.](doc/images/dogfood-model.png)
 
 ### php-class-diagram package related diagram
 
-Visualizing package relationships may expose critical design issues.
+Visualizing package relationships can uncover critical design issues.
 
 ![dogfood package related diagram image.](doc/images/dogfood-package.png)
 
@@ -38,7 +38,7 @@ Visualizing package relationships may expose critical design issues.
 
 ### From DockerHub
 
-You can use docker image includes php-class-diagram and plantuml, from below URL.
+You can utilize a Docker image that includes php-class-diagram and PlantUML from the following URL.
 
  * https://hub.docker.com/r/smeghead7/php-class-diagram
 
@@ -51,14 +51,14 @@ $ composer init
 $ composer require --dev smeghead/php-class-diagram
 ```
 
-you can execute `./vendor/bin/php-class-diagram`.
+Now, you can execute `./vendor/bin/php-class-diagram`.
 for instance, try to display help message.
 
 ```bash
 $ vendor/bin/php-class-diagram --help
 usage: php-class-diagram [OPTIONS] <target php source directory>
 
-A CLI tool that parses the PHP source directory and outputs PlantUML class diagram scripts.
+A CLI tool that parses the PHP source directory and generates PlantUML class diagram scripts as output.
 
 OPTIONS
   -h, --help                     show this help page.
@@ -85,7 +85,7 @@ OPTIONS
 
 ### Class Diagram
 
-When three php source files that TYPE commented exist in `test/fixtures/no-namespace`,
+If there are three PHP source files in the directory test/fixtures/no-namespace each with a TYPE comment,
 
  * php source files.
 
@@ -128,7 +128,7 @@ class Price {
 }
 ```
 
-To execute `php-class-diagram` will print PlantUML script.
+Executing `php-class-diagram` will output the PlantUML script.
 
 ```bash
 $ vendor/bin/php-class-diagram test/fixtures/no-namespace
@@ -169,7 +169,7 @@ $ vendor/bin/php-class-diagram \
 
 #### option `include`
 
-You can add patterns to find target files to process.
+You can add patterns to specify the target files for processing.
 
 ```bash
 $ vendor/bin/php-class-diagram \
@@ -180,7 +180,7 @@ $ vendor/bin/php-class-diagram \
 
 #### option `exclude`
 
-You can specify patterns to exclude files from being processed.
+You can specify patterns to exclude files from the processing.
 
 ```bash
 $ vendor/bin/php-class-diagram \
@@ -191,7 +191,7 @@ $ vendor/bin/php-class-diagram \
 
 ### Package Diagram
 
-You can visualize package dependencies by creating a package relationship diagram with php-class-diagram.
+You can visualize package dependencies by creating a package relationship diagram using php-class-diagram.
 
 ```bash
 $ vendor/bin/php-class-diagram --package-diagram test/fixtures/dependency-loops
@@ -209,8 +209,8 @@ $ vendor/bin/php-class-diagram --package-diagram test/fixtures/dependency-loops
 @enduml
 ```
 
-Packages that depend on each other are not desirable.
-If it finds packages that depend on each other, it will warn you with a thick red line.
+Packages that depend on each other are undesirable.
+If the tool detects such dependencies, it will issue a warning with a thick red line.
 
 ![PlantUML output image.](doc/images/output-package-dep-loop.png)
 
@@ -220,8 +220,8 @@ If it finds packages that depend on each other, it will warn you with a thick re
 
 ### Division Diagram
 
-If you are using the Enum added in PHP8.1, you can output the division diagram.
-Visualizing the divisions used in the program can be useful for research and design.
+If you are utilizing the Enum feature introduced in PHP 8.1, you can generate the division diagram.
+Visualizing the divisions employed in the program can be beneficial for research and design purposes.
 
 ```bash
 $ bin/php-class-diagram --division-diagram test/fixtures/enum/ 
