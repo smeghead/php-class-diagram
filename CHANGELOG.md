@@ -8,6 +8,7 @@
 
  * cleanup directory. moved image files.
  * add CREDITS file. use `smeghead/php-vendor-credits`
+ * update descriptions in README.
 
 ## v1.2.5 (2024-01-17)
 
