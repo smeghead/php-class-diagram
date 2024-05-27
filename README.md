@@ -75,7 +75,7 @@ OPTIONS
       --disable-class-name-summary describe classname without Class summary of document comment.
       --php5                     parse php source file as php5.
       --php7                     parse php source file as php7.
-      --php8                     parse php source file as php8. (not suppoted)
+      --php8                     parse php source file as php8. (not supported)
       --header='header string'   additional header string. You can specify multiple header values.
       --include='wildcard'       include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'       exclude target file pattern. You can specify multiple exclude patterns.
@@ -152,7 +152,7 @@ $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 @enduml
 ```
 
-Use PlnatUML to convert the PlantUML script to an image.
+Use PlantUML to convert the PlantUML script to an image.
 
 ![PlantUML output image.](doc/images/output.png)
 
