@@ -52,7 +52,7 @@ $ composer require --dev smeghead/php-class-diagram
 ```
 
 Now, you can execute `./vendor/bin/php-class-diagram`.
-for instance, try to display help message.
+For instance, try to display help message.
 
 ```bash
 $ vendor/bin/php-class-diagram --help
