@@ -46,7 +46,7 @@ jobs:
     - name: Run PHPStan
       run: composer phpstan
 
-  - create-class-diagram:
+  create-class-diagram:
     runs-on: ubuntu-latest
     name: Create class diagram
     steps:
