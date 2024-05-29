@@ -45,3 +45,24 @@ jobs:
 
     - name: Run PHPStan
       run: composer phpstan
+
+  create-class-diagram:
+    runs-on: ubuntu-latest
+    name: Create class diagram
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create class diagram
+        id: create-class-diagram
+        uses: smeghead/php-class-diagram-gh-action@v0
+        with:
+          target-path: src/DiagramElement
+          output-path: php-class-diagram.png
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Class_Diagram
+          path: php-class-diagram.png
+          retention-days: 5

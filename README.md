@@ -281,6 +281,13 @@ $ bin/php-class-diagram --division-diagram test/fixtures/enum/
 
 ![PlantUML output image.](doc/images/output-division.png)
 
+## Github Actions support
+
+The following repository provides actions for generating class diagrams using php-class-diagram in Github Actions workflows.
+
+[smeghead/php-class-diagram-gh-action](https://github.com/smeghead/php-class-diagram-gh-action)
+
+
 ## Development
 
 ### Open shell
