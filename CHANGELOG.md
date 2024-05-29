@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.6 (2024-05-29)
+
+### Features
+
+ * add Github Actions support. #64
+
 ### Bug fix
 
  * fix php-vendor-credits version in require.(composer.json)
@@ -9,6 +15,7 @@
  * cleanup directory. moved image files.
  * add CREDITS file. use `smeghead/php-vendor-credits`
  * update descriptions in README.
+ * fix typos #62 by @koriym
 
 ## v1.2.5 (2024-01-17)
 
