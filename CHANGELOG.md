@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.3.0 (2024-06-02)
+
 ### Features
 
  * add SVG link support. add `--svg-topurl` option. #65
