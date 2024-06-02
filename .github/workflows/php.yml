@@ -58,11 +58,11 @@ jobs:
         uses: smeghead/php-class-diagram-gh-action@v0
         with:
           target-path: src/DiagramElement
-          output-path: php-class-diagram.png
+          output-path: php-class-diagram.svg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Class_Diagram
-          path: php-class-diagram.png
+          path: php-class-diagram.svg
           retention-days: 5
