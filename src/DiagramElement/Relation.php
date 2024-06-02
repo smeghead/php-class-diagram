@@ -34,6 +34,10 @@ final class Relation
     public function dump(): array
     {
         $lines = ['@startuml class-diagram'];
+        if ( ! empty($this->options->svgTopurl())) {
+            $lines[] = '  skinparam svgLinkTarget _blank';
+            $lines[] = sprintf('  skinparam topurl %s', $this->options->svgTopurl());
+        }
         $lines = array_merge($lines, array_map(function ($x) {
             return '  ' . $x;
         }, $this->options->headers()));

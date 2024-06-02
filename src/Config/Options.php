@@ -152,4 +152,15 @@ final class Options
         }
         return $excludes;
     }
+
+    /**
+     * @return string specified svgTopurl
+     */
+    public function svgTopurl(): string
+    {
+        if ( ! isset($this->opt['svg-topurl'])) {
+            return '';
+        }
+        return $this->opt['svg-topurl'];
+    }
 }
