@@ -59,6 +59,8 @@ jobs:
         with:
           target-path: src/DiagramElement
           output-path: php-class-diagram.svg
+          target-repo: ${{ github.repository }}
+          target-branch: ${{ github.ref_name }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
