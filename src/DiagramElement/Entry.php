@@ -53,10 +53,11 @@ final class Entry
             ? $this->class->getDescription()
             : '');
         $classIdentifier = sprintf(
-            '%s "%s" as %s',
+            '%s "%s" as %s%s',
             $meta,
             $this->class->getClassType()->getName() . (empty($classSummary) ? '' : sprintf("\\n<b>%s</b>", $classSummary)),
-            $this->class->getClassNameAlias()
+            $this->class->getClassNameAlias(),
+            $this->getLinkExpression($meta)
         );
         if ($this->options->classProperties() || $this->options->classMethods()) {
             $lines[] = sprintf('%s%s {', $indent, $classIdentifier);
@@ -176,5 +177,18 @@ final class Entry
             $arrows[] = new ArrowDependency($this->class, $t);
         }
         return $arrows;
+    }
+
+    private function getLinkExpression(string $meta): string
+    {
+        if (empty($this->options->svgTopurl())) {
+            return '';
+        }
+        $path = sprintf('/%s/%s.php', $this->directory, $this->class->getClassType()->getName());
+        return sprintf(
+            ' [[%s %s %s]]',
+            $path,
+            $this->class->getClassType()->getName(),
+            ucfirst($meta));
     }
 }

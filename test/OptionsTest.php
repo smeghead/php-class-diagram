@@ -286,4 +286,22 @@ final class OptionsTest extends TestCase
 
         $this->assertSame(0, count($options->excludes()), 'default exclude is empty.');
     }
+    public function testSvgTopurlDefault(): void
+    {
+        $opt = [];
+
+        $options = new Options($opt);
+
+        $this->assertSame('*.php', $options->includes()[0], 'default include.');
+    }
+    public function testSvgTopurl(): void
+    {
+        $opt = [
+            'svg-topurl' => 'https://github.com/smeghead/php-class-diagram',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame('https://github.com/smeghead/php-class-diagram', $options->svgTopurl(), 'specified svg-topurl.');
+    }
 }

@@ -61,24 +61,25 @@ usage: php-class-diagram [OPTIONS] <target php source directory>
 A CLI tool that parses the PHP source directory and generates PlantUML class diagram scripts as output.
 
 OPTIONS
-  -h, --help                     show this help page.
-  -v, --version                  show version.
-      --class-diagram            output class diagram script. (default)
-      --package-diagram          output package diagram script.
-      --division-diagram         output division diagram script.
-      --jig-diagram              output class diagram and package diagram script.
-      --enable-class-properties  describe properties in class diagram. (default)
-      --disable-class-properties not describe properties in class diagram.
-      --enable-class-methods     describe methods in class diagram. (default)
-      --disable-class-methods    not describe methods in class diagram.
+  -h, --help                       show this help page.
+  -v, --version                    show version.
+      --class-diagram              output class diagram script. (default)
+      --package-diagram            output package diagram script.
+      --division-diagram           output division diagram script.
+      --jig-diagram                output class diagram and package diagram script.
+      --enable-class-properties    describe properties in class diagram. (default)
+      --disable-class-properties   not describe properties in class diagram.
+      --enable-class-methods       describe methods in class diagram. (default)
+      --disable-class-methods      not describe methods in class diagram.
       --enable-class-name-summary  describe classname with Class summary of document comment. (default)
       --disable-class-name-summary describe classname without Class summary of document comment.
-      --php5                     parse php source file as php5.
-      --php7                     parse php source file as php7.
-      --php8                     parse php source file as php8. (not supported)
-      --header='header string'   additional header string. You can specify multiple header values.
-      --include='wildcard'       include target file pattern. (default: `*.php`) You can specify multiple include patterns.
-      --exclude='wildcard'       exclude target file pattern. You can specify multiple exclude patterns.
+      --svg-topurl                 specifies the top URL when displaying the class as a link when outputting in SVG format.
+      --php5                       parse php source file as php5.
+      --php7                       parse php source file as php7.
+      --php8                       parse php source file as php8. (not supported)
+      --header='header string'     additional header string. You can specify multiple header values.
+      --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
+      --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
 ```
 
 ## How to execute
