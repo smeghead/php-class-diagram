@@ -20,7 +20,7 @@ A CLI tool that parses the PHP source directory and generates PlantUML class dia
 
 ### php-class-diagram class diagram
 
-![dogfood class diagram image.](doc/images/dogfood.png)
+![dogfood class diagram image.](doc/images/dogfood.svg)
 
 ### php-class-diagram class diagram without fields and methods
 
