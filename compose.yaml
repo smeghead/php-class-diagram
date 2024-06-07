@@ -1,5 +1,3 @@
-version: '3.5'
- 
 services:
   php_cli:
     container_name: php_cli
