@@ -72,22 +72,13 @@ final class Main
     {
         $relation = new Relation($entries, $this->options);
 
-        switch ($this->options->diagram()) {
-            case Options::DIAGRAM_CLASS:
-                $this->renderDiagramClass($relation);
-                break;
-            case OPTIONS::DIAGRAM_PACKAGE:
-                $this->renderDiagramPackage($relation);
-                break;
-            case OPTIONS::DIAGRAM_JIG:
-                $this->renderDiagramJig($relation);
-                break;
-            case OPTIONS::DIAGRAM_DIVSION:
-                $this->renderDiagramVivsion($relation);
-                break;
-            default:
-                throw new RuntimeException('invalid diagram.');
-        }
+        match ($this->options->diagram()) {
+            Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
+            OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
+            OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
+            OPTIONS::DIAGRAM_DIVSION => $this->renderDiagramVivsion($relation),
+            default => throw new RuntimeException('invalid diagram.')
+        };
     }
 
     private function renderDiagramClass(Relation $relation): void
