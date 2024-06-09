@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram;
 
+use RuntimeException;
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\{
-    Entry,
-    Relation,
-};
+use Smeghead\PhpClassDiagram\DiagramElement\{Entry, Relation,};
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 use Symfony\Component\Finder\Finder;
 
@@ -24,6 +22,15 @@ final class Main
 
     public function run(): void
     {
+        $finder = $this->createFinder();
+        $entries = $this->findEntries($finder);
+
+        $relation = new Relation($entries, $this->options);
+        $this->renderRelations($relation);
+    }
+
+    private function createFinder(): Finder
+    {
         $finder = new Finder();
         $finder->files()->in($this->directory);
         $finder->files()->name($this->options->includes());
@@ -33,6 +40,14 @@ final class Main
             $finder->files()->notName($excludes)->notPath($excludes);
         }
 
+        return $finder;
+    }
+
+    /**
+     * @return list<Entry>
+     */
+    private function findEntries(Finder $finder): array
+    {
         $entries = [];
         foreach ($finder as $file) {
             try {
@@ -48,8 +63,11 @@ final class Main
                 fputs(STDERR, $e->getMessage() . "\r\n");
             }
         }
+        return $entries;
+    }
 
-        $relation = new Relation($entries, $this->options);
+    private function renderRelations(Relation $relation): void
+    {
         switch ($this->options->diagram()) {
             case Options::DIAGRAM_CLASS:
                 echo implode("\r\n", $relation->dump()) . "\r\n";
@@ -66,7 +84,7 @@ final class Main
                 echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
                 break;
             default:
-                throw new \Exception('invalid diagram.');
+                throw new RuntimeException('invalid diagram.');
         }
     }
 }
