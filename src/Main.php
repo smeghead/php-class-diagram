@@ -74,21 +74,41 @@ final class Main
 
         switch ($this->options->diagram()) {
             case Options::DIAGRAM_CLASS:
-                echo implode("\r\n", $relation->dump()) . "\r\n";
+                $this->renderDiagramClass($relation);
                 break;
             case OPTIONS::DIAGRAM_PACKAGE:
-                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+                $this->renderDiagramPackage($relation);
                 break;
             case OPTIONS::DIAGRAM_JIG:
-                echo implode("\r\n", $relation->dump()) . "\r\n";
-                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
-                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+                $this->renderDiagramJig($relation);
                 break;
             case OPTIONS::DIAGRAM_DIVSION:
-                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+                $this->renderDiagramVivsion($relation);
                 break;
             default:
                 throw new RuntimeException('invalid diagram.');
         }
+    }
+
+    private function renderDiagramClass(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dump()) . "\r\n";
+    }
+
+    private function renderDiagramPackage(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+    }
+
+    private function renderDiagramJig(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dump()) . "\r\n";
+        echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+        echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+    }
+
+    private function renderDiagramVivsion(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
     }
 }
