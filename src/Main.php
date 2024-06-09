@@ -76,7 +76,7 @@ final class Main
             Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
             OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
             OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
-            OPTIONS::DIAGRAM_DIVSION => $this->renderDiagramVivsion($relation),
+            OPTIONS::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
             default => throw new RuntimeException('invalid diagram.')
         };
     }
@@ -98,7 +98,7 @@ final class Main
         echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
     }
 
-    private function renderDiagramVivsion(Relation $relation): void
+    private function renderDiagramDivision(Relation $relation): void
     {
         echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
     }
