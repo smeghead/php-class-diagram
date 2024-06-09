@@ -60,7 +60,7 @@ final class Main
                     $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $this->options);
                 }
             } catch (\Exception $e) {
-                fputs(STDERR, $e->getMessage() . "\r\n");
+                fwrite(STDERR, $e->getMessage() . "\r\n");
             }
         }
         return $entries;
