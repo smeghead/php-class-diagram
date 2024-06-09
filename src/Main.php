@@ -25,9 +25,7 @@ final class Main
     {
         $finder = $this->createFinder();
         $entries = $this->findEntries($finder);
-
-        $relation = new Relation($entries, $this->options);
-        $this->renderRelations($relation);
+        $this->renderEntries($entries);
     }
 
     private function createFinder(): Finder
@@ -67,8 +65,13 @@ final class Main
         return $entries;
     }
 
-    private function renderRelations(Relation $relation): void
+    /**
+     * @param list<Entry> $entries
+     */
+    private function renderEntries(array $entries): void
     {
+        $relation = new Relation($entries, $this->options);
+
         switch ($this->options->diagram()) {
             case Options::DIAGRAM_CLASS:
                 echo implode("\r\n", $relation->dump()) . "\r\n";
