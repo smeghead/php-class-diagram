@@ -83,4 +83,5 @@ if ( ! is_dir($directory)) {
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\Main;
 
-new Main($directory, new Options($options));
+$main = new Main($directory, new Options($options));
+$main->run();

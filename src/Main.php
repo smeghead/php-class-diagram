@@ -4,40 +4,53 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram;
 
-use Symfony\Component\Finder\Finder;
 use Smeghead\PhpClassDiagram\Config\Options;
 use Smeghead\PhpClassDiagram\DiagramElement\{
     Entry,
     Relation,
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
+use Symfony\Component\Finder\Finder;
 
 final class Main
 {
-    const VERSION = 'v1.3.0';
+    public const VERSION = 'v1.3.0';
 
-    public function __construct(string $directory, Options $options)
+    public function __construct(
+        private string $directory,
+        private Options $options,
+    ) {
+    }
+
+    public function run(): void
     {
         $finder = new Finder();
-        $finder->files()->in($directory);
-        $finder->files()->name($options->includes());
-        $excludes = $options->excludes();
+        $finder->files()->in($this->directory);
+        $finder->files()->name($this->options->includes());
+        $excludes = $this->options->excludes();
+
         if (count($excludes) > 0) {
             $finder->files()->notName($excludes)->notPath($excludes);
         }
+
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflections = PhpReader::parseFile(realpath($directory), $file->getRealPath(), $options);
+                $reflections = PhpReader::parseFile(
+                    realpath($this->directory),
+                    $file->getRealPath(),
+                    $this->options
+                );
                 foreach ($reflections as $reflection) {
-                    $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
+                    $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $this->options);
                 }
             } catch (\Exception $e) {
                 fputs(STDERR, $e->getMessage() . "\r\n");
             }
         }
-        $relation = new Relation($entries, $options);
-        switch ($options->diagram()) {
+
+        $relation = new Relation($entries, $this->options);
+        switch ($this->options->diagram()) {
             case Options::DIAGRAM_CLASS:
                 echo implode("\r\n", $relation->dump()) . "\r\n";
                 break;
