@@ -6,7 +6,8 @@ namespace Smeghead\PhpClassDiagram;
 
 use RuntimeException;
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\{Entry, Relation,};
+use Smeghead\PhpClassDiagram\DiagramElement\Entry;
+use Smeghead\PhpClassDiagram\DiagramElement\Relation;
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 use Symfony\Component\Finder\Finder;
 
