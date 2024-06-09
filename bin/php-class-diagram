@@ -1,15 +1,23 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
+
 namespace Smeghead\PhpClassDiagram;
 
-foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+use Smeghead\PhpClassDiagram\Config\Options;
+
+foreach (
+    [
+        __DIR__ . '/../../../autoload.php',
+        __DIR__ . '/../vendor/autoload.php'
+    ] as $file
+) {
     if (file_exists($file)) {
         require $file;
         break;
     }
 }
 
-$options = getopt('hv',[
+$options = getopt('hv', [
     'help',
     'version',
     'class-diagram',
@@ -31,7 +39,7 @@ $options = getopt('hv',[
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
-$usage =<<<EOS
+$usage = <<<EOS
 usage: php-class-diagram [OPTIONS] <target php source directory>
 
 A CLI tool that parses the PHP source directory and generates PlantUML class diagram scripts as output.
@@ -60,28 +68,25 @@ OPTIONS
 EOS;
 
 if (isset($options['v']) || isset($options['version'])) {
-    fputs(STDERR, sprintf('php-class-diagram %s%s', \Smeghead\PhpClassDiagram\Main::VERSION, PHP_EOL));
+    fwrite(STDERR, sprintf('php-class-diagram %s%s', Main::VERSION, PHP_EOL));
     exit(-1);
 }
 if (isset($options['h']) || isset($options['help'])) {
-    fputs(STDERR, $usage);
+    fwrite(STDERR, $usage);
     exit(-1);
 }
 
 $directory = array_shift($arguments);
 if (empty($directory)) {
-    fputs(STDERR, "ERROR: not specified php source file.\n");
-    fputs(STDERR, $usage);
+    fwrite(STDERR, "ERROR: not specified php source file.\n");
+    fwrite(STDERR, $usage);
     exit(-1);
 }
-if ( ! is_dir($directory)) {
-    fputs(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
-    fputs(STDERR, $usage);
+if (!is_dir($directory)) {
+    fwrite(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
+    fwrite(STDERR, $usage);
     exit(-1);
 }
-
-use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\Main;
 
 $main = new Main($directory, new Options($options));
 $main->run();
