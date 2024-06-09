@@ -36,7 +36,7 @@ final class Package
     }
 
     /**
-     * @param string[] $paths Paths
+     * @param list<string> $paths
      */
     public function addEntry(array $paths, Entry $entry): string
     {
