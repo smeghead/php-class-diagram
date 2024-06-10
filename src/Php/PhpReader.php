@@ -31,7 +31,7 @@ final class PhpReader
      */
     public static function parseFile(string $directory, string $filename, Options $options): array
     {
-        $code = file_get_contents($filename);
+        $code = (string)file_get_contents($filename);
 
         $targetVersion = match ($options->phpVersion()) {
             'php5' => ParserFactory::PREFER_PHP5,

@@ -51,7 +51,7 @@ final class Main
         foreach ($finder as $file) {
             try {
                 $reflections = PhpReader::parseFile(
-                    realpath($this->directory),
+                    (string)realpath($this->directory),
                     $file->getRealPath(),
                     $this->options
                 );

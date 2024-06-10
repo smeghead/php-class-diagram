@@ -194,8 +194,16 @@ final class PhpTypeExpression
                 }
             }
         }
+        /** @var list<string> $parts */
         $typeName = array_pop($parts);
-        return new PhpType($parts, empty($type) ? '' : $type->getType(), $typeName ?? '', null, $nullable);
+
+        return new PhpType(
+            namespace: $parts,
+            meta: empty($type) ? '' : $type->getType(),
+            name: $typeName ?? '',
+            alias: null,
+            nullable: $nullable
+        );
     }
 
     /**

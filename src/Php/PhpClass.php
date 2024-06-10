@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Node;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt\{
     Namespace_,
@@ -21,14 +22,14 @@ use Smeghead\PhpClassDiagram\Php\Finders\FindUsePhpTypes;
 
 final class PhpClass
 {
-    /** @var string[] directory parts */
+    /** @var list<string> directory parts */
     private array $dirs;
     private ClassLike $syntax;
-    /** @var \PhpParser\Node[] */
+    /** @var list<Node> */
     private array $full;
 
     /**
-     * @param \PhpParser\Node[] $full
+     * @param list<Node> $full
      */
     public function __construct(string $filename, ClassLike $syntax, array $full)
     {
@@ -36,7 +37,8 @@ final class PhpClass
         if ($relativePath === '.') {
             $dirs = [];
         } else {
-            $dirs = preg_split('/[\\\\\/]/', $relativePath);
+            /** @var list<string> $dirs */
+            $dirs = (array)preg_split('/[\\\\\/]/', $relativePath);
         }
         $this->dirs = $dirs;
         $this->syntax = $syntax;
@@ -124,7 +126,7 @@ final class PhpClass
     }
 
     /**
-     * @param \PhpParser\Node[] $stmts Stmts
+     * @param list<Node> $stmts Stmts
      * @param PhpType[] $uses
      * @return PhpType[]
      */
@@ -180,7 +182,7 @@ final class PhpClass
                 $extends[] = new PhpType(
                     array_slice($extend->parts, 0, count($extend->parts) - 1),
                     '',
-                    end($extend->parts)
+                    (string)end($extend->parts)
                 );
             }
         }
@@ -191,7 +193,7 @@ final class PhpClass
                     $extends[] = new PhpType(
                         array_slice($implement->parts, 0, count($implement->parts) - 1),
                         '',
-                        end($implement->parts)
+                        (string)end($implement->parts)
                     );
                 }
             }
@@ -218,16 +220,21 @@ final class PhpClass
 
     public function getDescription(): string
     {
-        $doc = new PhpDocComment($this->syntax);
-        return $doc->getDescription();
+        return (new PhpDocComment($this->syntax))
+            ->getDescription();
     }
 
     /**
-     * @return PhpType[] using types.
+     * @return list<PhpType>
      */
     public function getUsingTypes(): array
     {
         $finder = new FindUsePhpTypes($this->syntax);
-        return array_map(fn(FullyQualified $x) => new PhpType(array_slice($x->parts, 0, count($x->parts) - 1), '', end($x->parts)), $finder->collectTypes());
+        return array_map(
+            fn(FullyQualified $x) => new PhpType(
+                array_slice($x->parts, 0, count($x->parts) - 1), '', (string)end($x->parts)
+            ),
+            $finder->collectTypes()
+        );
     }
 }

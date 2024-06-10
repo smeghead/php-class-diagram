@@ -24,15 +24,15 @@ final class PhpAccessModifier
     public function __construct(ClassConst|Property|ClassMethod|Param $stmt)
     {
         if ($stmt instanceof Param) {
-            $this->public = boolval($stmt->flags & Class_::MODIFIER_PUBLIC);
-            $this->protected = boolval($stmt->flags & Class_::MODIFIER_PROTECTED);
-            $this->private = boolval($stmt->flags & Class_::MODIFIER_PRIVATE);
+            $this->public = (bool)($stmt->flags & Class_::MODIFIER_PUBLIC);
+            $this->protected = (bool)($stmt->flags & Class_::MODIFIER_PROTECTED);
+            $this->private = (bool)($stmt->flags & Class_::MODIFIER_PRIVATE);
         } else {
             $this->public = $stmt->isPublic();
             $this->protected = $stmt->isProtected();
             $this->private = $stmt->isPrivate();
-            $this->static = $stmt->isStatic();
             if ($stmt instanceof ClassMethod) {
+                $this->static = $stmt->isStatic();
                 $this->abstract = $stmt->isAbstract();
             }
         }
