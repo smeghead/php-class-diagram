@@ -32,8 +32,16 @@ final class PhpProperty
     public static function buildByParam(Param $param, ClassMethod $method, PhpClass $class): self
     {
         $instance = new self();
-        $instance->name = $param->var->name;
-        $instance->type = PhpTypeExpression::buildByMethodParam($param, $class->getNamespace(), $method, $param->var->name, $class->getUses());
+        /** @var string $varName */
+        $varName = $param->var->name; // @phpstan-ignore-line
+        $instance->name = $varName;
+        $instance->type = PhpTypeExpression::buildByMethodParam(
+            $param,
+            $class->getNamespace(),
+            $method,
+            $varName,
+            $class->getUses()
+        );
         $instance->accessModifier = new PhpAccessModifier($param);
         return $instance;
     }

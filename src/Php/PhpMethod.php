@@ -22,8 +22,16 @@ final class PhpMethod
     public function __construct(ClassMethod $method, PhpClass $class)
     {
         $params = array_map(function (Param $x) use ($class, $method) {
-            $type = PhpTypeExpression::buildByMethodParam($x, $class->getNamespace(), $method, $x->var->name, $class->getUses());
-            return new PhpMethodParameter($x->var->name, $type);
+            /** @var string $varName */
+            $varName = $x->var->name; /** @phpstan-ignore-line */
+            $type = PhpTypeExpression::buildByMethodParam(
+                $x,
+                $class->getNamespace(),
+                $method,
+                $varName,
+                $class->getUses()
+            );
+            return new PhpMethodParameter($varName, $type);
         }, $method->getParams());
         $this->name = $method->name->toString();
         $this->type = $this->getTypeFromMethod($method, $class);
