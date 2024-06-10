@@ -19,7 +19,9 @@ final class Relation
         $this->options = $options;
         $this->package = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
-            $this->package->addEntry(preg_split('/[\\\\\/]/', $e->getDirectory()), $e);
+            /** @var list<string> $paths */
+            $paths = preg_split('/[\\\\\/]/', $e->getDirectory());
+            $this->package->addEntry($paths, $e);
         }
     }
 
