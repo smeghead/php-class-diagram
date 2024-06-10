@@ -16,7 +16,7 @@ final class Options
     public const DIAGRAM_CLASS = 'class';
     public const DIAGRAM_PACKAGE = 'package';
     public const DIAGRAM_JIG = 'jig';
-    public const DIAGRAM_DIVSION = 'division';
+    public const DIAGRAM_DIVISION = 'division';
 
     /**
      * @param array<string, mixed> $opt Option array
@@ -49,7 +49,7 @@ final class Options
             return self::DIAGRAM_JIG;
         }
         if (isset($this->opt['division-diagram'])) {
-            return self::DIAGRAM_DIVSION;
+            return self::DIAGRAM_DIVISION;
         }
         // default
         return self::DIAGRAM_CLASS;

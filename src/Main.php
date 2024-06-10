@@ -4,56 +4,102 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram;
 
-use Symfony\Component\Finder\Finder;
+use RuntimeException;
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\DiagramElement\{
-    Entry,
-    Relation,
-};
+use Smeghead\PhpClassDiagram\DiagramElement\Entry;
+use Smeghead\PhpClassDiagram\DiagramElement\Relation;
 use Smeghead\PhpClassDiagram\Php\PhpReader;
+use Symfony\Component\Finder\Finder;
 
 final class Main
 {
-    const VERSION = 'v1.3.0';
+    public const VERSION = 'v1.3.0';
 
-    public function __construct(string $directory, Options $options)
+    public function __construct(
+        private string $directory,
+        private Options $options,
+    ) {
+    }
+
+    public function run(): void
+    {
+        $finder = $this->createFinder();
+        $entries = $this->findEntries($finder);
+        $this->renderEntries($entries);
+    }
+
+    private function createFinder(): Finder
     {
         $finder = new Finder();
-        $finder->files()->in($directory);
-        $finder->files()->name($options->includes());
-        $excludes = $options->excludes();
+        $finder->files()->in($this->directory);
+        $finder->files()->name($this->options->includes());
+        $excludes = $this->options->excludes();
+
         if (count($excludes) > 0) {
             $finder->files()->notName($excludes)->notPath($excludes);
         }
+
+        return $finder;
+    }
+
+    /**
+     * @return list<Entry>
+     */
+    private function findEntries(Finder $finder): array
+    {
         $entries = [];
         foreach ($finder as $file) {
             try {
-                $reflections = PhpReader::parseFile(realpath($directory), $file->getRealPath(), $options);
+                $reflections = PhpReader::parseFile(
+                    realpath($this->directory),
+                    $file->getRealPath(),
+                    $this->options
+                );
                 foreach ($reflections as $reflection) {
-                    $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $options);
+                    $entries[] = new Entry($file->getRelativePath(), $reflection->getInfo(), $this->options);
                 }
             } catch (\Exception $e) {
-                fputs(STDERR, $e->getMessage() . "\r\n");
+                fwrite(STDERR, $e->getMessage() . "\r\n");
             }
         }
-        $relation = new Relation($entries, $options);
-        switch ($options->diagram()) {
-            case Options::DIAGRAM_CLASS:
-                echo implode("\r\n", $relation->dump()) . "\r\n";
-                break;
-            case OPTIONS::DIAGRAM_PACKAGE:
-                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
-                break;
-            case OPTIONS::DIAGRAM_JIG:
-                echo implode("\r\n", $relation->dump()) . "\r\n";
-                echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
-                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
-                break;
-            case OPTIONS::DIAGRAM_DIVSION:
-                echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
-                break;
-            default:
-                throw new \Exception('invalid diagram.');
-        }
+        return $entries;
+    }
+
+    /**
+     * @param list<Entry> $entries
+     */
+    private function renderEntries(array $entries): void
+    {
+        $relation = new Relation($entries, $this->options);
+
+        match ($this->options->diagram()) {
+            Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
+            OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
+            OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
+            OPTIONS::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
+            default => throw new RuntimeException('invalid diagram.')
+        };
+    }
+
+    private function renderDiagramClass(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dump()) . "\r\n";
+    }
+
+    private function renderDiagramPackage(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+    }
+
+    private function renderDiagramJig(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dump()) . "\r\n";
+        echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+        echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+    }
+
+    private function renderDiagramDivision(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
     }
 }
