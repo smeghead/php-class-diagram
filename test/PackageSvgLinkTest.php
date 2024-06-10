@@ -11,7 +11,7 @@ use Smeghead\PhpClassDiagram\DiagramElement\{
 };
 use Smeghead\PhpClassDiagram\Php\PhpReader;
 
-final class PackageSvgLink extends TestCase
+final class PackageSvgLinkTest extends TestCase
 {
     private string $fixtureDir;
 
