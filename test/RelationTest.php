@@ -32,11 +32,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
 
         $this->assertNotNull($rel, 'initialize Relation');
     }
@@ -54,11 +52,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(3, count($relations), 'count');
@@ -78,11 +74,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(2, count($relations), 'count');
@@ -103,11 +97,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(3, count($relations), 'count');
@@ -128,11 +120,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn ($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(2, count($relations), 'count');
@@ -152,11 +142,9 @@ final class RelationTest extends TestCase
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            foreach ($classes as $c) {
-                $entries = array_merge($entries, [new Entry(dirname($f), $c->getInfo(), $options)]);
-            }
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation($entries, $options);
+        $rel = new Relation(array_merge(...$entries), $options);
         $relations = $rel->getRelations();
 
         $this->assertSame(1, count($relations), 'count');
