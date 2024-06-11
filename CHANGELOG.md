@@ -2,6 +2,9 @@
 
 ### Bug fix
 
+ * Improve Main class #68 by @Chemaclass
+ * Improve PhpReader #69 by @Chemaclass
+ * Upgrade phpstan level 7 #70 by @Chemaclass
  * Avoid calling the `array_merge` function in the loop process
 
 ## v1.3.0 (2024-06-02)
