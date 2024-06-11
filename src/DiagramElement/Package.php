@@ -89,12 +89,8 @@ final class Package
                 $this->getLogicalName()
             );
         }
-        foreach ($this->entries as $e) {
-            $lines = array_merge($lines, $e->dump($level + 1));
-        }
-        foreach ($this->children as $n) {
-            $lines = array_merge($lines, $n->dump($level + 1));
-        }
+        $lines = array_merge($lines, ...array_map(fn($e) => $e->dump($level + 1), $this->entries));
+        $lines = array_merge($lines, ...array_map(fn($n) => $n->dump($level + 1), $this->children));
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf('%s}', $indent);
         }
@@ -124,9 +120,7 @@ final class Package
                 end($targetElements)
             );
         }
-        foreach ($this->children as $n) {
-            $lines = array_merge($lines, $n->dumpPackages($level + 1));
-        }
+        $lines = array_merge($lines, ...array_map(fn($n) => $n->dumpPackages($level + 1), $this->children));
         $lines[] = sprintf('%s}', $indent);
         return $lines;
     }
@@ -137,15 +131,9 @@ final class Package
     public function getArrows(): array
     {
         $arrows = [];
-        foreach ($this->entries as $e) {
-            $arrows = array_merge($arrows, $e->getArrows());
-        }
-        foreach ($this->children as $n) {
-            $arrows = array_merge($arrows, $n->getArrows());
-        }
-        foreach ($this->entries as $n) {
-            $arrows = array_merge($arrows, $n->getUsingArrows());
-        }
+        $arrows = array_merge($arrows, ...array_map(fn($e) => $e->getArrows(), $this->entries));
+        $arrows = array_merge($arrows, ...array_map(fn($n) => $n->getArrows(), $this->children));
+        $arrows = array_merge($arrows, ...array_map(fn($n) => $n->getUsingArrows(), $this->entries));
 
         return $arrows;
     }
@@ -156,9 +144,7 @@ final class Package
     public function getEntries(): array
     {
         $entries = $this->entries;
-        foreach ($this->children as $n) {
-            $entries = array_merge($entries, $n->getEntries());
-        }
+        $entries = array_merge($entries, ...array_map(fn($n) => $n->getEntries(), $this->children));
         return $entries;
     }
 
@@ -169,14 +155,10 @@ final class Package
     public function getUses(array $acc): array
     {
         $uses = [];
-        foreach ($this->entries as $e) {
-            $uses = array_merge($uses, $e->getClass()->getUses());
-        }
+        $uses = array_merge($uses, ...array_map(fn($e) => $e->getClass()->getUses(), $this->entries));
         $package = empty($this->package) ? sprintf('%s.%s', implode('.', $this->parents), $this->name) : $this->package;
         $acc[$package] = $uses;
-        foreach ($this->children as $n) {
-            $acc = array_merge($acc, $n->getUses($acc));
-        }
+        $acc = array_merge($acc, ...array_map(fn($n) => $n->getUses($acc), $this->children));
         return $acc;
     }
 
@@ -239,12 +221,8 @@ final class Package
                 $this->getLogicalName()
             );
         }
-        foreach ($this->entries as $e) {
-            $lines = array_merge($lines, $e->dumpDivisions($level + 1));
-        }
-        foreach ($this->children as $n) {
-            $lines = array_merge($lines, $n->dumpDivisions($level + 1));
-        }
+        $lines = array_merge($lines, ...array_map(fn($e) => $e->dumpDivisions($level + 1), $this->entries));
+        $lines = array_merge($lines, ...array_map(fn($n) => $n->dumpDivisions($level + 1), $this->children));
         if ($this->name !== 'ROOT') {
             $lines[] = sprintf('%s}', $indent);
         }

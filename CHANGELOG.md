@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Avoid calling the `array_merge` function in the loop process
+
 ## v1.3.0 (2024-06-02)
 
 ### Features
