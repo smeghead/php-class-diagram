@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.3.1 (2024-07-05)
+
 ### Features
 
  * add `--hide-private`, `--hide-private-properties`, `--hide-private-methods` option. #67

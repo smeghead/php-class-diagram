@@ -13,7 +13,7 @@ use Symfony\Component\Finder\Finder;
 
 final class Main
 {
-    public const VERSION = 'v1.3.0';
+    public const VERSION = 'v1.3.1';
 
     public function __construct(
         private string $directory,
