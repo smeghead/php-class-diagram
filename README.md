@@ -73,6 +73,9 @@ OPTIONS
       --disable-class-methods      not describe methods in class diagram.
       --enable-class-name-summary  describe classname with Class summary of document comment. (default)
       --disable-class-name-summary describe classname without Class summary of document comment.
+      --hide-private               hide private properties and methods.
+      --hide-private-properties    hide private properties.
+      --hide-private-methods       hide private methods.
       --svg-topurl                 specifies the top URL when displaying the class as a link when outputting in SVG format.
       --php5                       parse php source file as php5.
       --php7                       parse php source file as php7.
