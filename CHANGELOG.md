@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * add `--hide-private`, `--hide-private-properties`, `--hide-private-methods` option. #67
+
 ### Bug fix
 
  * Improve Main class #68 by @Chemaclass

@@ -63,11 +63,17 @@ final class Entry
             $lines[] = sprintf('%s%s {', $indent, $classIdentifier);
             if ($this->options->classProperties()) {
                 foreach ($this->class->getProperties() as $p) {
+                    if ($this->options->hidePrivateProperties() && $p->getAccessModifier()->isPublic() === false) {
+                        continue;
+                    }
                     $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
                 }
             }
             if ($this->options->classMethods()) {
                 foreach ($this->class->getMethods() as $m) {
+                    if ($this->options->hidePrivateMethods() && $m->getAccessModifier()->isPublic() === false) {
+                        continue;
+                    }
                     $params = array_map(function (PhpMethodParameter $x) {
                         return $x->getName();
                     }, $m->getParams());
@@ -189,6 +195,7 @@ final class Entry
             ' [[%s %s %s]]',
             $path,
             $this->class->getClassType()->getName(),
-            ucfirst($meta));
+            ucfirst($meta)
+        );
     }
 }

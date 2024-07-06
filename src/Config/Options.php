@@ -163,4 +163,26 @@ final class Options
         }
         return $this->opt['svg-topurl'];
     }
+
+    public function hidePrivateProperties(): bool
+    {
+        if (isset($this->opt['hide-private-properties'])) {
+            return true;
+        }
+        if (isset($this->opt['hide-private'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hidePrivateMethods(): bool
+    {
+        if (isset($this->opt['hide-private-methods'])) {
+            return true;
+        }
+        if (isset($this->opt['hide-private'])) {
+            return true;
+        }
+        return false;
+    }
 }
