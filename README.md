@@ -45,8 +45,8 @@ You can utilize a Docker image that includes php-class-diagram and PlantUML from
 ### From Composer
 
 ```bash
-$ mkdir sample
-$ cd sample
+$ mkdir example
+$ cd example
 $ composer init
 $ composer require --dev smeghead/php-class-diagram
 ```
