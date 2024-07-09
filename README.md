@@ -8,6 +8,7 @@ A CLI tool that parses the PHP source directory and generates PlantUML class dia
 
  * ♻️ Generating class diagrams from source code contributes to continuous design improvement.
  * 🔖  It produces expressive class diagrams with a focus on namespaces and relationships.
+ * 🌐 Diagrams are interactive hypermedia tools, allowing you to click on class boxes to navigate directly to the source code, enhancing understanding both visually and interactively.
  * 🔧 This simple CLI tool is easy to use.
  * 💡 Additionally, it can generate a package relationship diagram to visualize dependencies on external namespaces.
 
@@ -15,6 +16,38 @@ A CLI tool that parses the PHP source directory and generates PlantUML class dia
 
 > [PlantUML - Wikipedia](https://en.wikipedia.org/wiki/PlantUML)
 > PlantUML is an open-source tool allowing users to create diagrams from a plain text language. Besides various UML diagrams, PlantUML has support for various other software development related formats (such as Archimate, Block diagram, BPMN, C4, Computer network diagram, ERD, Gantt chart, Mind map, and WBD), as well as visualisation of JSON and YAML files.
+
+## Hypermedia Feature
+
+One of the standout features of this tool is the ability to generate class diagrams with clickable links that navigate directly to the source code of those classes. This transforms the diagrams into interactive hypermedia tools, enhancing the understanding of the source code visually and interactively.
+
+To enable this feature, generate the diagrams in SVG format and use the `--svg-topurl` option to specify the base URL for the links:
+
+```shell
+$ vendor/bin/php-class-diagram --svg-topurl='https://github.com/your-username/your-repo/blob/main/path/to/source' path/to/php/files
+```
+
+To embed the SVG diagrams in HTML while preserving the clickable links, use the `embed` or `object` tags instead of `img`. Here’s an example:
+
+```html
+<html lang="en">
+<head>
+    <title>PHP Class Diagram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        embed {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <embed type="image/svg+xml" src="php-class-diagram.svg"/>
+</body>
+</html>
+```
+
+This ensures that the SVG image is responsive and the hyperlinks remain functional.
 
 ## Dogfooding
 
