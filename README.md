@@ -53,19 +53,19 @@ This ensures that the SVG image is responsive and the hyperlinks remain function
 
 ### php-class-diagram class diagram (linked SVG file)
 
-<img src="doc/images/dogfood.svg">
+<img src="docs/images/dogfood.svg">
 
 ### php-class-diagram class diagram without fields and methods
 
 If your analysis primarily focuses on the relationships between classes, a simpler notation may be more appropriate.
 
-![dogfood class diagram image.](doc/images/dogfood-model.png)
+![dogfood class diagram image.](docs/images/dogfood-model.png)
 
 ### php-class-diagram package related diagram
 
 Visualizing package relationships can uncover critical design issues.
 
-![dogfood package related diagram image.](doc/images/dogfood-package.png)
+![dogfood package related diagram image.](docs/images/dogfood-package.png)
 
 ## Install
 
@@ -191,7 +191,7 @@ $ vendor/bin/php-class-diagram test/fixtures/no-namespace
 
 Use PlantUML to convert the PlantUML script to an image.
 
-![PlantUML output image.](doc/images/output.png)
+![PlantUML output image.](docs/images/output.png)
 
 
 #### option `header`
@@ -249,10 +249,10 @@ $ vendor/bin/php-class-diagram --package-diagram test/fixtures/dependency-loops
 Packages that depend on each other are undesirable.
 If the tool detects such dependencies, it will issue a warning with a thick red line.
 
-![PlantUML output image.](doc/images/output-package-dep-loop.png)
+![PlantUML output image.](docs/images/output-package-dep-loop.png)
 
 
-![PlantUML output image.](doc/images/output-package.png)
+![PlantUML output image.](docs/images/output-package.png)
 
 
 ### Division Diagram
@@ -316,7 +316,7 @@ $ bin/php-class-diagram --division-diagram test/fixtures/enum/
 ```
 
 
-![PlantUML output image.](doc/images/output-division.png)
+![PlantUML output image.](docs/images/output-division.png)
 
 ## GitHub Actions support
 

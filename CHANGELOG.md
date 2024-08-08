@@ -1,5 +1,8 @@
 # CHANGELOG
 
+
+ * rename directory doc to docs.
+
 ## v1.3.1 (2024-07-05)
 
 ### Features
