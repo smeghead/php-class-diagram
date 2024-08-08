@@ -49,7 +49,7 @@ To embed the SVG diagrams in HTML while preserving the clickable links, use the 
 
 This ensures that the SVG image is responsive and the hyperlinks remain functional.
 
-[Hypermedia example](https://smeghead.github.io/hyper-media.html)
+[Hypermedia example](https://smeghead.github.io/php-class-diagram/hyper-media.html)
 
 ## Dogfooding
 
