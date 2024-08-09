@@ -36,7 +36,9 @@ To embed the SVG diagrams in HTML while preserving the clickable links, use the 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         embed {
-            width: 100%;
+            max-width: 100%;
+            max-height: 200%;
+            width: auto;
             height: auto;
         }
     </style>
