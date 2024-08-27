@@ -14,12 +14,10 @@ final class OptionsTest extends TestCase
 
     public function testNothing(): void
     {
-        $opt = [];
-
-        $options = new Options($opt);
+        $options = new Options([]);
 
         $this->assertNotNull($options, 'initialize Options');
-        $this->assertSame(false, $options->help(), 'help is off.');
+        $this->assertfalse($options->help(), 'help is off.');
     }
 
     public function testH(): void
@@ -31,7 +29,7 @@ final class OptionsTest extends TestCase
         $options = new Options($opt);
 
         $this->assertNotNull($options, 'initialize Options');
-        $this->assertSame(true, $options->help(), 'help is on.');
+        $this->assertTrue($options->help(), 'help is on.');
     }
 
     public function testHelp(): void
@@ -43,10 +41,10 @@ final class OptionsTest extends TestCase
         $options = new Options($opt);
 
         $this->assertNotNull($options, 'initialize Options');
-        $this->assertSame(true, $options->help(), 'help is on.');
+        $this->assertTrue($options->help(), 'help is on.');
     }
 
-    public function testClassProperties1(): void
+    public function testClassPropertiesEnabled(): void
     {
         $opt = [
             'enable-class-properties' => true,
@@ -54,10 +52,10 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(true, $options->classProperties(), 'classProperties is on.');
+        $this->assertTrue($options->classProperties(), 'classProperties is on.');
     }
 
-    public function testClassProperties2(): void
+    public function testClassPropertiesDisabled(): void
     {
         $opt = [
             'disable-class-properties' => true,
@@ -65,19 +63,17 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(false, $options->classProperties(), 'classProperties is off.');
+        $this->assertFalse($options->classProperties(), 'classProperties is off.');
     }
 
-    public function testClassProperties3(): void
+    public function testClassPropertiesDefault(): void
     {
-        $opt = [];
+        $options = new Options([]);
 
-        $options = new Options($opt);
-
-        $this->assertSame(true, $options->classProperties(), 'classProperties is default on.');
+        $this->assertTrue($options->classProperties(), 'classProperties is default on.');
     }
 
-    public function testClassMethods1(): void
+    public function testClassMethodsEnabled(): void
     {
         $opt = [
             'enable-class-methods' => true,
@@ -85,10 +81,10 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(true, $options->classMethods(), 'classMethods is on.');
+        $this->assertTrue($options->classMethods(), 'classMethods is on.');
     }
 
-    public function testClassMethods2(): void
+    public function testClassMethodsDisabled(): void
     {
         $opt = [
             'disable-class-methods' => true,
@@ -96,19 +92,17 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(false, $options->classMethods(), 'classMethods is off.');
+        $this->assertFalse($options->classMethods(), 'classMethods is off.');
     }
 
-    public function testClassMethods3(): void
+    public function testClassMethodsDefault(): void
     {
-        $opt = [];
+        $options = new Options([]);
 
-        $options = new Options($opt);
-
-        $this->assertSame(true, $options->classMethods(), 'classMethods is default on.');
+        $this->assertTrue($options->classMethods(), 'classMethods is default on.');
     }
 
-    public function testClassNameSummary1(): void
+    public function testClassNameSummaryEnabled(): void
     {
         $opt = [
             'enable-class-name-summary' => true,
@@ -116,10 +110,10 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(true, $options->classNameSummary(), 'classNameSummary is on.');
+        $this->assertTrue($options->classNameSummary(), 'classNameSummary is on.');
     }
 
-    public function testClassNameSummary2(): void
+    public function testClassNameSummaryDisabled(): void
     {
         $opt = [
             'disable-class-name-summary' => true,
@@ -127,19 +121,17 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(false, $options->classNameSummary(), 'classNameSummary is off.');
+        $this->assertFalse($options->classNameSummary(), 'classNameSummary is off.');
     }
 
-    public function testClassNameSummary3(): void
+    public function testClassNameSummaryDefault(): void
     {
-        $opt = [];
+        $options = new Options([]);
 
-        $options = new Options($opt);
-
-        $this->assertSame(true, $options->classNameSummary(), 'classNameSummary is default on.');
+        $this->assertTrue($options->classNameSummary(), 'classNameSummary is default on.');
     }
 
-    public function testPhp1(): void
+    public function testPhp7(): void
     {
         $opt = [
             'php7' => true,
@@ -150,7 +142,7 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::PHP7, $options->phpVersion(), 'php version is 7.');
     }
 
-    public function testPhp2(): void
+    public function testPhp8(): void
     {
         $opt = [
             'php8' => true,
@@ -161,7 +153,7 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::PHP8, $options->phpVersion(), 'php version is 8.');
     }
 
-    public function testDiagram1(): void
+    public function testDiagramClass(): void
     {
         $opt = [
             'class-diagram' => true,
@@ -172,7 +164,7 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'diagram is class.');
     }
 
-    public function testDiagram2(): void
+    public function testDiagramPackage(): void
     {
         $opt = [
             'package-diagram' => true,
@@ -183,7 +175,7 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::DIAGRAM_PACKAGE, $options->diagram(), 'diagram is package.');
     }
 
-    public function testDiagram_division(): void
+    public function testDiagramDivision(): void
     {
         $opt = [
             'division-diagram' => true,
@@ -194,16 +186,14 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::DIAGRAM_DIVISION, $options->diagram(), 'diagram is division.');
     }
 
-    public function testDiagram3(): void
+    public function testDiagramDefault(): void
     {
-        $opt = [];
-
-        $options = new Options($opt);
+        $options = new Options([]);
 
         $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'default diagram is class.');
     }
 
-    public function testDiagram4(): void
+    public function testDiagramJig(): void
     {
         $opt = [
             'jig-diagram' => true,
@@ -268,14 +258,12 @@ final class OptionsTest extends TestCase
 
     public function testIncludeDefault(): void
     {
-        $opt = [];
-
-        $options = new Options($opt);
+        $options = new Options([]);
 
         $this->assertSame('*.php', $options->includes()[0], 'default include.');
     }
 
-    public function testexclude(): void
+    public function testExclude(): void
     {
         $opt = [
             'exclude' => '*Exception.php',
@@ -303,18 +291,14 @@ final class OptionsTest extends TestCase
 
     public function testExcludeDefault(): void
     {
-        $opt = [];
+        $options = new Options([]);
 
-        $options = new Options($opt);
-
-        $this->assertSame(0, count($options->excludes()), 'default exclude is empty.');
+        $this->assertCount(0, $options->excludes(), 'default exclude is empty.');
     }
 
-    public function testSvgTopurlDefault(): void
+    public function testSvgTopUrlDefault(): void
     {
-        $opt = [];
-
-        $options = new Options($opt);
+        $options = new Options([]);
 
         $this->assertSame('*.php', $options->includes()[0], 'default include.');
     }
@@ -332,13 +316,10 @@ final class OptionsTest extends TestCase
 
     public function testHidePrivateDefault(): void
     {
-        $opt = [
-        ];
+        $options = new Options([]);
 
-        $options = new Options($opt);
-
-        $this->assertSame(false, $options->hidePrivateProperties(), 'default hide-private-property.');
-        $this->assertSame(false, $options->hidePrivateMethods(), 'default hide-private-methods.');
+        $this->assertFalse($options->hidePrivateProperties(), 'default hide-private-property.');
+        $this->assertFalse($options->hidePrivateMethods(), 'default hide-private-methods.');
     }
 
     public function testHidePrivateTrue(): void
@@ -349,8 +330,8 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(true, $options->hidePrivateProperties(), 'hide-private-property is true.');
-        $this->assertSame(true, $options->hidePrivateMethods(), 'hide-private-methods is true.');
+        $this->assertTrue($options->hidePrivateProperties(), 'hide-private-property is true.');
+        $this->assertTrue($options->hidePrivateMethods(), 'hide-private-methods is true.');
     }
 
     public function testHidePrivateMethodsTrue(): void
@@ -361,8 +342,8 @@ final class OptionsTest extends TestCase
 
         $options = new Options($opt);
 
-        $this->assertSame(false, $options->hidePrivateProperties(), 'hide-private-property is false.');
-        $this->assertSame(true, $options->hidePrivateMethods(), 'hide-private-methods is true.');
+        $this->assertFalse($options->hidePrivateProperties(), 'hide-private-property is false.');
+        $this->assertTrue($options->hidePrivateMethods(), 'hide-private-methods is true.');
     }
 
 }
