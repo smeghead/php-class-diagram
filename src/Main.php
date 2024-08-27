@@ -76,6 +76,7 @@ final class Main
             Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
             OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
             OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
+            OPTIONS::DIAGRAM_FLOW => $this->renderDiagramFlow($relation),
             OPTIONS::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
             default => throw new RuntimeException('invalid diagram.')
         };
@@ -83,7 +84,7 @@ final class Main
 
     private function renderDiagramClass(Relation $relation): void
     {
-        echo implode("\r\n", $relation->dump()) . "\r\n";
+        echo implode("\r\n", $relation->dumpClasses()) . "\r\n";
     }
 
     private function renderDiagramPackage(Relation $relation): void
@@ -93,9 +94,16 @@ final class Main
 
     private function renderDiagramJig(Relation $relation): void
     {
-        echo implode("\r\n", $relation->dump()) . "\r\n";
+        echo implode("\r\n", $relation->dumpClasses()) . "\r\n";
         echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
         echo implode("\r\n", $relation->dumpDivisions()) . "\r\n";
+    }
+
+    private function renderDiagramFlow(Relation $relation): void
+    {
+        echo implode("\r\n", $relation->dumpClasses()) . "\r\n";
+        echo implode("\r\n", $relation->dumpPackages()) . "\r\n";
+        echo implode("\r\n", $relation->dumpFlow()) . "\r\n";
     }
 
     private function renderDiagramDivision(Relation $relation): void
