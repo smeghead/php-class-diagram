@@ -204,6 +204,17 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::DIAGRAM_JIG, $options->diagram(), 'diagram is jig.');
     }
 
+    public function testDiagramFlow(): void
+    {
+        $opt = [
+            'jig-diagram' => true,
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(Options::DIAGRAM_FLOW, $options->diagram(), 'diagram is flow.');
+    }
+
     public function testHeader(): void
     {
         $opt = [
