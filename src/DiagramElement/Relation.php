@@ -109,4 +109,23 @@ final class Relation
         return $lines;
     }
 
+
+    /**
+     * @return string[] diagram lines.
+     */
+    public function dumpFlow(): array
+    {
+        $lines = ['@startuml flow-diagram'];
+
+        $uses = $this->getUses();
+        $packageRelations = new PackageRelations($uses, $this->package);
+        $lines = array_merge($lines, $packageRelations->getArrows());
+        //TODO add function relations
+        //TODO add class relations
+
+        $lines = array_merge($lines, $this->getRelations());
+
+        $lines[] = '@enduml';
+        return $lines;
+    }
 }
