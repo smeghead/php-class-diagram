@@ -99,7 +99,6 @@ EOS;
             'product/Name.php',
         ];
 
-
         $rel = $this->getRelation($directory, $options, $files);
 
         $expected = <<<EOS

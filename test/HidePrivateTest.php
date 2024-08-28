@@ -20,12 +20,17 @@ final class HidePrivateTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+
+        parent::tearDown();
+    }
+
     public function testDefault(): void
     {
         $directory = sprintf('%s/hide-private', $this->fixtureDir);
-        $options = new Options([
-        ]);
-
+        $options = new Options([]);
         $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
@@ -49,7 +54,6 @@ EOS;
         $options = new Options([
             'hide-private' => true,
         ]);
-
         $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
@@ -71,7 +75,6 @@ EOS;
         $options = new Options([
             'hide-private-properties' => true,
         ]);
-
         $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
@@ -94,7 +97,6 @@ EOS;
         $options = new Options([
             'hide-private-methods' => true,
         ]);
-
         $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
