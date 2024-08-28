@@ -20,6 +20,11 @@ final class PackageSvgLinkTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+    }
+
     public function testDump_SvgLink_Classes(): void
     {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
@@ -33,13 +38,8 @@ final class PackageSvgLinkTest extends TestCase
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/namespace/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options, $files);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -69,13 +69,9 @@ EOS;
         $files = [
             'product/Interface_.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options, $files);
+
         $expected = <<<EOS
 @startuml class-diagram
   skinparam svgLinkTarget _blank
@@ -102,13 +98,9 @@ EOS;
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+
+        $rel = $this->getRelation($directory, $options, $files);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -125,5 +117,20 @@ EOS;
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function getRelation(string $directory, Options $options, array $files): Relation
+    {
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
+        }
+
+        return new Relation(array_merge(...$entries), $options);
     }
 }

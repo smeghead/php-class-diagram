@@ -16,6 +16,12 @@ final class PhpReflectionTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+        parent::tearDown();
+    }
+
     public function testInitialize(): void
     {
         $options = new Options([]);

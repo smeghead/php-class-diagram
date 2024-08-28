@@ -153,68 +153,28 @@ final class OptionsTest extends TestCase
         $this->assertSame(Options::PHP8, $options->phpVersion(), 'php version is 8.');
     }
 
-    public function testDiagramClass(): void
+    /**
+     * @param string[] $options
+     *
+     * @dataProvider provideDiagrams
+     */
+    public function testDiagrams(array $options, string $expected): void
     {
-        $opt = [
-            'class-diagram' => true,
+        $options = new Options($options);
+
+        $this->assertSame($expected, $options->diagram(), sprintf('diagram is %s.', $expected));
+    }
+
+    private function provideDiagrams(): array
+    {
+        return [
+            [[], Options::DIAGRAM_CLASS],// default
+            [['class-diagram' => true], Options::DIAGRAM_CLASS],
+            [['package-diagram' => true], Options::DIAGRAM_PACKAGE],
+            [['division-diagram' => true], Options::DIAGRAM_DIVISION],
+            [['jig-diagram' => true], Options::DIAGRAM_JIG],
         ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'diagram is class.');
     }
-
-    public function testDiagramPackage(): void
-    {
-        $opt = [
-            'package-diagram' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::DIAGRAM_PACKAGE, $options->diagram(), 'diagram is package.');
-    }
-
-    public function testDiagramDivision(): void
-    {
-        $opt = [
-            'division-diagram' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::DIAGRAM_DIVISION, $options->diagram(), 'diagram is division.');
-    }
-
-    public function testDiagramDefault(): void
-    {
-        $options = new Options([]);
-
-        $this->assertSame(Options::DIAGRAM_CLASS, $options->diagram(), 'default diagram is class.');
-    }
-
-    public function testDiagramJig(): void
-    {
-        $opt = [
-            'jig-diagram' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::DIAGRAM_JIG, $options->diagram(), 'diagram is jig.');
-    }
-
-    public function testDiagramFlow(): void
-    {
-        $opt = [
-            'jig-diagram' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::DIAGRAM_FLOW, $options->diagram(), 'diagram is flow.');
-    }
-
     public function testHeader(): void
     {
         $opt = [
@@ -356,5 +316,4 @@ final class OptionsTest extends TestCase
         $this->assertFalse($options->hidePrivateProperties(), 'hide-private-property is false.');
         $this->assertTrue($options->hidePrivateMethods(), 'hide-private-methods is true.');
     }
-
 }

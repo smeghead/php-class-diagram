@@ -25,16 +25,8 @@ final class HidePrivateTest extends TestCase
         $directory = sprintf('%s/hide-private', $this->fixtureDir);
         $options = new Options([
         ]);
-        $files = [
-            'product/Product.php',
-        ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/hide-private/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -57,16 +49,8 @@ EOS;
         $options = new Options([
             'hide-private' => true,
         ]);
-        $files = [
-            'product/Product.php',
-        ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/hide-private/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -87,16 +71,8 @@ EOS;
         $options = new Options([
             'hide-private-properties' => true,
         ]);
-        $files = [
-            'product/Product.php',
-        ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/hide-private/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -118,16 +94,8 @@ EOS;
         $options = new Options([
             'hide-private-methods' => true,
         ]);
-        $files = [
-            'product/Product.php',
-        ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/hide-private/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -141,5 +109,21 @@ EOS;
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
+    private function getRelation(string $directory, Options $options): Relation
+    {
+        $files = [
+            'product/Product.php',
+        ];
+
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/hide-private/%s', $this->fixtureDir, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
+        }
+
+        return new Relation(array_merge(...$entries), $options);
     }
 }

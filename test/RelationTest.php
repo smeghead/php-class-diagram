@@ -19,6 +19,13 @@ final class RelationTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+
+        parent::tearDown();
+    }
+
     public function testInitialize(): void
     {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
@@ -28,13 +35,7 @@ final class RelationTest extends TestCase
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+        $rel = $this->getRelation($files, $directory, $options);
 
         $this->assertNotNull($rel, 'initialize Relation');
     }
@@ -48,16 +49,11 @@ final class RelationTest extends TestCase
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(3, count($relations), 'count');
+        $this->assertCount(3, $relations, 'count');
         $this->assertSame('  product_Product ..> product_Name', $relations[0], 'relation 1');
         $this->assertSame('  product_Product ..> product_Price', $relations[1], 'relation 2');
         $this->assertSame('  product_Product ..> product_Product', $relations[2], 'relation 3');
@@ -70,16 +66,11 @@ final class RelationTest extends TestCase
             'product/Product.php',
             'product/Main.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(2, count($relations), 'count');
+        $this->assertCount(2, $relations, 'count');
         $this->assertSame('  product_Main ..> product_Product', $relations[0], 'relation 0');
     }
 
@@ -93,16 +84,11 @@ final class RelationTest extends TestCase
             'product/Name.php',
             'product/Tag.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(3, count($relations), 'count');
+        $this->assertCount(3, $relations, 'count');
         $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation 1');
         $this->assertSame('  product_Product ..> product_Name', $relations[1], 'relation 2');
         $this->assertSame('  product_Product ..> product_Price', $relations[2], 'relation 3');
@@ -116,16 +102,11 @@ final class RelationTest extends TestCase
             'product/Product.php',
             'product/Tag.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn ($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
         $relations = $rel->getRelations();
 
-        $this->assertSame(2, count($relations), 'count');
+        $this->assertCount(2, $relations, 'count');
         $this->assertSame('  product_Product "1" ..> "*" product_Tag', $relations[0], 'relation *');
         $this->assertSame('  product_Product "1" ..> "1..*" product_Tag', $relations[1], 'relation 1..*');
     }
@@ -138,16 +119,25 @@ final class RelationTest extends TestCase
             'product/Tag.php',
             'product/SubTag.php',
         ];
+        $rel = $this->getRelation($files, $directory, $options);
+        $relations = $rel->getRelations();
+
+        $this->assertCount(1, $relations, 'count');
+        $this->assertSame('  product_Tag <|-- product_SubTag', $relations[0], 'relation 1');
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function getRelation(array $files, string $directory, Options $options): Relation
+    {
         $entries = [];
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
             $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
         }
-        $rel = new Relation(array_merge(...$entries), $options);
-        $relations = $rel->getRelations();
 
-        $this->assertSame(1, count($relations), 'count');
-        $this->assertSame('  product_Tag <|-- product_SubTag', $relations[0], 'relation 1');
+        return new Relation(array_merge(...$entries), $options);
     }
 }

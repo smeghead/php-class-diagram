@@ -21,6 +21,13 @@ final class PackageTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+
+        parent::tearDown();
+    }
+
     public function testInitialize(): void
     {
         $directory = sprintf('%s/namespace', $this->fixtureDir);
@@ -33,14 +40,9 @@ final class PackageTest extends TestCase
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
 
-        $rel = new Relation(array_merge(...$entries), $options);
+        $rel = $this->getRelation($files, $directory, $options);
+
         $namespace = $rel->getPackage();
 
         $this->assertInstanceOf(Package::class, $namespace, 'namespace instance');
@@ -66,13 +68,8 @@ final class PackageTest extends TestCase
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/namespace/%s', $this->fixtureDir, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry('product', $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -101,13 +98,9 @@ EOS;
             'product/Price.php',
             'product/utility/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml class-diagram
   package product as product {
@@ -134,13 +127,9 @@ EOS;
         $files = [
             'product/Interface_.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml class-diagram
   package product as product {
@@ -161,13 +150,9 @@ EOS;
         $files = [
             'product/Interface_.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml class-diagram
   package product as product {
@@ -189,13 +174,9 @@ EOS;
         $files = [
             'product/Interface_.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml class-diagram
   package product as product {
@@ -218,13 +199,9 @@ EOS;
             'product/Interface_.php',
             'product/Implement_.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml class-diagram
   package product as product {
@@ -252,13 +229,8 @@ EOS;
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
 
         $expected = <<<EOS
 @startuml class-diagram
@@ -286,13 +258,8 @@ EOS;
             'product/Price.php',
             'product/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
 
         $expected = <<<EOS
 @startuml package-related-diagram
@@ -318,13 +285,9 @@ EOS;
             'product/Product.php',
             'product/utility/Name.php',
         ];
-        $entries = [];
-        foreach ($files as $f) {
-            $filename = sprintf('%s/%s', $directory, $f);
-            $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
-        }
-        $rel = new Relation(array_merge(...$entries), $options);
+
+        $rel = $this->getRelation($files, $directory, $options);
+
         $expected = <<<EOS
 @startuml package-related-diagram
   package hoge.fuga as fuga {
@@ -337,5 +300,20 @@ EOS;
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dumpPackages()), 'output PlantUML script.');
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function getRelation(array $files, string $directory, Options $options): Relation
+    {
+        $entries = [];
+        foreach ($files as $f) {
+            $filename = sprintf('%s/%s', $directory, $f);
+            $classes = PhpReader::parseFile($directory, $filename, $options);
+            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
+        }
+
+        return new Relation(array_merge(...$entries), $options);
     }
 }
