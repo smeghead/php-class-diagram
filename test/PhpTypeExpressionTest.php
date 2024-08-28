@@ -20,6 +20,12 @@ final class PhpTypeExpressionTest extends TestCase
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
     }
 
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+        parent::tearDown();
+    }
+
     public function testNullableString(): void
     {
         //     private ?string $nullableString;

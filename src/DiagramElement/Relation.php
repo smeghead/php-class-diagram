@@ -108,5 +108,4 @@ final class Relation
 
         return $lines;
     }
-
 }

@@ -7,15 +7,9 @@ use Smeghead\PhpClassDiagram\DiagramElement\ExternalPackage\PackageHierarchy;
 
 final class PackageHierarchyTest extends TestCase
 {
-    public function setUp(): void
-    {
-    }
-
     public function testEmptyExternalPackages(): void
     {
-        $externals = [];
-
-        $sut = new PackageHierarchy($externals);
+        $sut = new PackageHierarchy([]);
 
         $this->assertSame('', $sut->dump(), 'empty string');
     }

@@ -11,10 +11,19 @@ use Smeghead\PhpClassDiagram\Php\PhpReader;
 
 final class ClassDiagramClassNameSummaryTest extends TestCase
 {
-    private $fixtureDir;
+    private string $fixtureDir;
     public function setUp(): void
     {
         $this->fixtureDir = sprintf('%s/fixtures', __DIR__);
+
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        $this->fixtureDir = '';
+
+        parent::tearDown();
     }
 
     public function testClassnameWithSummary(): void
@@ -22,13 +31,8 @@ final class ClassDiagramClassNameSummaryTest extends TestCase
         $options = new Options([
             'enable-class-name-summary' => true
         ]);
-        $directory = sprintf('%s/classname-summary', $this->fixtureDir);
-        $filename = sprintf('%s/classname-summary/product/Product.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
-        $filename = sprintf('%s/classname-summary/product/Price.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
-        $filename = sprintf('%s/classname-summary/product/Name.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
+
+        $entries = $this->getEntries($options);
 
         $rel = new Relation($entries, $options);
         $expected = <<<EOS
@@ -58,13 +62,8 @@ EOS;
         $options = new Options([
             'disable-class-name-summary' => true
         ]);
-        $directory = sprintf('%s/classname-summary', $this->fixtureDir);
-        $filename = sprintf('%s/classname-summary/product/Product.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
-        $filename = sprintf('%s/classname-summary/product/Price.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
-        $filename = sprintf('%s/classname-summary/product/Name.php', $this->fixtureDir);
-        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
+
+        $entries = $this->getEntries($options);
 
         $rel = new Relation($entries, $options);
         $expected = <<<EOS
@@ -88,5 +87,21 @@ EOS;
 @enduml
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
+    /**
+     * @return array<Entry>
+     */
+    private function getEntries(Options $options): array
+    {
+        $directory = sprintf('%s/classname-summary', $this->fixtureDir);
+        $filename = sprintf('%s/classname-summary/product/Product.php', $this->fixtureDir);
+        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
+        $filename = sprintf('%s/classname-summary/product/Price.php', $this->fixtureDir);
+        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
+        $filename = sprintf('%s/classname-summary/product/Name.php', $this->fixtureDir);
+        $entries[] = new Entry('product', PhpReader::parseFile($directory, $filename, $options)[0]->getInfo(), $options);
+
+        return $entries;
     }
 }
