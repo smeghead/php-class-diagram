@@ -154,8 +154,6 @@ final class OptionsTest extends TestCase
     }
 
     /**
-     * @param string[] $options
-     *
      * @dataProvider provideDiagrams
      */
     public function testDiagrams(array $options, string $expected): void
@@ -165,7 +163,7 @@ final class OptionsTest extends TestCase
         $this->assertSame($expected, $options->diagram(), sprintf('diagram is %s.', $expected));
     }
 
-    private function provideDiagrams(): array
+    public function provideDiagrams(): array
     {
         return [
             [[], Options::DIAGRAM_CLASS],// default
