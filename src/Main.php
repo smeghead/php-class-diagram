@@ -23,10 +23,11 @@ final class Main
 
     public function run(): void
     {
-        match ($this->options->diagram()) {
-            Options::DIAGRAM_CLASS_SINGLE => $this->runSingleClass(),
-            default => $this->runDefault(),
-        };
+        if (!is_dir($this->directory)) {
+            $this->runSingleClass();
+        }
+
+        $this->runDefault();
     }
 
     private function runDefault(): void

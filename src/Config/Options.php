@@ -14,7 +14,6 @@ final class Options
     public const PHP8 = 'php8';
 
     public const DIAGRAM_CLASS = 'class';
-    public const DIAGRAM_CLASS_SINGLE = 'single-class';
     public const DIAGRAM_PACKAGE = 'package';
     public const DIAGRAM_JIG = 'jig';
     public const DIAGRAM_DIVISION = 'division';
@@ -42,9 +41,6 @@ final class Options
     {
         if (isset($this->opt['class-diagram'])) {
             return self::DIAGRAM_CLASS;
-        }
-        if (isset($this->opt['single-class-diagram'])) {
-            return self::DIAGRAM_CLASS_SINGLE;
         }
         if (isset($this->opt['package-diagram'])) {
             return self::DIAGRAM_PACKAGE;
