@@ -68,7 +68,9 @@ final class Main
 
         $finder = new Finder();
         $finder->files()->in($fileDir);
-        $finder->files()->name([$fileName]);
+        $finder->files()->name([
+            $fileName,
+        ]);
 
         $excludes = $this->options->excludes();
         if (count($excludes) > 0) {
@@ -111,7 +113,6 @@ final class Main
 
         match ($this->options->diagram()) {
             Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
-            Options::DIAGRAM_CLASS_SINGLE => $this->renderDiagramSingleClass($relation),
             OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
             OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
             OPTIONS::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
@@ -120,11 +121,6 @@ final class Main
     }
 
     private function renderDiagramClass(Relation $relation): void
-    {
-        echo implode("\r\n", $relation->dump()) . "\r\n";
-    }
-
-    private function renderDiagramSingleClass(Relation $relation): void
     {
         echo implode("\r\n", $relation->dump()) . "\r\n";
     }
