@@ -25,6 +25,8 @@ final class Main
     {
         if (!is_dir($this->directory)) {
             $this->runSingleClass();
+
+            return;
         }
 
         $this->runDefault();
