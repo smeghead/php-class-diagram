@@ -171,6 +171,7 @@ final class OptionsTest extends TestCase
             [['package-diagram' => true], Options::DIAGRAM_PACKAGE],
             [['division-diagram' => true], Options::DIAGRAM_DIVISION],
             [['jig-diagram' => true], Options::DIAGRAM_JIG],
+            [['class-single-diagram' => true], Options::DIAGRAM_CLASS_SINGLE],
         ];
     }
     public function testHeader(): void
