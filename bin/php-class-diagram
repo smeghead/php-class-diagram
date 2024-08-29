@@ -21,6 +21,7 @@ $options = getopt('hv', [
     'help',
     'version',
     'class-diagram',
+    'single-class-diagram',
     'package-diagram',
     'division-diagram',
     'jig-diagram',
@@ -51,6 +52,7 @@ OPTIONS
   -h, --help                       show this help page.
   -v, --version                    show version.
       --class-diagram              output class diagram script. (default)
+      --single-class-diagram       output class diagram script. (default)
       --package-diagram            output package diagram script.
       --division-diagram           output division diagram script.
       --jig-diagram                output class diagram and package diagram and division diagram script.
@@ -88,8 +90,13 @@ if (empty($directory)) {
     fwrite(STDERR, $usage);
     exit(-1);
 }
-if (!is_dir($directory)) {
+if (!isset($options['single-class-diagram']) && !is_dir($directory)) {
     fwrite(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
+    fwrite(STDERR, $usage);
+    exit(-1);
+}
+if(isset($options['single-class-diagram']) && !is_file($directory)) {
+    fwrite(STDERR, sprintf("ERROR: specified file dose not exists. file: %s\n", $directory));
     fwrite(STDERR, $usage);
     exit(-1);
 }
