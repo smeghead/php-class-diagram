@@ -113,9 +113,9 @@ final class Main
 
         match ($this->options->diagram()) {
             Options::DIAGRAM_CLASS => $this->renderDiagramClass($relation),
-            OPTIONS::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
-            OPTIONS::DIAGRAM_JIG => $this->renderDiagramJig($relation),
-            OPTIONS::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
+            Options::DIAGRAM_PACKAGE => $this->renderDiagramPackage($relation),
+            Options::DIAGRAM_JIG => $this->renderDiagramJig($relation),
+            Options::DIAGRAM_DIVISION => $this->renderDiagramDivision($relation),
             default => throw new RuntimeException('invalid diagram.')
         };
     }
