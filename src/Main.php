@@ -23,25 +23,7 @@ final class Main
 
     public function run(): void
     {
-        if (!is_dir($this->directory)) {
-            $this->runSingleClass();
-
-            return;
-        }
-
-        $this->runDefault();
-    }
-
-    private function runDefault(): void
-    {
         $finder = $this->createFinder();
-        $entries = $this->findEntries($finder);
-        $this->renderEntries($entries);
-    }
-
-    private function runSingleClass(): void
-    {
-        $finder = $this->createSingleClassFinder();
         $entries = $this->findEntries($finder);
         $this->renderEntries($entries);
     }
@@ -53,26 +35,6 @@ final class Main
         $finder->files()->name($this->options->includes());
         $excludes = $this->options->excludes();
 
-        if (count($excludes) > 0) {
-            $finder->files()->notName($excludes)->notPath($excludes);
-        }
-
-        return $finder;
-    }
-
-    private function createSingleClassFinder(): Finder
-    {
-        $fileDir = explode('/', $this->directory);
-        $fileName = array_pop($fileDir);
-        $fileDir = implode('/', $fileDir);
-
-        $finder = new Finder();
-        $finder->files()->in($fileDir);
-        $finder->files()->name([
-            $fileName,
-        ]);
-
-        $excludes = $this->options->excludes();
         if (count($excludes) > 0) {
             $finder->files()->notName($excludes)->notPath($excludes);
         }
