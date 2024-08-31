@@ -30,6 +30,14 @@ final class Main
 
     private function createFinder(): Finder
     {
+        if (is_file($this->directory)) {
+            $finder = new Finder();
+            $finder->files()->in(dirname($this->directory));
+            $finder->files()->name($this->options->includes());
+
+            return $finder;
+        }
+
         $finder = new Finder();
         $finder->files()->in($this->directory);
         $finder->files()->name($this->options->includes());
