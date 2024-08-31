@@ -88,18 +88,10 @@ if (empty($directory)) {
     fwrite(STDERR, $usage);
     exit(-1);
 }
-if (!is_file($directory) && !is_dir($directory)) {
-    if(!is_file($directory)) {
-        fwrite(STDERR, sprintf("ERROR: specified file dose not exists. file: %s\n", $directory));
-        fwrite(STDERR, $usage);
-        exit(-1);
-    }
-
-    if (!is_dir($directory)) {
-        fwrite(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
-        fwrite(STDERR, $usage);
-        exit(-1);
-    }
+if (!file_exists($directory)) {
+    fwrite(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
+    fwrite(STDERR, $usage);
+    exit(-1);
 }
 
 $main = new Main($directory, new Options($options));
