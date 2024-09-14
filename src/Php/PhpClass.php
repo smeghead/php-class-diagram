@@ -52,7 +52,7 @@ final class PhpClass
     {
         foreach ($this->full as $stmt) {
             if ($stmt instanceof Namespace_) {
-                return $stmt->name->parts;
+                return $stmt->name->getParts();
             }
         }
         return [];
@@ -84,7 +84,7 @@ final class PhpClass
         $namespace = [];
         foreach ($this->full as $stmt) {
             if ($stmt instanceof Namespace_) {
-                $namespace = $stmt->name->parts;
+                $namespace = $stmt->name->getParts();
                 break;
             }
         }
@@ -134,15 +134,15 @@ final class PhpClass
     {
         foreach ($stmts as $stmt) {
             if ($stmt instanceof GroupUse) {
-                $prefix = $stmt->prefix->parts;
+                $prefix = $stmt->prefix->getParts();
                 foreach ($stmt->uses as $u) {
-                    $parts = $u->name->parts;
+                    $parts = $u->name->getParts();
                     $name = array_pop($parts);
                     $uses[] = new PhpType(array_merge($prefix, $parts), '', $name, $u->alias);
                 }
             } else if ($stmt instanceof Use_) {
                 foreach ($stmt->uses as $u) {
-                    $parts = $u->name->parts;
+                    $parts = $u->name->getParts();
                     $name = array_pop($parts);
                     $uses[] = new PhpType($parts, '', $name, $u->alias);
                 }
@@ -179,10 +179,11 @@ final class PhpClass
         if (property_exists($this->syntax, 'extends')) {
             $extend = $this->syntax->{'extends'};
             if ($extend instanceof FullyQualified) {
+                $parts = $extend->getParts();
                 $extends[] = new PhpType(
-                    array_slice($extend->parts, 0, count($extend->parts) - 1),
+                    array_slice($parts, 0, count($parts) - 1),
                     '',
-                    (string)end($extend->parts)
+                    (string)end($parts)
                 );
             }
         }
@@ -190,10 +191,11 @@ final class PhpClass
         if (property_exists($this->syntax, 'implements')) {
             foreach ($this->syntax->{'implements'} as $implement) {
                 if ($implement instanceof FullyQualified) {
+                    $parts = $implement->getParts();
                     $extends[] = new PhpType(
-                        array_slice($implement->parts, 0, count($implement->parts) - 1),
+                        array_slice($parts, 0, count($parts) - 1),
                         '',
-                        (string)end($implement->parts)
+                        (string)end($parts)
                     );
                 }
             }
@@ -231,9 +233,12 @@ final class PhpClass
     {
         $finder = new FindUsePhpTypes($this->syntax);
         return array_map(
-            fn(FullyQualified $x) => new PhpType(
-                array_slice($x->parts, 0, count($x->parts) - 1), '', (string)end($x->parts)
-            ),
+            function(FullyQualified $x) {
+                $parts = $x->getParts();
+                return new PhpType(
+                    array_slice($parts, 0, count($parts) - 1), '', (string)end($parts)
+                );
+            },
             $finder->collectTypes()
         );
     }

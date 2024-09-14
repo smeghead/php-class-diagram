@@ -179,9 +179,9 @@ final class PhpTypeExpression
             if ($type instanceof Identifier) {
                 $parts[] = $type->name;
             } else if ($type instanceof FullyQualified) {
-                $parts = $type->parts;
+                $parts = $type->getParts();
             } else if ($type instanceof Name) {
-                $typeParts = $type->parts;
+                $typeParts = $type->getParts();
                 // usesを検索して適切なnamespaceを探す必要がある。
                 $targets = array_values(array_filter($this->uses, function (PhpType $t) use ($typeParts) {
                     $name = end($typeParts);
@@ -190,7 +190,7 @@ final class PhpTypeExpression
                 if (count($targets) > 0) {
                     $parts = array_merge($targets[0]->getNamespace(), [end($typeParts)]);
                 } else {
-                    $parts = array_merge($currentNamespace, $type->parts);
+                    $parts = array_merge($currentNamespace, $type->getParts());
                 }
             }
         }
