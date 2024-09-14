@@ -33,7 +33,7 @@ final class PhpReader
     {
         $code = (string)file_get_contents($filename);
 
-        $parser = (new ParserFactory)->createForHostVersion();
+        $parser = (new ParserFactory)->createForNewestSupportedVersion();
         try {
             $ast = $parser->parse($code);
             $nameResolver = new NameResolver();
