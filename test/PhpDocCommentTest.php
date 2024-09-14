@@ -30,7 +30,7 @@ final class PhpDocCommentTest extends TestCase
 
     public function testDocString(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -48,7 +48,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_enum_getDescription(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -66,7 +66,7 @@ final class PhpDocCommentTest extends TestCase
 
     public function testDocStringMultiLines(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -87,7 +87,7 @@ final class PhpDocCommentTest extends TestCase
 
     public function test_getDescription(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/enum/TestEnum.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -109,7 +109,7 @@ final class PhpDocCommentTest extends TestCase
 
     public function test_getVarType(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -127,7 +127,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_getParamType(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -144,7 +144,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_getReturnType(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -162,7 +162,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_getVarType_array_expression(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/array-expression-in-doc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -180,7 +180,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_getReturnType_array_expression(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/array-expression-in-doc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -198,7 +198,7 @@ final class PhpDocCommentTest extends TestCase
     }
     public function test_getClassComment(): void
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));

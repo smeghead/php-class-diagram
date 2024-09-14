@@ -29,7 +29,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testNullableString(): void
     {
         //     private ?string $nullableString;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -50,7 +50,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testIntOrString(): void
     {
         //     private int|string $intOrString;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -74,7 +74,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testName(): void
     {
         // private Price $price;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -95,7 +95,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testException(): void
     {
         // private \Exception $error;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -116,7 +116,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testRelated(): void
     {
         // private bar\Boo $boo;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -137,7 +137,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testAbsolute(): void
     {
         // private \hoge\fuga\product\bar\Boo $boo2;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -159,7 +159,7 @@ final class PhpTypeExpressionTest extends TestCase
     {
         // /** @var bur\Bon $docString */
         // private bar\Boo $docString;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -181,7 +181,7 @@ final class PhpTypeExpressionTest extends TestCase
     {
         // /** @var string|int $docStringUnion */
         // private $docStringUnion;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -206,7 +206,7 @@ final class PhpTypeExpressionTest extends TestCase
     {
         // /** @var string|bar\Bon $docStringUnion2 */
         // private $docStringUnion2;
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -230,7 +230,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodParameterInt(): void
     {
         // int $paramInt
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -255,7 +255,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodParameterPrice(): void
     {
         // ?Price $price
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -279,7 +279,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodParameterDocString(): void
     {
         // /** @params string|int $param1 */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -306,7 +306,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnInt(): void
     {
         // /** @return int|null return val. */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -327,7 +327,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnProduct(): void
     {
         // /** @return Product product (優先される情報) */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -348,7 +348,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnArray(): void
     {
         // public function method3(): array
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -369,7 +369,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodParameterTag(): void
     {
         // public function method4(Tag $tag): array
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -394,7 +394,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnUnion(): void
     {
         // public function method5(Tag $tag): int|string
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -418,7 +418,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnUnionDoc(): void
     {
         // /** @return int|string return value. */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -442,7 +442,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testMethodReturnObjectArray(): void
     {
         // /** @return Tag[] tags */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/php8/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -465,7 +465,7 @@ final class PhpTypeExpressionTest extends TestCase
     public function testVarArrayAlternative(): void
     {
         // /** @var array<int, Tag> 付与されたタグ一覧 */
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -491,7 +491,7 @@ final class PhpTypeExpressionTest extends TestCase
         //  * @return array<int, Tag> tags
         //  */
         // public function arrayTags(array $tags): array
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
@@ -520,7 +520,7 @@ final class PhpTypeExpressionTest extends TestCase
         //  * @return array<int, Tag> tags
         //  */
         // public function arrayTags(array $tags): array
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->createForHostVersion();
         $filename = sprintf('%s/phpdoc/product/Product.php', $this->fixtureDir);
         try {
             $ast = $parser->parse(file_get_contents($filename));
