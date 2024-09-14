@@ -9,10 +9,6 @@ final class Options
     /** @var array<string, mixed> */
     private array $opt;
 
-    public const PHP5 = 'php5';
-    public const PHP7 = 'php7';
-    public const PHP8 = 'php8';
-
     public const DIAGRAM_CLASS = 'class';
     public const DIAGRAM_PACKAGE = 'package';
     public const DIAGRAM_JIG = 'jig';
@@ -89,21 +85,6 @@ final class Options
         }
         // default
         return true;
-    }
-
-    public function phpVersion(): string
-    {
-        if (isset($this->opt['php5'])) {
-            return self::PHP5;
-        }
-        if (isset($this->opt['php7'])) {
-            return self::PHP7;
-        }
-        if (isset($this->opt['php8'])) {
-            return self::PHP8;
-        }
-        // default
-        return self::PHP7;
     }
 
     /**
