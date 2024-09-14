@@ -33,13 +33,7 @@ final class PhpReader
     {
         $code = (string)file_get_contents($filename);
 
-        $targetVersion = match ($options->phpVersion()) {
-            'php5' => ParserFactory::PREFER_PHP5,
-            'php7', 'php8' => ParserFactory::PREFER_PHP7, // php-parser でまだ php8 がサポートされていない。
-            default => throw new RuntimeException(sprintf("invalid php version %s\n", ParserFactory::PREFER_PHP7)),
-        };
-
-        $parser = (new ParserFactory)->create($targetVersion);
+        $parser = (new ParserFactory)->createForHostVersion();
         try {
             $ast = $parser->parse($code);
             $nameResolver = new NameResolver();

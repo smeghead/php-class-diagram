@@ -2,6 +2,8 @@
 
 
  * rename directory doc to docs.
+ * Tests refactoring #75 by @pmaasz
+ * remove --php5 --php7 --php8 options #78
 
 ## v1.3.1 (2024-07-05)
 

@@ -131,28 +131,6 @@ final class OptionsTest extends TestCase
         $this->assertTrue($options->classNameSummary(), 'classNameSummary is default on.');
     }
 
-    public function testPhp7(): void
-    {
-        $opt = [
-            'php7' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::PHP7, $options->phpVersion(), 'php version is 7.');
-    }
-
-    public function testPhp8(): void
-    {
-        $opt = [
-            'php8' => true,
-        ];
-
-        $options = new Options($opt);
-
-        $this->assertSame(Options::PHP8, $options->phpVersion(), 'php version is 8.');
-    }
-
     /**
      * @dataProvider provideDiagrams
      */

@@ -114,9 +114,6 @@ OPTIONS
       --hide-private-properties    hide private properties.
       --hide-private-methods       hide private methods.
       --svg-topurl                 specifies the top URL when displaying the class as a link when outputting in SVG format.
-      --php5                       parse php source file as php5.
-      --php7                       parse php source file as php7.
-      --php8                       parse php source file as php8. (not supported)
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
