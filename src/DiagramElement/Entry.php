@@ -190,7 +190,10 @@ final class Entry
         if (empty($this->options->svgTopurl())) {
             return '';
         }
-        $path = sprintf('/%s/%s.php', $this->directory, $this->class->getClassType()->getName());
+        $path = sprintf(
+            '/%s%s.php',
+            empty($this->directory) ? '' : sprintf('%s/', $this->directory),
+            $this->class->getClassType()->getName());
         return sprintf(
             ' [[%s %s %s]]',
             $path,

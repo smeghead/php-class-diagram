@@ -58,6 +58,37 @@ EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
 
+    public function testDump_SvgLink_Classes_toplevel_php_file(): void
+    {
+        $directory = sprintf('%s/namespace/product', $this->fixtureDir);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+            'svg-topurl' => 'https://github.com/smeghead/php-class-diagram/tree/main/test/fixtures/namespace/product',
+        ]);
+        $files = [
+            'Product.php',
+            'Price.php',
+            'Name.php',
+        ];
+
+        $rel = $this->getRelation($directory, $options, $files);
+
+        $expected = <<<EOS
+@startuml class-diagram
+  skinparam svgLinkTarget _blank
+  skinparam topurl https://github.com/smeghead/php-class-diagram/tree/main/test/fixtures/namespace/product
+  class "Product" as Product [[/Product.php Product Class]]
+  class "Price" as Price [[/Price.php Price Class]]
+  class "Name" as Name [[/Name.php Name Class]]
+  Product ..> Name
+  Product ..> Price
+  Product ..> Product
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
     public function testDump_SvgLink_Interfaces(): void
     {
         $directory = sprintf('%s/interface', $this->fixtureDir);
@@ -127,7 +158,11 @@ EOS;
         foreach ($files as $f) {
             $filename = sprintf('%s/%s', $directory, $f);
             $classes = PhpReader::parseFile($directory, $filename, $options);
-            $entries[] = array_map(fn($c) => new Entry(dirname($f), $c->getInfo(), $options), $classes);
+            $d = dirname($f);
+            if ($d === '.') {
+                $d = '';
+            }
+            $entries[] = array_map(fn($c) => new Entry($d, $c->getInfo(), $options), $classes);
         }
 
         return new Relation(array_merge(...$entries), $options);
