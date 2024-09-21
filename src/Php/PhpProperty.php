@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smeghead\PhpClassDiagram\Php;
 
 use PhpParser\Node\Param;
+use PhpParser\Node\PropertyHook;
 use PhpParser\Node\Stmt\{
     ClassMethod,
     Property,
@@ -15,6 +16,7 @@ final class PhpProperty
     private string $name;
     private PhpTypeExpression $type;
     private PhpAccessModifier $accessModifier;
+    private string $hooksState;
 
     private function __construct()
     {
@@ -26,6 +28,7 @@ final class PhpProperty
         $instance->name = $p->props[0]->name->toString();
         $instance->type = PhpTypeExpression::buildByVar($p, $class->getNamespace(), $class->getUses());
         $instance->accessModifier = new PhpAccessModifier($p);
+        $instance->hooksState = self::parsePropertyHooks($p->hooks);
         return $instance;
     }
 
@@ -46,6 +49,24 @@ final class PhpProperty
         return $instance;
     }
 
+    /**
+     * @param list<PropertyHook>|null $hooks
+     */
+    private static function parsePropertyHooks(?array $hooks): string {
+        if (empty($hooks)) {
+            return '';
+        }
+        $propertyHooks = [];
+        foreach ($hooks as $h) {
+            $propertyHooks[] = sprintf(
+                '%s%s',
+                $h->byRef ? '&' : '',
+                $h->name->name
+            );
+        }
+        return sprintf('{%s}', implode('/', $propertyHooks));
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -59,5 +80,10 @@ final class PhpProperty
     public function getAccessModifier(): PhpAccessModifier
     {
         return $this->accessModifier;
+    }
+
+    public function getHooksState(): string
+    {
+        return $this->hooksState;
     }
 }

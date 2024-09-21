@@ -66,7 +66,15 @@ final class Entry
                     if ($this->options->hidePrivateProperties() && $p->getAccessModifier()->isPublic() === false) {
                         continue;
                     }
-                    $lines[] = sprintf('  %s%s%s : %s', $indent, $this->modifier($p->getAccessModifier()), $p->getName(), $p->getType()->getName());
+                    $hooksState = $p->getHooksState();
+                    $lines[] = sprintf(
+                        '  %s%s%s : %s%s',
+                        $indent,
+                        $this->modifier($p->getAccessModifier()),
+                        $p->getName(),
+                        $p->getType()->getName(),
+                        empty($hooksState) ? '' : sprintf(' %s', $hooksState)
+                    );
                 }
             }
             if ($this->options->classMethods()) {
