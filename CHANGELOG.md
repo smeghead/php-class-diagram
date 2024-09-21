@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.4.1 (2024-09-22)
+
+ * Update php-parser version to v5.2
+ * Support property hooks #82
+
 ## v1.4.0 (2024-09-15)
 
  * rename directory doc to docs.
