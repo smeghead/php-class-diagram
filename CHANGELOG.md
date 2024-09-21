@@ -2,8 +2,14 @@
 
 ## v1.4.1 (2024-09-22)
 
+### Features
+
  * Update php-parser version to v5.2
  * Support property hooks #82
+
+### Bug fix
+
+ * Fix svg link double slashes #81
 
 ## v1.4.0 (2024-09-15)
 
