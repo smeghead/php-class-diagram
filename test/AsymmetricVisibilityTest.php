@@ -39,6 +39,9 @@ final class AsymmetricVisibilityTest extends TestCase
         $expected = <<<EOS
 @startuml class-diagram
   class "AsymmetricVisibility" as AsymmetricVisibility {
+    +publicSet : int
+    +privateSet : int
+    +protectedSet : float
     +param1 : int
     -param2 : int
     +name : string
