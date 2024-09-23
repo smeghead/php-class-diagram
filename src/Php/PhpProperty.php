@@ -46,6 +46,7 @@ final class PhpProperty
             $class->getUses()
         );
         $instance->accessModifier = new PhpAccessModifier($param);
+        $instance->hooksState = '';
         return $instance;
     }
 
