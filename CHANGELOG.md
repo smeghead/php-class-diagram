@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * feat: support AsymmetricVisibility in constructor promotion.
+
 ## v1.4.1 (2024-09-22)
 
 ### Features

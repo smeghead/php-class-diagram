@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php;
 
+use PhpParser\Modifiers;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\{
     Class_,
@@ -24,9 +25,9 @@ final class PhpAccessModifier
     public function __construct(ClassConst|Property|ClassMethod|Param $stmt)
     {
         if ($stmt instanceof Param) {
-            $this->public = (bool)($stmt->flags & Class_::MODIFIER_PUBLIC);
-            $this->protected = (bool)($stmt->flags & Class_::MODIFIER_PROTECTED);
-            $this->private = (bool)($stmt->flags & Class_::MODIFIER_PRIVATE);
+            $this->public = $this->parseFlagsPublic($stmt->flags);
+            $this->protected = (bool)($stmt->flags & Modifiers::PROTECTED);
+            $this->private = (bool)($stmt->flags & Modifiers::PRIVATE);
         } else {
             $this->public = $stmt->isPublic();
             $this->protected = $stmt->isProtected();
@@ -36,6 +37,23 @@ final class PhpAccessModifier
                 $this->abstract = $stmt->isAbstract();
             }
         }
+    }
+
+    private function parseFlagsPublic(int $flags): bool
+    {
+        if ($flags & Modifiers::PUBLIC) {
+            return true;
+        }
+        if ($flags & Modifiers::PUBLIC_SET) {
+            return true;
+        }
+        if ($flags & Modifiers::PROTECTED_SET) {
+            return true;
+        }
+        if ($flags & Modifiers::PRIVATE_SET) {
+            return true;
+        }
+        return false;
     }
 
     public function isPublic(): bool

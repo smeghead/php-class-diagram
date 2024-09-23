@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpClassDiagram\Php\Finders;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
@@ -29,11 +29,17 @@ final class FindConstructerProperties
         }
         $this->constructer = $constructer;
         foreach ($constructer->getParams() as $p) {
-            if ($p->flags & Class_::MODIFIER_PUBLIC) {
+            if ($p->flags & Modifiers::PUBLIC) {
                 $this->properties[] = $p;
-            } else if ($p->flags & Class_::MODIFIER_PRIVATE) {
+            } else if ($p->flags & Modifiers::PRIVATE) {
                 $this->properties[] = $p;
-            } else if ($p->flags & Class_::MODIFIER_PROTECTED) {
+            } else if ($p->flags & Modifiers::PROTECTED) {
+                $this->properties[] = $p;
+            } else if ($p->flags & Modifiers::PUBLIC_SET) {
+                $this->properties[] = $p;
+            } else if ($p->flags & Modifiers::PROTECTED_SET) {
+                $this->properties[] = $p;
+            } else if ($p->flags & Modifiers::PRIVATE_SET) {
                 $this->properties[] = $p;
             }
         }
