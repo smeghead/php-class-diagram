@@ -24,7 +24,9 @@ One of the standout features of this tool is the ability to generate class diagr
 To enable this feature, generate the diagrams in SVG format and use the `--svg-topurl` option to specify the base URL for the links:
 
 ```shell
-$ vendor/bin/php-class-diagram --svg-topurl='https://github.com/your-username/your-repo/blob/main/path/to/source' path/to/php/files
+$ vendor/bin/php-class-diagram \
+    --svg-topurl='https://github.com/your-username/your-repo/blob/main/path/to/source' \
+    path/to/php/files
 ```
 
 To embed the SVG diagrams in HTML while preserving the clickable links, use the `embed` or `object` tags instead of `img`. Here’s an example:
