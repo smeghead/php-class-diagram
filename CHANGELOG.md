@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Add argument to `--svg-topurl` in help message.
+
 ## v1.4.2 (2024-09-23)
 
 ### Features

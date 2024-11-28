@@ -61,7 +61,7 @@ OPTIONS
       --hide-private               hide private properties and methods.
       --hide-private-properties    hide private properties.
       --hide-private-methods       hide private methods.
-      --svg-topurl                 Specifies the top URL when displaying the class as a link when outputting in SVG format.
+      --svg-topurl='url'           Specifies the top URL when displaying the class as a link when outputting in SVG format.
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
