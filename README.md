@@ -220,7 +220,7 @@ $ vendor/bin/php-class-diagram \
 
 #### option `exclude`
 
-You can specify patterns to exclude files from the processing.
+You can specify patterns to exclude files from the processing. If you want to ignore a folder, you must specify the relative path to the target php source directory.
 
 ```bash
 $ vendor/bin/php-class-diagram \
