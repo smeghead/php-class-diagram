@@ -37,6 +37,9 @@ $options = getopt('hv', [
     'header::',
     'include::',
     'exclude::',
+    'from::',
+    'to::',
+    'depth::',
 ], $rest_index);
 $arguments = array_slice($argv, $rest_index);
 
@@ -65,7 +68,9 @@ OPTIONS
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
-
+      --from='class1,class2,...'   comma separated list of classes to filter dependencies from
+      --to='class1,class2,...'     comma separated list of classes to filter dependencies to
+      --depth=integer              max depth of dependencies to show when using --from or --to filters
 EOS;
 
 if (isset($options['v']) || isset($options['version'])) {

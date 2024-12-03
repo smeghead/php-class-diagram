@@ -166,4 +166,33 @@ final class Options
         }
         return false;
     }
+
+    /**
+     * @return array<string>
+     */
+    public function fromClass(): array
+    {
+        if (!isset($this->opt['from'])) {
+            return [];
+        }
+
+        return explode(',', $this->opt['from']);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function toClass(): array
+    {
+        if (!isset($this->opt['to'])) {
+            return [];
+        }
+
+        return explode(',', $this->opt['to']);
+    }
+
+    public function depth(): int
+    {
+        return (int) ($this->opt['depth'] ?? PHP_INT_MAX);
+    }
 }
