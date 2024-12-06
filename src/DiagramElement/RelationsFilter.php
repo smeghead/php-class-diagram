@@ -29,6 +29,12 @@ class RelationsFilter {
         $output = [];
         $fromClasses = $this->options->fromClass();
         $toClasses = $this->options->toClass();
+
+        if ([] !== $this->options->targetClass()) {
+            $fromClasses = $this->options->targetClass();
+            $toClasses = $this->options->targetClass();
+        }
+
         $this->maxDepth = $this->options->depth() - 1;
         $this->relationExpressions = $relation_expressions;
 

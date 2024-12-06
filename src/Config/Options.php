@@ -191,6 +191,18 @@ final class Options
         return explode(',', $this->opt['rel-target-to']);
     }
 
+    /**
+     * @return array<string>
+     */
+    public function targetClass(): array
+    {
+        if (!isset($this->opt['rel-target'])) {
+            return [];
+        }
+
+        return explode(',', $this->opt['rel-target']);
+    }
+
     public function depth(): int
     {
         return (int) ($this->opt['rel-target-depth'] ?? PHP_INT_MAX);
