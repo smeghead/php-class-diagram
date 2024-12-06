@@ -63,7 +63,7 @@ final class RelationsFilterTest extends TestCase
     public function testFiltersInboundRelations(): void
     {
         $relationsFilter = new RelationsFilter(new Options([
-            'to' => 'PackageNode'
+            'rel-target-to' => 'PackageNode'
         ]));
 
         $result = $relationsFilter->filterRelations($this->fixture);
@@ -78,8 +78,8 @@ final class RelationsFilterTest extends TestCase
     public function testFiltersInboundRelationsWithDepth(): void
     {
         $relationsFilter = new RelationsFilter(new Options([
-            'to' => 'PackageNode',
-            'depth' => 1
+            'rel-target-to' => 'PackageNode',
+            'rel-target-depth' => 1
         ]));
 
         $result = $relationsFilter->filterRelations($this->fixture);
@@ -93,7 +93,7 @@ final class RelationsFilterTest extends TestCase
     public function testFiltersOutboundRelations(): void
     {
         $relationsFilter = new RelationsFilter(new Options([
-            'from' => 'Package'
+            'rel-target-from' => 'Package'
         ]));
 
         $result = $relationsFilter->filterRelations($this->fixture);
@@ -112,8 +112,8 @@ final class RelationsFilterTest extends TestCase
     public function testFiltersOutboundRelationsWithDepth(): void
     {
         $relationsFilter = new RelationsFilter(new Options([
-            'from' => 'Package',
-            'depth' => 1
+            'rel-target-from' => 'Package',
+            'rel-target-depth' => 1
         ]));
 
         $result = $relationsFilter->filterRelations($this->fixture);
@@ -128,7 +128,7 @@ final class RelationsFilterTest extends TestCase
     public function testGeneratesRemoveUnlinkedDirective(): void
     {
         $relationsFilter = new RelationsFilter(new Options([
-            'from' => 'Package'
+            'rel-target-from' => 'Package'
         ]));
 
         $relationsFilter->filterRelations($this->fixture);

@@ -172,11 +172,11 @@ final class Options
      */
     public function fromClass(): array
     {
-        if (!isset($this->opt['from'])) {
+        if (!isset($this->opt['rel-target-from'])) {
             return [];
         }
 
-        return explode(',', $this->opt['from']);
+        return explode(',', $this->opt['rel-target-from']);
     }
 
     /**
@@ -184,15 +184,15 @@ final class Options
      */
     public function toClass(): array
     {
-        if (!isset($this->opt['to'])) {
+        if (!isset($this->opt['rel-target-to'])) {
             return [];
         }
 
-        return explode(',', $this->opt['to']);
+        return explode(',', $this->opt['rel-target-to']);
     }
 
     public function depth(): int
     {
-        return (int) ($this->opt['depth'] ?? PHP_INT_MAX);
+        return (int) ($this->opt['rel-target-depth'] ?? PHP_INT_MAX);
     }
 }
