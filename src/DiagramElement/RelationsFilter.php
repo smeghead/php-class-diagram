@@ -111,8 +111,8 @@ class RelationsFilter {
         }
 
         return match ($direction) {
-            'in' => "/.*?> ({$filteredClass}$|[\w_]+{$filteredClass}$)/",
-            'out' => "/^({$filteredClass}|^[\w_]+{$filteredClass}) .*?>.*?/",
+            'in' => "/.*?> ({$filteredClass}$|[\w]+_{$filteredClass}$)/",
+            'out' => "/^({$filteredClass}|^[\w]_+{$filteredClass}) .*?>.*?/",
         };
     }
 }
