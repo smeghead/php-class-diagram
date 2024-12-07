@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.5.0 (2024-12-07)
+
+### Features
+
+ * feat: Filter relations from and to class #90 (@jose-ba)
+
 ### Bug fix
 
  * Add argument to `--svg-topurl` in help message.

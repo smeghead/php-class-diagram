@@ -119,6 +119,11 @@ OPTIONS
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
+      --rel-target-from='clases'   comma separated list of classes to filter dependencies from
+      --rel-target-to='classes'    comma separated list of classes to filter dependencies to
+      --rel-target='classes'       comma separated list of classes to filter dependencies from or to. this option overrides
+                                   --rel-target-from and --rel-target-to if set.
+      --rel-target-depth=integer   max depth of dependencies to show when using --from or --to filters
 ```
 
 ## How to execute
@@ -226,6 +231,26 @@ You can specify patterns to exclude files from the processing. If you want to ig
 $ vendor/bin/php-class-diagram \
     --exclude='test' \
     --exclude='*Exception.php' \
+    path/to/src
+```
+
+#### option `rel-target`
+
+If there are a very large number of target classes, the class diagram will be cumbersome and difficult to understand.
+In such a case, you can specify the classes you want to study in the `--rel-target` field to generate a class diagram for only the related classes.
+By using `--rel-target-from` and `--rel-target-to`, it is also possible to further narrow down the list according to the direction of dependencies.
+
+```bash
+$ vendor/bin/php-class-diagram \
+    --rel-target-from=Entry \
+    --rel-target-depth=3 \
+    path/to/src
+```
+
+```bash
+$ vendor/bin/php-class-diagram \
+    --rel-target-from-from=Entry \
+    --rel-target-depth=3 \
     path/to/src
 ```
 
