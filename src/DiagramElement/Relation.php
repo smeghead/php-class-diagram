@@ -11,12 +11,15 @@ final class Relation
     private Options $options;
     private Package $package;
 
+    private RelationsFilter $relationsFilter;
+
     /**
      * @param Entry[] $entries
      */
     public function __construct(array $entries, Options $options)
     {
         $this->options = $options;
+        $this->relationsFilter = new RelationsFilter($options);
         $this->package = new Package([], 'ROOT', $options);
         foreach ($entries as $e) {
             /** @var list<string> $paths */
@@ -66,7 +69,11 @@ final class Relation
         }, $this->package->getArrows());
 
         $relation_expressions = array_filter($relation_expressions);
+
+        $relation_expressions = $this->relationsFilter->filterRelations($relation_expressions);
+
         sort($relation_expressions);
+        $relation_expressions = $this->relationsFilter->addRemoveUnlinkedDirective($relation_expressions);
         return array_values(array_unique($relation_expressions));
     }
 
