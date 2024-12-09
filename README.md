@@ -242,14 +242,14 @@ By using `--rel-target-from` and `--rel-target-to`, it is also possible to furth
 
 ```bash
 $ vendor/bin/php-class-diagram \
-    --rel-target-from=Entry \
+    --rel-target=Entry \
     --rel-target-depth=3 \
     path/to/src
 ```
 
 ```bash
 $ vendor/bin/php-class-diagram \
-    --rel-target-from-from=Entry \
+    --rel-target-from=Entry \
     --rel-target-depth=3 \
     path/to/src
 ```
