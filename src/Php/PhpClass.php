@@ -76,7 +76,7 @@ final class PhpClass
      */
     public function getClassNameAlias(): string
     {
-        return str_replace(['.', '[', ']'], '_', $this->getLogicalName());
+        return str_replace(['-', '.', '[', ']'], ['', '_', '_', '_'], $this->getLogicalName());
     }
 
     public function getClassType(): PhpType
