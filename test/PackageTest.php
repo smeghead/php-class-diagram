@@ -246,6 +246,37 @@ EOS;
 EOS;
         $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
     }
+
+    public function testDump_paths_with_hyphens_To_avoid_PlantUML_errors(): void
+    {
+        $directory = sprintf('%s/paths-with-hyphens', $this->fixtureDir);
+        $options = new Options([
+            'disable-class-properties' => true,
+            'disable-class-methods' => true,
+        ]);
+        $files = [
+            'product-with-hyphens/Product.php',
+            'product-with-hyphens/Price.php',
+            'product-with-hyphens/Name.php',
+        ];
+
+        $rel = $this->getRelation($files, $directory, $options);
+
+        $expected = <<<EOS
+@startuml class-diagram
+  package product-with-hyphens as product-with-hyphens {
+    class "Product" as productwithhyphens_Product
+    class "Price" as productwithhyphens_Price
+    class "Name" as productwithhyphens_Name
+  }
+  productwithhyphens_Product ..> productwithhyphens_Name
+  productwithhyphens_Product ..> productwithhyphens_Price
+  productwithhyphens_Product ..> productwithhyphens_Product
+@enduml
+EOS;
+        $this->assertSame($expected, implode(PHP_EOL, $rel->dump()), 'output PlantUML script.');
+    }
+
     public function testDumpPackage1(): void
     {
         $directory = sprintf('%s/no-namespace', $this->fixtureDir);
