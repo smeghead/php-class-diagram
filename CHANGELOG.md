@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.5.1 (2024-12-11)
+
+### Bug fix
+
+ * fix: allow paths with hyphens #91 (@jose-ba)
+
 ## v1.5.0 (2024-12-07)
 
 ### Features
