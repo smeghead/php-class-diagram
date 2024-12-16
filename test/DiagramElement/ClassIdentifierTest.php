@@ -53,6 +53,30 @@ final class ClassIdentifierTest extends TestCase
         $this->assertSame('enum "Suit\n<b>スート</b>" as Suit', $sut->getIdentifier());
     }
 
+    public function testClassRelTarget(): void
+    {
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
+
+        $options = new Options(['rel-target' => 'Product,Name']);
+        $entry = $this->getTargetEntry('product/Product.php', $directory, $options);
+
+        $sut = new ClassIdentifier($options, 'product', $entry);
+
+        $this->assertSame('class "Product" as product_Product #FFF0F5;line:740125;text:740125', $sut->getIdentifier());
+    }
+
+    public function testClassRelTargetNotMatch(): void
+    {
+        $directory = sprintf('%s/namespace', $this->fixtureDir);
+
+        $options = new Options(['rel-target' => 'ProductXX,Name']);
+        $entry = $this->getTargetEntry('product/Product.php', $directory, $options);
+
+        $sut = new ClassIdentifier($options, 'product', $entry);
+
+        $this->assertSame('class "Product" as product_Product', $sut->getIdentifier());
+    }
+
     private function getTargetEntry(string $path, string $directory, Options $options): Entry
     {
         $filename = sprintf('%s/%s', $directory, $path);

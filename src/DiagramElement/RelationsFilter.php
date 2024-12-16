@@ -4,7 +4,6 @@ namespace Smeghead\PhpClassDiagram\DiagramElement;
 
 use InvalidArgumentException;
 use Smeghead\PhpClassDiagram\Config\Options;
-use Smeghead\PhpClassDiagram\Enums\DependenciesDirection;
 use function preg_match;
 
 class RelationsFilter {
@@ -27,15 +26,10 @@ class RelationsFilter {
     public function filterRelations(array $relation_expressions): array
     {
         $output = [];
-        $fromClasses = $this->options->fromClass();
-        $toClasses = $this->options->toClass();
+        $fromClasses = $this->options->relTargetsFrom();
+        $toClasses = $this->options->relTargetsTo();
 
-        if ([] !== $this->options->targetClass()) {
-            $fromClasses = $this->options->targetClass();
-            $toClasses = $this->options->targetClass();
-        }
-
-        $this->maxDepth = $this->options->depth() - 1;
+        $this->maxDepth = $this->options->relTargetsDepth() - 1;
         $this->relationExpressions = $relation_expressions;
 
         if ([] === $fromClasses && [] === $toClasses) {
