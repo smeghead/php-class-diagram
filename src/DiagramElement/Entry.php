@@ -48,17 +48,9 @@ final class Entry
     {
         $indent = str_repeat('  ', $level);
         $lines = [];
-        $meta = $this->class->getClassType()->getMetaName();
-        $classSummary = ($this->options->classNameSummary()
-            ? $this->class->getDescription()
-            : '');
-        $classIdentifier = sprintf(
-            '%s "%s" as %s%s',
-            $meta,
-            $this->class->getClassType()->getName() . (empty($classSummary) ? '' : sprintf("\\n<b>%s</b>", $classSummary)),
-            $this->class->getClassNameAlias(),
-            $this->getLinkExpression($meta)
-        );
+        $identifier = new ClassIdentifier($this->options, $this->directory, $this);
+        $classIdentifier = $identifier->getIdentifier();
+
         if ($this->options->classProperties() || $this->options->classMethods()) {
             $lines[] = sprintf('%s%s {', $indent, $classIdentifier);
             if ($this->options->classProperties()) {
@@ -191,22 +183,5 @@ final class Entry
             $arrows[] = new ArrowDependency($this->class, $t);
         }
         return $arrows;
-    }
-
-    private function getLinkExpression(string $meta): string
-    {
-        if (empty($this->options->svgTopurl())) {
-            return '';
-        }
-        $path = sprintf(
-            '/%s%s.php',
-            empty($this->directory) ? '' : sprintf('%s/', $this->directory),
-            $this->class->getClassType()->getName());
-        return sprintf(
-            ' [[%s %s %s]]',
-            $path,
-            $this->class->getClassType()->getName(),
-            ucfirst($meta)
-        );
     }
 }
