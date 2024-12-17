@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.5.2 (2024-12-17)
+
+### Features
+
+ * Highlight the target class when output with rel-target. #92
+
 ## v1.5.1 (2024-12-11)
 
 ### Bug fix
