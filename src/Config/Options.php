@@ -168,42 +168,36 @@ final class Options
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
-    public function fromClass(): array
+    public function relTargetsFrom(): array
     {
-        if (!isset($this->opt['rel-target-from'])) {
-            return [];
+        $targets = [];
+        if (isset($this->opt['rel-target-from'])) {
+            $targets = [...$targets, ...explode(',', $this->opt['rel-target-from'])];
         }
-
-        return explode(',', $this->opt['rel-target-from']);
+        if (isset($this->opt['rel-target'])) {
+            $targets = [...$targets, ...explode(',', $this->opt['rel-target'])];
+        }
+        return array_values($targets);
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
-    public function toClass(): array
+    public function relTargetsTo(): array
     {
-        if (!isset($this->opt['rel-target-to'])) {
-            return [];
+        $targets = [];
+        if (isset($this->opt['rel-target-to'])) {
+            $targets = [...$targets, ...explode(',', $this->opt['rel-target-to'])];
         }
-
-        return explode(',', $this->opt['rel-target-to']);
+        if (isset($this->opt['rel-target'])) {
+            $targets = [...$targets, ...explode(',', $this->opt['rel-target'])];       
+        }
+        return array_values($targets);
     }
 
-    /**
-     * @return array<string>
-     */
-    public function targetClass(): array
-    {
-        if (!isset($this->opt['rel-target'])) {
-            return [];
-        }
-
-        return explode(',', $this->opt['rel-target']);
-    }
-
-    public function depth(): int
+    public function relTargetsDepth(): int
     {
         return (int) ($this->opt['rel-target-depth'] ?? PHP_INT_MAX);
     }

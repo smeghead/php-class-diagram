@@ -292,4 +292,51 @@ final class OptionsTest extends TestCase
         $this->assertFalse($options->hidePrivateProperties(), 'hide-private-property is false.');
         $this->assertTrue($options->hidePrivateMethods(), 'hide-private-methods is true.');
     }
+
+    public function testRelTarget(): void
+    {
+        $opt = [
+            'rel-target' => 'Product,Name',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(['Product', 'Name'], $options->relTargetsFrom());
+        $this->assertSame(['Product', 'Name'], $options->relTargetsTo());
+    }
+
+    public function testRelTargetFrom(): void
+    {
+        $opt = [
+            'rel-target-from' => 'Product,Name',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(['Product', 'Name'], $options->relTargetsFrom());
+        $this->assertSame([], $options->relTargetsTo());
+    }
+
+    public function testRelTargetTo(): void
+    {
+        $opt = [
+            'rel-target-to' => 'Product,Name',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame([], $options->relTargetsFrom());
+        $this->assertSame(['Product', 'Name'], $options->relTargetsTo());
+    }
+
+    public function testRelTargetDepth(): void
+    {
+        $opt = [
+            'rel-target-depth' => '1',
+        ];
+
+        $options = new Options($opt);
+
+        $this->assertSame(1, $options->relTargetsDepth());
+    }
 }
