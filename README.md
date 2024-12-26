@@ -119,7 +119,7 @@ OPTIONS
       --header='header string'     additional header string. You can specify multiple header values.
       --include='wildcard'         include target file pattern. (default: `*.php`) You can specify multiple include patterns.
       --exclude='wildcard'         exclude target file pattern. You can specify multiple exclude patterns.
-      --rel-target-from='clases'   comma separated list of classes to filter dependencies from
+      --rel-target-from='classes'   comma separated list of classes to filter dependencies from
       --rel-target-to='classes'    comma separated list of classes to filter dependencies to
       --rel-target='classes'       comma separated list of classes to filter dependencies from or to. this option overrides
                                    --rel-target-from and --rel-target-to if set.
