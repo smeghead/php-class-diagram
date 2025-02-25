@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * doc: add Extension Visual Studio Code.
+
 ## v1.5.3 (2024-12-26)
 
 ### Bug fix

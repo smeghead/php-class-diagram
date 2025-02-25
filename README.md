@@ -346,6 +346,13 @@ $ bin/php-class-diagram --division-diagram test/fixtures/enum/
 
 ![PlantUML output image.](docs/images/output-division.png)
 
+## Extension for Visual Studio Code
+
+This VSCode extension allows you to generate and view class diagram scripts using php-class-diagram directly from the file explorer's folder context menu.
+
+[VSCode extension](https://marketplace.visualstudio.com/items?itemName=smeghead7.php-class-diagram)
+
+
 ## GitHub Actions support
 
 The following repository provides actions for generating class diagrams using php-class-diagram in GitHub Actions workflows.
