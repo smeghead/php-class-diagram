@@ -92,7 +92,7 @@ if (empty($directory)) {
     fwrite(STDERR, $usage);
     exit(-1);
 }
-if (!is_dir($directory)) {
+if (!file_exists($directory)) {
     fwrite(STDERR, sprintf("ERROR: specified directory dose not exists. directory: %s\n", $directory));
     fwrite(STDERR, $usage);
     exit(-1);
