@@ -32,7 +32,7 @@
     ],
     "scripts": {
         "test": [
-            "php vendor/phpunit/phpunit/phpunit --colors test/"
+            "php vendor/phpunit/phpunit/phpunit"
         ],
         "build": [
             "php -d phar.readonly=off ./vendor/bin/phar-composer build ./"
