@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v1.6.0 (2025-09-30)
+
 ### Features
 
  * doc: add Extension Visual Studio Code.
