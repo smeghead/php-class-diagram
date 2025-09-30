@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
@@ -343,10 +344,7 @@ final class PhpReflectionTest extends TestCase
         $this->assertSame('string', $data->getMethods()[0]->getParams()[0]->getType()->getName(), 'parameter type.');
         $this->assertSame([], $data->getMethods()[0]->getParams()[0]->getType()->getTypes()[0]->getNamespace(), 'parameter type namespace.');
     }
-    /**
-     * @requires PHP >= 8.1
-     * PHP8.0 dose not have `enum`. 
-     */
+
     public function testEnum(): void
     {
         $options = new Options([]);

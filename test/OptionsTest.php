@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use Smeghead\PhpClassDiagram\Config\Options;
@@ -131,9 +132,7 @@ final class OptionsTest extends TestCase
         $this->assertTrue($options->classNameSummary(), 'classNameSummary is default on.');
     }
 
-    /**
-     * @dataProvider provideDiagrams
-     */
+    #[DataProvider('provideDiagrams')]
     public function testDiagrams(array $options, string $expected): void
     {
         $options = new Options($options);
@@ -141,7 +140,7 @@ final class OptionsTest extends TestCase
         $this->assertSame($expected, $options->diagram(), sprintf('diagram is %s.', $expected));
     }
 
-    public function provideDiagrams(): array
+    public static function provideDiagrams(): array
     {
         return [
             [[], Options::DIAGRAM_CLASS],// default
