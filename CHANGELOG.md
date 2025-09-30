@@ -3,6 +3,8 @@
 ### Features
 
  * doc: add Extension Visual Studio Code.
+ * chore: supported php version >=8.2.
+ * chore: update vendors.
 
 ## v1.5.3 (2024-12-26)
 
