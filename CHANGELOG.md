@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * chore: supported php version 8.5.
+
 ## v1.6.0 (2025-09-30)
 
 ### Features
